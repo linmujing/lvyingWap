@@ -1,0 +1,127 @@
+
+    
+    /*颜色变量*/
+    @color_f8cca4 : #f8cca4;    // 轻橙色
+    @color_f09105 : #f09105;    // 深橙色
+    @color_cccccc : #cccccc;
+    @color_e6e6e6 : #e6e6e6;
+
+    @color_00aa88 : #00aa88;    // 个人中心绿
+    @color_fafafa : #fafafa;    // 个人标题背景灰
+    
+    @color_333 : #333;
+    @color_666 : #666;
+    
+    // Here are the variables to cover, such as:
+    @primary-color: #8c0776;
+
+    /**通用**/
+    div{
+        box-sizing: border-box;
+    }
+    i{
+        font-style: normal;
+    }
+    .block_center{
+        display: block;
+        text-align: center;
+    }
+    .border_bottom_1{
+        border-bottom:1px dotted @color_e6e6e6;
+    }
+    .color_f09105{
+        color: @color_f09105;
+    }
+    .color_ccc{
+        color: #ccc;
+    }
+
+
+    //数字加减小组件
+    .number_add_reduce{
+        width: 80px;
+        height:22px;
+        border:1px solid @color_cccccc;
+        font-size: 12px;
+        position: relative;
+        top:59px;
+        line-height: 22px;
+        margin: 0 auto;
+        
+        overflow: hidden;
+
+        span,b{
+            display: inline-block;
+            text-align: center;
+        }
+        span{
+            width:17px;
+            cursor: pointer;
+            line-height: 18px;
+        }
+        input{
+            display: inline-block;
+            width:100%;
+            border:0;
+            height:20px;
+            text-align: center;
+            position: relative;
+            top:-1px;
+        }
+        .number_value{
+            width:44px;
+            border-left: 1px solid @color_cccccc;
+            border-right: 1px solid @color_cccccc;
+        }
+    }
+
+    // 页面title
+    .order_title{
+        height: 48px;
+        line-height: 48px;
+        background: @color_fafafa;
+
+        span{
+            display: inline-block;
+            width: 122px;
+            text-align: center;
+            border-bottom:2px solid @color_00aa88;
+            font-size: 16px;
+        }
+    }
+
+    // table布局
+    .table_block{
+        display: table;
+
+        .td_block{
+            display:table-cell;
+            vertical-align:middle;
+            line-height:1.5;
+        }
+    }
+
+    // 图片居中
+    .img_middle_center{
+        position: relative;
+
+        img{
+            height: 80%;
+            position: absolute;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            margin:auto;
+        }
+    }
+
+    // 文字鼠标悬停改变颜色
+    .text_hover_color{
+        color: @color_00aa88;
+        transition: 0.5s;
+        cursor: pointer;
+        &:hover{
+            color: #666;
+        }
+    }
