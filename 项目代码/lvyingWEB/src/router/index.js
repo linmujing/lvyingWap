@@ -1,18 +1,30 @@
 import Vue from 'vue'
+import Vant from 'vant'
 import Router from 'vue-router'
-import HelloWorld from '@/components/HelloWorld'
 
 Vue.use(Router)
 
 const router = new Router({
   
   routes: [
+    {path: '/', redirect: 'shopMallIdex'},
     {
       path: '/',
-      name: '/',
+      name: 'Index',
       meta:{
-        title:'首页',
-      }
+        title:'律瀛官方主页',
+      },
+      component:  resolve => require(['@/view/shopMall/index'],resolve),
+      children: [
+       	{
+          path: '/shopMallIdex',
+          name: 'shopMallIdex',
+          component:resolve => require(['@/view/shopMall/shopMallIdex'],resolve),
+          meta:{
+            title:'律瀛官方主页',
+          }
+        }
+      ]
     },
     {
       path: '*',
