@@ -3,7 +3,7 @@
     	
     	<router-view></router-view>
 	    
-    	<FooterBar></FooterBar>
+    	<FooterBar :curIndex = '0'></FooterBar>
 		
     </div>
 </template>
