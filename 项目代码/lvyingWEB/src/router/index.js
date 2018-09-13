@@ -72,9 +72,17 @@ const router = new Router({
           name: 'sortIndex',
           component:resolve => require(['@/view/sort/sortIndex'],resolve),
           meta:{
-            title:'律瀛官方主页',
+            title:'分类',
           }
         },
+        {
+          path: '/sortList',
+          name: 'sortList',
+          component:resolve => require(['@/view/sort/sortList'],resolve),
+          meta:{
+            title:'分类列表',
+          }
+        }
     	]
     },
     {

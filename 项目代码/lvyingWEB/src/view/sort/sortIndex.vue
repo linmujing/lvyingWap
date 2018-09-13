@@ -13,9 +13,9 @@
 			  	<van-col span="17">
 				  	<div  v-bind:style="{height: fullHeight - 50 + 'px'}" class="scroll">
 					  	<div v-for="(item,index) in tabData[tabIndex].lists" :key="index">
-							<div class="font_16 padding_10 van-ellipsis">{{item.title}}</div>
+							<div @click="toList(1)" class="font_16 padding_10 van-ellipsis">{{item.title}}</div>
 							<div class="flex_warp">
-								<div v-for="val in item.items" class="sort">
+								<div v-for="val in item.items" @click="toList(2)" class="sort">
 									<div class="all_width">
 										<img :src="val.img" class="all_width all_height"/>
 									</div>
@@ -188,9 +188,19 @@ export default {
 	},
 	methods: {
     	onClick(key) {
-    	console.log(key)
+    		console.log(key)
 	      this.activeKey = key;
 	      this.tabIndex = key;
+	    },
+	    toList(id){
+	    	console.log(id)
+	    	this.$router.push({
+              path:'/sortList',
+              query: {
+                id: id,
+                name: '劳动企业' + id
+              }
+            })
 	    }
     }
 }
