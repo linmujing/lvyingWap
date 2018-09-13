@@ -1,19 +1,8 @@
 <template>
-    <div style="margin-bottom: 60px">
-    	<!--tab标签-->
+    <div>
     	<div>
-    		<van-tabs color="#00AA88">
-			  <van-tab v-for="(item,index) in tabTitle" :key="index" :title="item">
-			  	<!--轮播-->
-			  	<div>
-			  		<van-swipe :autoplay="3000">
-					  <van-swipe-item v-for="(image, index) in images" :key="index">
-					    <img :src="image" class="all_width"/>
-					  </van-swipe-item>
-					</van-swipe>
-			  	</div>
 			  	<!--搜索-->
-			  	<div v-if="index == 0">
+			  	<div>
 			  		<van-row>
 					  <van-col span="20">
 					  	<div class="search_box">
@@ -31,7 +20,7 @@
 					</van-row>
 			  	</div>
 			  	<!--视频课程-->
-			  	<div v-if="index == 0 || index == 3">
+			  	<div>
             <div class="div_line"></div>
 			  		<div class="margin_10">
 			  			<van-row>
@@ -71,7 +60,7 @@
 						  		<div class="margin_top_10">
                     <van-row>
                       <van-col span="6">
-                        <div class="flex_warp">
+                        <div class="flex_warp van-ellipsis">
                           <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                           <span class="font_12 color_666">试听</span>
                         </div>
@@ -92,7 +81,7 @@
 			  		</div>
 			  	</div>
           <!--音频课程-->
-          <div v-if="index == 0 || index == 4">
+          <div>
             <div class="div_line"></div>
             <div class="margin_10">
               <van-row>
@@ -132,7 +121,7 @@
                     <div class="margin_top_10">
                       <van-row>
                         <van-col span="6">
-                          <div class="flex_warp">
+                          <div class="flex_warp van-ellipsis">
                             <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                             <span class="font_12 color_666">试听</span>
                           </div>
@@ -153,11 +142,11 @@
             </div>
           </div>
 			  	<!--广告-->
-          <div v-if="index == 0">
+          <div>
             <img src="../../../static/images/img/ad.png" class="all_width"/>
           </div>
           <!--行业动态-->
-          <div v-if="index == 0 || index == 1">
+          <div>
             <div class="margin_10">
               <van-row>
                 <van-col span="18">
@@ -207,7 +196,7 @@
             </div>
           </div>
           <!--法律动态-->
-          <div v-if="index == 0 || index == 2">
+          <div>
             <div class="div_line"></div>
             <div class="margin_10">
               <van-row>
@@ -258,11 +247,11 @@
             </div>
           </div>
           <!--广告-->
-          <div v-if="index == 0">
+          <div >
             <img src="../../../static/images/img/ad-02.png" class="all_width"/>
           </div>
           <!--律瀛商城-->
-          <div v-if="index == 0">
+          <div>
             <div class="margin_10">
               <van-row>
                 <van-col span="18">
@@ -285,15 +274,13 @@
                 <div class="van-ellipsis margin_top_5 title">知识产权许可使用合同起草</div>
                 <div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草知识产权许可使用合同起草</div>
                 <div class="juc_between align_center margin_top_10">
-                  <span class="color_title font_18">￥500.00</span>
-                  <button class="btn_title">立即购买</button>
+                  <span class="color_title font_16 van-ellipsis">￥500.00</span>
+                  <button class="btn_title van-ellipsis">立即购买</button>
                 </div>
               </div>
             </div>
           </div>
 
-			  </van-tab>
-			</van-tabs>
     	</div>
 		
     </div>
@@ -305,12 +292,7 @@ export default {
     },
     data() {
         return {
-        	tabTitle: ['推荐','行业动态管控','法律动态管控','视频课程','音频课程'],
-        	images: [
-		      '../../../static/images/img/banner.png',
-		      '../../../static/images/img/banner.png'
-		    ],
-		    value: ''
+        	value: ''
         }
         
     },
@@ -321,12 +303,6 @@ export default {
     }
 }
 </script>
-<style type="text/css">
-	/*轮播的点*/
-	.van-swipe__indicators{display: none;}
-	/*搜索*/
-	.van-search .van-cell{border-radius: 15px; border: 1px solid #D8D8D8;border-right:transparent}
-</style>
 <style scoped lang='less'>
  	/*引入共用less文件*/
     @import './shopMall.less'; 
@@ -359,9 +335,5 @@ export default {
 	.scan{
 		margin: 0.25rem 0.2rem 0.2rem 0.2rem;
 		text-align: right;
-	}
-	/*课程内容*/
-	.class_box{
-		margin-left: 0.2rem;
 	}
 </style>

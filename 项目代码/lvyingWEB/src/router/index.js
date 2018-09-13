@@ -23,6 +23,38 @@ const router = new Router({
           meta:{
             title:'律瀛官方主页',
           }
+        },
+        {
+          path: '/industryDynamic',
+          name: 'industryDynamic',
+          component:resolve => require(['@/view/shopMall/industryDynamic'],resolve),
+          meta:{
+            title:'行业动态管控',
+          }
+        },
+        {
+          path: '/lawDynamic',
+          name: 'lawDynamic',
+          component:resolve => require(['@/view/shopMall/lawDynamic'],resolve),
+          meta:{
+            title:'法律动态管控',
+          }
+        },
+        {
+          path: '/videoCourse',
+          name: 'videoCourse',
+          component:resolve => require(['@/view/shopMall/videoCourse'],resolve),
+          meta:{
+            title:'视频课程',
+          }
+        },
+        {
+          path: '/audioCourse',
+          name: 'audioCourse',
+          component:resolve => require(['@/view/shopMall/audioCourse'],resolve),
+          meta:{
+            title:'音频课程',
+          }
         }
       ]
     },
