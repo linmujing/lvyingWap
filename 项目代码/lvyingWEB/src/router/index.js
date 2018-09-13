@@ -32,8 +32,67 @@ const router = new Router({
           meta:{
             title:'律瀛官方主页',
           }
+        },
+        {
+          path: '/industryDynamic',
+          name: 'industryDynamic',
+          component:resolve => require(['@/view/shopMall/industryDynamic'],resolve),
+          meta:{
+            title:'行业动态管控',
+          }
+        },
+        {
+          path: '/lawDynamic',
+          name: 'lawDynamic',
+          component:resolve => require(['@/view/shopMall/lawDynamic'],resolve),
+          meta:{
+            title:'法律动态管控',
+          }
+        },
+        {
+          path: '/videoCourse',
+          name: 'videoCourse',
+          component:resolve => require(['@/view/shopMall/videoCourse'],resolve),
+          meta:{
+            title:'视频课程',
+          }
+        },
+        {
+          path: '/audioCourse',
+          name: 'audioCourse',
+          component:resolve => require(['@/view/shopMall/audioCourse'],resolve),
+          meta:{
+            title:'音频课程',
+          }
         }
       ]
+    },
+     /**分类**/ 
+    {
+      path: '/sort',
+      name: 'sort',
+      meta:{
+        title:'分类',
+      },
+      component:  resolve => require(['@/view/sort/index'],resolve),
+      children: [
+       	{
+          path: '/sortIndex',
+          name: 'sortIndex',
+          component:resolve => require(['@/view/sort/sortIndex'],resolve),
+          meta:{
+            title:'分类',
+          }
+        },
+        {
+          path: '/sortList',
+          name: 'sortList',
+          component:resolve => require(['@/view/sort/sortList'],resolve),
+          meta:{
+            title:'分类列表',
+          }
+        }
+    	]
     },
     {
       path: '*',

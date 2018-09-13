@@ -1,6 +1,6 @@
 <template>
   <div>
-		<van-tabbar v-model="active">
+		<van-tabbar v-model="active" @change="toggle">
 		  <van-tabbar-item>
 		    <span>首页</span>
 		    <img
@@ -39,10 +39,10 @@
 
 <script>
 export default {
-
+	props:['curIndex'],
   data () {
     return {
-  		active: 0,
+  		active: parseInt(this.curIndex),
       icon: {
         normal: '../../static/images/icon/home.png',
         active: '../../static/images/icon/_home.png'
@@ -60,10 +60,32 @@ export default {
         active: '../../static/images/icon/_user.png'
       }
     }
+  },
+  methods: {
+  	toggle(active){
+  		console.log(active)
+  		switch(active){
+  			case 0:
+  				this.$router.push({
+	          path:'/shopMallIdex'
+	        })
+        	break;
+        	case 1:
+  				this.$router.push({
+	          path:'/sortIndex'
+	        })
+        	break;
+  		}
+  	}
+  },
+  mounted(){
+  	
   }
 }
 </script>
-
+<style>
+	.van-tabbar-item--active{color:#00AA88}
+</style>
 <style scoped>
 
 </style>
