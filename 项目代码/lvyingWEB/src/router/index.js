@@ -58,6 +58,25 @@ const router = new Router({
         }
       ]
     },
+     /**分类**/ 
+    {
+      path: '/sort',
+      name: 'sort',
+      meta:{
+        title:'分类',
+      },
+      component:  resolve => require(['@/view/sort/index'],resolve),
+      children: [
+       	{
+          path: '/sortIndex',
+          name: 'sortIndex',
+          component:resolve => require(['@/view/sort/sortIndex'],resolve),
+          meta:{
+            title:'律瀛官方主页',
+          }
+        },
+    	]
+    },
     {
       path: '*',
       name: '404',

@@ -70,6 +70,11 @@ export default {
 	          path:'/shopMallIdex'
 	        })
         	break;
+        	case 1:
+  				this.$router.push({
+	          path:'/sortIndex'
+	        })
+        	break;
   		}
   	}
   },
