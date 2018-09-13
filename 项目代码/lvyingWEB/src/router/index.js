@@ -85,11 +85,27 @@ const router = new Router({
           }
         },
         {
-          path: '/sortList',
-          name: 'sortList',
-          component:resolve => require(['@/view/sort/sortList'],resolve),
+          path: '/videoList',
+          name: 'videoList',
+          component:resolve => require(['@/view/sort/videoList'],resolve),
           meta:{
-            title:'分类列表',
+            title:'',
+          }
+        },
+        {
+          path: '/dynamicList',
+          name: 'dynamicList',
+          component:resolve => require(['@/view/sort/dynamicList'],resolve),
+          meta:{
+            title:'',
+          }
+        },
+        {
+          path: '/lvyingMallList',
+          name: 'lvyingMallList',
+          component:resolve => require(['@/view/sort/lvyingMallList'],resolve),
+          meta:{
+            title:'律瀛商城',
           }
         }
     	]
