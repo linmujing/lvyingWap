@@ -16,6 +16,15 @@ const router = new Router({
       },
       component:  resolve => require(['@/view/shopMall/index'],resolve),
       children: [
+        // 购物车
+        {
+          path: 'shoppingCart',
+          name: 'shoppingCart',
+          component:resolve => require(['@/view/shopCart/shoppingCart'],resolve),
+          meta:{
+            title:'律瀛官方主页',
+          }
+        },
        	{
           path: '/shopMallIdex',
           name: 'shopMallIdex',

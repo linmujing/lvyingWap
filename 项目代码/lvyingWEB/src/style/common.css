@@ -1,0 +1,162 @@
+/*颜色变量*/
+/**通用**/
+div {
+  box-sizing: border-box;
+}
+i {
+  font-style: normal;
+}
+.block_center {
+  display: block;
+  text-align: center;
+}
+.border_bottom_1 {
+  border-bottom: 1px dotted #e6e6e6;
+}
+.color_f09105 {
+  color: #f09105;
+}
+.color_ccc {
+  color: #ccc;
+}
+.color_red {
+  color: red;
+}
+.border_top_1px,
+.border_bottom_1px {
+  position: relative;
+}
+.border_top_1px:before,
+.border_bottom_1px:before {
+  content: '';
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 1px;
+  -webkit-transform: scaleY(0.3);
+  transform: scaleY(0.3);
+  background-color: #ddd;
+}
+.border_top_1px:before {
+  top: 0;
+}
+.body_bg {
+  background: #f5f5f5;
+}
+.bg_fff {
+  background: #fff;
+}
+.bg_00aa88 {
+  background: #00aa88;
+}
+.font_20 {
+  font-size: 0.20rem;
+}
+.font_24 {
+  font-size: 0.24rem;
+}
+.font_26 {
+  font-size: 0.26rem;
+}
+.font_28 {
+  font-size: 0.28rem;
+}
+.font_30 {
+  font-size: 0.3rem;
+}
+.padding_0_20 {
+  padding: 0 0.2rem;
+}
+.padding_left_20 {
+  padding-left: 0.2rem;
+}
+.padding_left_30 {
+  padding-left: 0.3rem;
+}
+.padding_right_20 {
+  padding-right: 0.2rem;
+}
+.padding_right_30 {
+  padding-right: 0.3rem;
+}
+.padding_top_20 {
+  padding-top: 0.2rem;
+}
+.padding_top_30 {
+  padding-top: 0.3rem;
+}
+.padding_bottom_20 {
+  padding-bottom: 0.2rem;
+}
+.padding_bottom_30 {
+  padding-bottom: 0.3rem;
+}
+.margin_0_20 {
+  margin: 0 0.2rem;
+}
+.margin_left_20 {
+  margin-left: 0.2rem;
+}
+.margin_left_30 {
+  margin-left: 0.3rem;
+}
+.margin_right_20 {
+  margin-right: 0.2rem;
+}
+.margin_right_30 {
+  margin-right: 0.3rem;
+}
+.margin_top_20 {
+  margin-top: 0.2rem;
+}
+.margin_top_30 {
+  margin-top: 0.3rem;
+}
+.margin_bottom_20 {
+  margin-bottom: 0.2rem;
+}
+.margin_bottom_30 {
+  margin-bottom: 0.3rem;
+}
+.border_bottom_1 {
+  border-bottom: 1px solid #e0e0e0;
+}
+.border_1 {
+  border: 1px solid #e0e0e0;
+}
+.flex {
+  display: flex;
+}
+.space_between {
+  justify-content: space-between;
+}
+.space_around {
+  justify-content: space-between;
+}
+.space_center {
+  justify-content: center;
+}
+.flex_end {
+  justify-content: flex-end;
+}
+.table_block {
+  display: table;
+}
+.table_block .td_block {
+  display: table-cell;
+  vertical-align: middle;
+  line-height: 1.5;
+}
+.img_middle_center {
+  position: relative;
+}
+.img_middle_center img {
+  height: 80%;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  margin: auto;
+}
