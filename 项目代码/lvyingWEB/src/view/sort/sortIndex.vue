@@ -194,13 +194,33 @@ export default {
 	    },
 	    toList(id){
 	    	console.log(id)
-	    	this.$router.push({
-              path:'/sortList',
-              query: {
-                id: id,
-                name: '劳动企业' + id
-              }
-            })
+        var tabIndex = this.tabIndex;
+        if(tabIndex == 0 || tabIndex == 1){
+          this.$router.push({
+            path:'/dynamicList',
+            query: {
+              id: id,
+              name: '劳动企业' + id
+            }
+          })
+        }else if(tabIndex == 2 || tabIndex == 3){
+          this.$router.push({
+            path:'/videoList',
+            query: {
+              id: id,
+              name: '视频' + id
+            }
+          })
+        }else if(tabIndex == 4){
+          this.$router.push({
+            path:'/lvyingMallList',
+            query: {
+              id: id,
+              name: '律瀛商城' + id
+            }
+          })
+        }
+
 	    }
     }
 }
