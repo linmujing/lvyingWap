@@ -75,13 +75,16 @@
         <div class="img_middle_center"  :style="{ height: windowHeight + 'px' }" v-if="!cartDate.cartList.length">
             <img  style="height:auto;width:50%;" src="../../../static/images/image/not_goods.png" alt="">
         </div>
+
+        <FooterBar :curIndex = '2'></FooterBar>
     </div>
 
 </template>
 <script>
+import FooterBar from '../../components/FooterBar.vue'
 export default {
     components : {
-    	
+    	FooterBar
     },
     data() {
         return {
