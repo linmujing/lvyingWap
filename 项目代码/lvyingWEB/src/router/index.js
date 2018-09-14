@@ -16,15 +16,7 @@ const router = new Router({
       },
       component:  resolve => require(['@/view/shopMall/index'],resolve),
       children: [
-        // 购物车
-        {
-          path: 'shoppingCart',
-          name: 'shoppingCart',
-          component:resolve => require(['@/view/shopCart/shoppingCart'],resolve),
-          meta:{
-            title:'律瀛官方主页',
-          }
-        },
+
        	{
           path: '/shopMallIdex',
           name: 'shopMallIdex',
@@ -118,6 +110,25 @@ const router = new Router({
         }
     	]
     },
+
+    /**购物车部分**/ 
+    {
+      path: '/shoppingCart',
+      name: 'shoppingCart',
+      component:resolve => require(['@/view/shopCart/shoppingCart'],resolve),
+      meta:{
+        title:'购物车',
+      }
+    },
+    {
+      path: '/submitOrder',
+      name: 'submitOrder',
+      meta:{
+        title:'确认订单',
+      },
+      component: resolve => require(['@/view/shopCart/submitOrder'],resolve)
+    },
+
     {
       path: '*',
       name: '404',

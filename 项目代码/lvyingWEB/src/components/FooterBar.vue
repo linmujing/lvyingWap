@@ -1,36 +1,12 @@
 <template>
   <div>
-		<van-tabbar v-model="active" @change="toggle">
-		  <van-tabbar-item>
-		    <span>首页</span>
+		<van-tabbar v-model="navData.active" @change="toggle">
+		  <van-tabbar-item v-for="(item, index ) in navData.list" :key="index">
+		    <span>{{item.text}}</span>
 		    <img
 		      slot="icon"
 		      slot-scope="props"
-		      :src="props.active ? icon.active : icon.normal"
-		    >
-		  </van-tabbar-item>
-		  <van-tabbar-item>
-		    <span>分类</span>
-		    <img
-		      slot="icon"
-		      slot-scope="props"
-		      :src="props.active ? icon2.active : icon2.normal"
-		    >
-		  </van-tabbar-item>
-		  <van-tabbar-item>
-		    <span>购物车</span>
-		    <img
-		      slot="icon"
-		      slot-scope="props"
-		      :src="props.active ? icon3.active : icon3.normal"
-		    >
-		  </van-tabbar-item>
-		  <van-tabbar-item>
-		    <span>我的</span>
-		    <img
-		      slot="icon"
-		      slot-scope="props"
-		      :src="props.active ? icon4.active : icon4.normal"
+		      :src="props.active ? item.active : item.normal"
 		    >
 		  </van-tabbar-item>
 		</van-tabbar>
@@ -39,43 +15,61 @@
 
 <script>
 export default {
+
 	props:['curIndex'],
+	
   data () {
     return {
-  		active: parseInt(this.curIndex),
-      icon: {
-        normal: '../../static/images/icon/home.png',
-        active: '../../static/images/icon/_home.png'
-      },
-      icon2: {
-        normal: '../../static/images/icon/sort.png',
-        active: '../../static/images/icon/_sort.png'
-      },
-      icon3: {
-        normal: '../../static/images/icon/cart.png',
-        active: '../../static/images/icon/_cart.png'
-      },
-      icon4: {
-        normal: '../../static/images/icon/user.png',
-        active: '../../static/images/icon/_user.png'
-      }
+
+			navData:{
+				// 当前选项
+				active: parseInt(this.curIndex),
+
+				// 选项列表
+				list:[
+					{
+						text:'首页',
+						url:'/shopMallIdex',
+						normal: '../../static/images/icon/home.png',
+						active: '../../static/images/icon/_home.png'
+					},
+					{
+						text:'分类',
+						url:'/sortIndex',
+						normal: '../../static/images/icon/sort.png',
+						active: '../../static/images/icon/_sort.png'
+					},
+					{
+						text:'购物车',
+						url:'/shoppingCart',
+						normal: '../../static/images/icon/cart.png',
+						active: '../../static/images/icon/_cart.png'
+					},
+					{
+						text:'我的',
+						url:'/shopMallIdex',
+						normal: '../../static/images/icon/user.png',
+						active: '../../static/images/icon/_user.png'
+					}
+				]
+
+			}
+  		
     }
   },
   methods: {
-  	toggle(active){
-  		console.log(active)
-  		switch(active){
-  			case 0:
-  				this.$router.push({
-	          path:'/shopMallIdex'
-	        })
-        	break;
-        	case 1:
-  				this.$router.push({
-	          path:'/sortIndex'
-	        })
-        	break;
-  		}
+
+		// 跳转
+  	toggle(){
+
+			let index = this.navData.active;
+
+			this.$router.push({
+
+				path: this.navData.list[index].url
+				
+			})
+			
   	}
   },
   mounted(){
