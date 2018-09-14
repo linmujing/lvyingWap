@@ -47,7 +47,7 @@ export default {
 					},
 					{
 						text:'我的',
-						url:'/shopMallIdex',
+						url:'/personCenter',
 						normal: '../../static/images/icon/user.png',
 						active: '../../static/images/icon/_user.png'
 					}

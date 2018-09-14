@@ -36,8 +36,8 @@
                                             </span>
                                             <span class="td_block padding_left_30 ">
                                                 <p  class="" style="word-wrap:break-word;">
-                                                    <span>{{item.describe}}</span>    <br>
-                                                    <span style="display:inline-block;margin-top:0.1rem;">￥{{item.price}}</span>
+                                                    <span style="position:relative;top:-0.6rem;">{{item.describe}}</span>   
+                                                    <span class="font_20" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{item.price}}</span>
                                                 </p>
                                             </span>
                                         </div>
@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- 提交订单 -->
-                <div class="submit_cart padding_left_20 flex space_between bg_fff border_top_1px">
+                <div class="submit_cart padding_left_20 flex space_between bg_fff border_top_1px font_30">
                     <div>
                         <van-checkbox v-model="cartDate.listState" @change="setAllCheckboxChange"></van-checkbox>
                     </div>
@@ -114,7 +114,7 @@ export default {
                                 state: false,
                                 price: '88.01',
                                 num: 1,
-                                describe: '多行文字多行文字多行文字',
+                                describe: '多行文字多行文字多行文字多行文字多行文字多行文字',
                                 imgSrc: '../../../static/images/image/book_01.png'
                             },
                             {

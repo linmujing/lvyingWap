@@ -13,21 +13,6 @@ i {
 .border_bottom_1 {
   border-bottom: 1px dotted #e6e6e6;
 }
-.line_height_26 {
-  line-height: 0.5rem;
-}
-.color_f09105 {
-  color: #f09105;
-}
-.color_ccc {
-  color: #ccc;
-}
-.color_000 {
-  color: #000;
-}
-.color_red {
-  color: red;
-}
 .border_top_1px,
 .border_bottom_1px {
   position: relative;
@@ -55,6 +40,27 @@ i {
 }
 .bg_00aa88 {
   background: #00aa88;
+}
+.color_f09105 {
+  color: #f09105;
+}
+.color_00aa88 {
+  color: #00aa88;
+}
+.color_ccc {
+  color: #ccc;
+}
+.color_000 {
+  color: #000;
+}
+.color_red {
+  color: red;
+}
+.color_cart_ccc1 {
+  color: #999999;
+}
+.color_cart_ccc2 {
+  color: #666666;
 }
 .font_20 {
   font-size: 0.20rem;
@@ -145,6 +151,18 @@ i {
 }
 .flex_end {
   justify-content: flex-end;
+}
+.line_height_60 {
+  line-height: 0.6rem;
+}
+.line_height_80 {
+  line-height: 0.8rem;
+}
+.line_height_94 {
+  line-height: 0.94rem;
+}
+.line_height_100 {
+  line-height: 1rem;
 }
 .table_block {
   display: table;

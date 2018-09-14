@@ -121,6 +121,23 @@ const router = new Router({
       component: resolve => require(['@/view/shopCart/submitOrder'],resolve)
     },
 
+    /**个人中心部分**/ 
+    {
+      path: '/personCenter',
+      name: 'personCenter',
+      meta:{
+        title:'我的',
+      },
+      component: resolve => require(['@/view/personCenter/personCenter'],resolve)
+    },
+    {
+      path: '/myOrder',
+      name: 'myOrder',
+      meta:{
+        title:'我的订单',
+      },
+      component: resolve => require(['@/view/personCenter/myOrder'],resolve)
+    },
     {
       path: '*',
       name: '404',
