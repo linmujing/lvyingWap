@@ -107,6 +107,14 @@ const router = new Router({
           meta:{
             title:'商品详情',
           }
+        },
+        {
+          path: '/seeVideo',
+          name: 'seeVideo',
+          component:resolve => require(['@/view/sort/seeVideo'],resolve),
+          meta:{
+            title:'查看',
+          }
         }
     	]
     },
