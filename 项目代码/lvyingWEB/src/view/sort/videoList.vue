@@ -7,7 +7,7 @@
 				  	
 				  	<div class="padding_10 juc_wrap_between">
 				  		<div v-for="(val,i) in item.lists" :key="i" class="list_box">
-				  			<div class="text_center">
+				  			<div @click="toDetail(i)" class="text_center">
                   <img :src="val.img" class="img_box">
                 </div>
                 <div class="margin_top_5 font_16 van-ellipsis">{{val.title}}</div>
@@ -116,7 +116,14 @@ export default {
 //		console.log(this.$route.params.name)
 	},
 	methods: {
-    	
+    	toDetail(i){
+    		this.$router.push({
+	            path:'/videoDetail',
+	            query: {
+	              id: i
+	            }
+          	})
+    	}
     }
 }
 </script>

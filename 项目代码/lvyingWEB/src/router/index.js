@@ -99,6 +99,22 @@ const router = new Router({
           meta:{
             title:'律瀛商城',
           }
+        },
+        {
+          path: '/videoDetail',
+          name: 'videoDetail',
+          component:resolve => require(['@/view/sort/videoDetail'],resolve),
+          meta:{
+            title:'商品详情',
+          }
+        },
+        {
+          path: '/seeVideo',
+          name: 'seeVideo',
+          component:resolve => require(['@/view/sort/seeVideo'],resolve),
+          meta:{
+            title:'查看',
+          }
         }
     	]
     },

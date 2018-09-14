@@ -1,8 +1,8 @@
 <template>
-    <div>
+    <div class="body_bg">
     	<div>
 			  	<!--搜索-->
-			  	<div>
+			  	<div class="bg_fff">
 			  		<van-row>
 					  <van-col span="20">
 					  	<div class="search_box">
@@ -22,7 +22,7 @@
 			  	<!--视频课程-->
 			  	<div>
             <div class="div_line"></div>
-			  		<div class="margin_10">
+			  		<div class="padding_10 bg_fff">
 			  			<van-row>
 						  <van-col span="18">
 						  	<span class="title">视频课程</span>
@@ -36,7 +36,7 @@
 						  </van-col>
 						</van-row>
 			  		</div>
-			  		<div v-for="item in 2" class="margin_10">
+			  		<div v-for="item in 2" class="padding_10 bg_fff">
 			  			<van-row>
 						  <van-col span="10">
 						  	<div>
@@ -83,7 +83,7 @@
           <!--音频课程-->
           <div>
             <div class="div_line"></div>
-            <div class="margin_10">
+            <div class="padding_10 bg_fff">
               <van-row>
                 <van-col span="18">
                   <span class="title">音频课程</span>
@@ -97,7 +97,7 @@
                 </van-col>
               </van-row>
             </div>
-            <div v-for="item in 2" class="margin_10">
+            <div v-for="item in 2" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
                   <div>
@@ -147,7 +147,7 @@
           </div>
           <!--行业动态-->
           <div>
-            <div class="margin_10">
+            <div class="padding_10 bg_fff">
               <van-row>
                 <van-col span="18">
                   <span class="title">行业动态管控</span>
@@ -161,7 +161,7 @@
                 </van-col>
               </van-row>
             </div>
-            <div v-for="item in 2" class="margin_10">
+            <div v-for="item in 2" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
                   <div>
@@ -198,7 +198,7 @@
           <!--法律动态-->
           <div>
             <div class="div_line"></div>
-            <div class="margin_10">
+            <div class="padding_10 bg_fff">
               <van-row>
                 <van-col span="18">
                   <span class="title">法律动态管控</span>
@@ -212,7 +212,7 @@
                 </van-col>
               </van-row>
             </div>
-            <div v-for="item in 2" class="margin_10">
+            <div v-for="item in 2" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
                   <div>
@@ -252,7 +252,7 @@
           </div>
           <!--律瀛商城-->
           <div>
-            <div class="margin_10">
+            <div class="padding_10 bg_fff">
               <van-row>
                 <van-col span="18">
                   <span class="title">律瀛商城</span>
@@ -266,7 +266,7 @@
                 </van-col>
               </van-row>
             </div>
-            <div class="juc_wrap_around">
+            <div class="juc_wrap_around bg_fff">
               <div v-for="item in 4" class="width_45 border_999 margin_bottom_20 padding_10 box_sizing">
                 <div>
                   <img src="../../../static/images/img/book.png" class="all_width">
