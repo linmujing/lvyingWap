@@ -178,6 +178,14 @@ const router = new Router({
       },
       component: resolve => require(['@/view/personCenter/myAfterService'],resolve)
     },
+    {
+      path: '/myCourse',
+      name: 'myCourse',
+      meta:{
+        title:'我的课程',
+      },
+      component: resolve => require(['@/view/personCenter/myCourse'],resolve)
+    },
 
     {
       path: '*',

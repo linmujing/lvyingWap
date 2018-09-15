@@ -44,7 +44,7 @@ export default {
                 {
                     text: '我的课程',
                     imgSrc: '../../../static/images/icon/person_icon_1.png',
-                    url: ''
+                    url: 'myCourse'
                 },{
                     text: '我的订单',
                     imgSrc: '../../../static/images/icon/person_icon_2.png',

@@ -117,6 +117,21 @@ i{
 .font_40{
     font-size: 0.4rem;
 }
+
+//文字样式 省略号
+.text_ellipsis{overflow: hidden !important;white-space: nowrap;text-overflow: ellipsis;}
+.text_justify{text-justify: inherit;}
+.twoline_ellipsis {
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+	-webkit-line-clamp: 2;
+	/* autoprefixer: off*/
+	-webkit-box-orient: vertical;
+	/* autoprefixer: on*/
+    white-space: normal;
+}
+
 // padding
 .padding_20{
     padding: 0.2rem;
@@ -201,6 +216,10 @@ i{
 }
 .flex_end {
     justify-content: flex-end ;
+}
+.flex_warp{
+    display: flex;
+    flex-wrap: wrap;
 }
 
 // 行高
