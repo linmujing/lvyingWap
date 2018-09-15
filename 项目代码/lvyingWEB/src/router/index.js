@@ -155,6 +155,31 @@ const router = new Router({
       component: resolve => require(['@/view/personCenter/myOrder'],resolve)
     },
     {
+      path: '/myComment',
+      name: 'myComment',
+      meta:{
+        title:'我的评价',
+      },
+      component: resolve => require(['@/view/personCenter/myComment'],resolve)
+    },
+    {
+      path: '/myCoupon',
+      name: 'myCoupon',
+      meta:{
+        title:'我的优惠券',
+      },
+      component: resolve => require(['@/view/personCenter/myCoupon'],resolve)
+    },
+    {
+      path: '/myAfterService',
+      name: 'myAfterService',
+      meta:{
+        title:'我的售后',
+      },
+      component: resolve => require(['@/view/personCenter/myAfterService'],resolve)
+    },
+
+    {
       path: '*',
       name: '404',
       meta:{

@@ -13,6 +13,9 @@ i {
 .border_bottom_1 {
   border-bottom: 1px dotted #e6e6e6;
 }
+.text_center {
+  text-align: center;
+}
 .border_top_1px,
 .border_bottom_1px {
   position: relative;
@@ -50,6 +53,9 @@ i {
 .color_ccc {
   color: #ccc;
 }
+.color_999 {
+  color: #999;
+}
 .color_000 {
   color: #000;
 }
@@ -61,6 +67,12 @@ i {
 }
 .color_cart_ccc2 {
   color: #666666;
+}
+.text_space_1 {
+  letter-spacing: 1px;
+}
+.text_space_2 {
+  letter-spacing: 2px;
 }
 .font_20 {
   font-size: 0.20rem;
@@ -76,6 +88,12 @@ i {
 }
 .font_30 {
   font-size: 0.3rem;
+}
+.font_40 {
+  font-size: 0.4rem;
+}
+.padding_20 {
+  padding: 0.2rem;
 }
 .padding_0_20 {
   padding: 0 0.2rem;
@@ -151,6 +169,9 @@ i {
 }
 .flex_end {
   justify-content: flex-end;
+}
+.line_height_50 {
+  line-height: 0.5rem;
 }
 .line_height_60 {
   line-height: 0.6rem;

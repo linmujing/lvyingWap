@@ -52,15 +52,15 @@ export default {
                 },{
                     text: '我的优惠券',
                     imgSrc: '../../../static/images/icon/person_icon_3.png',
-                    url: ''
+                    url: 'myCoupon'
                 },{
                     text: '我的评价',
                     imgSrc: '../../../static/images/icon/person_icon_4.png',
-                    url: ''
+                    url: 'myComment'
                 },{
                     text: '我的售后',
                     imgSrc: '../../../static/images/icon/person_icon_5.png',
-                    url: ''
+                    url: 'myAfterService'
                 },
             ]
 
