@@ -1,7 +1,7 @@
 <template>
 
     <div >
-
+        <!-- 我的评论 -->
         <div class="comment_list" v-if="commentData.length != 0">
             <div class="items" v-for="(items, index) in commentData" :key="index">
                 <div class="flex padding_0_20 padding_top_20">
@@ -53,7 +53,7 @@ export default {
     data() {
         return {
 
-            // 个人中心列表
+            // 我的评论
             commentData: [
                 {
                     text: '小熊猫',
@@ -87,18 +87,6 @@ export default {
     },
     methods: {
 
-        /*个人中心导航栏切换*/
-        changeNav(index){
-
-            this.personNavData.navIndex = index;
-
-            // 跳转
-            let Url = this.personNavData[index].url;
-
-            //this.$router.push({ path: Url, query: {id: '11'}})
-            this.$router.push({ name: Url, params: {id: '11'}})
-
-        }
    
 
     }

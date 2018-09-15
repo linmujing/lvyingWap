@@ -186,6 +186,38 @@ const router = new Router({
       },
       component: resolve => require(['@/view/personCenter/myCourse'],resolve)
     },
+    {
+      path: '/myOrder/checkLogistics',
+      name: 'checkLogistics',
+      meta:{
+        title:'查看物流',
+      },
+      component: resolve => require(['@/view/personCenter/checkLogistics'],resolve)
+    },
+    {
+      path: '/myOrder/goComment',
+      name: 'goComment',
+      meta:{
+        title:'去评价',
+      },
+      component: resolve => require(['@/view/personCenter/goComment'],resolve)
+    },
+    {
+      path: '/myOrder/refundMoney',
+      name: 'refundMoney',
+      meta:{
+        title:'退货退款',
+      },
+      component: resolve => require(['@/view/personCenter/refundMoney'],resolve)
+    },
+    {
+      path: '/myOrder/refundingMoney',
+      name: 'refundingMoney',
+      meta:{
+        title:'退货退款',
+      },
+      component: resolve => require(['@/view/personCenter/refundingMoney'],resolve)
+    },
 
     {
       path: '*',
