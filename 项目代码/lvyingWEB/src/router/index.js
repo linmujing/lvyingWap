@@ -115,6 +115,22 @@ const router = new Router({
           meta:{
             title:'查看',
           }
+        },
+        {
+          path: '/bookDetail',
+          name: 'bookDetail',
+          component:resolve => require(['@/view/sort/bookDetail'],resolve),
+          meta:{
+            title:'详情',
+          }
+        },
+        {
+          path: '/supplierStore',
+          name: 'supplierStore',
+          component:resolve => require(['@/view/sort/supplierStore'],resolve),
+          meta:{
+            title:'提供商店铺',
+          }
         }
     	]
     },
