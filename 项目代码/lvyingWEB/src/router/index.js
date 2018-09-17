@@ -131,6 +131,14 @@ const router = new Router({
           meta:{
             title:'提供商店铺',
           }
+        },
+        {
+          path: '/falvDetail',
+          name: 'falvDetail',
+          component:resolve => require(['@/view/sort/falvDetail'],resolve),
+          meta:{
+            title:'详情',
+          }
         }
     	]
     },
