@@ -139,6 +139,14 @@ const router = new Router({
           meta:{
             title:'详情',
           }
+        },
+        {
+          path: '/seeFalv',
+          name: 'seeFalv',
+          component:resolve => require(['@/view/sort/seeFalv'],resolve),
+          meta:{
+            title:'查看',
+          }
         }
     	]
     },

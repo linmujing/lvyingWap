@@ -18,9 +18,9 @@
     					<div v-if="index === 0" class="width_70px">
     						<button class="btn_warning">试听</button>
     					</div>
-                      	<div v-else class="width_70px">
-                      		<button class="btn_title van-ellipsis line_height_20">立即购买</button>
-                      	</div>
+              <div v-else class="width_70px">
+                <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+              </div>
     				</div>
     			</div>
 			</div>

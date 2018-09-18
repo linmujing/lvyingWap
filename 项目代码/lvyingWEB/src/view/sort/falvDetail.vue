@@ -39,22 +39,37 @@
 			    		<div class="div_line"></div>
 			    		<div class="title padding_10">全程动态管控系统</div>
 			    		<div class="padding_10">
-			    			<p class="color_666">第一张  <span class="font_12">&nbsp;&nbsp;&nbsp;&nbsp;入职管理</span></p>
+			    			<div class="align_center font_12">
+                  <div class="align_center">
+                    <span class="padding_5">项目启动</span>
+                    <img src="../../../static/images/icon/jt.png" class="jt">
+                  </div>
+                  <div class="align_center">
+                    <span class="padding_5">调研</span>
+                    <img src="../../../static/images/icon/jt.png" class="jt">
+                  </div>
+                  <div class="align_center">
+                    <span class="padding_5">入职</span>
+                    <img src="../../../static/images/icon/jt.png" class="jt">
+                  </div>
+                  <div class="align_center">
+                    <span class="padding_5">在职</span>
+                    <img src="../../../static/images/icon/jt.png" class="jt">
+                  </div>
+                  <div class="align_center">
+                    <span class="padding_5">离职</span>
+                  </div>
+                </div>
 			    			<div v-for="(item,index) in 4" :key="index">
-			    				<div class="margin_top_10 padding_10 body_bg juc_center_between">
-				    				<div class="color_666 flex">
-				    					<div class="width_20px">{{index + 1}}</div>
-				    					<div class="font_12 van-ellipsis">入职申请管理{{index + 1}}</div>
-				    				</div>
-				    				<div class="align_center">
-				    					<span class="color_999 font_12 margin_right_10">00:20:22</span>
-				    					<div v-if="index === 0" class="width_70px">
-				    						<button class="btn_warning">试听</button>
-				    					</div>
-			                          	<div v-else class="width_70px">
-			                          		<button class="btn_title van-ellipsis line_height_20">立即购买</button>
-			                          	</div>
-				    				</div>
+			    				<div class="margin_top_10 padding_10 van-hairline--bottom">
+				    				<p>1.1.1专项服务合同</p>
+                    <div class="juc_center_between padding_left_20">
+                      <div class="van-ellipsis color_999">视频音频详细讲解</div>
+                      <div>
+                        <Button class="btn_gary van-ellipsis margin_right_10">查看详情</Button>
+                        <button class="btn_title van-ellipsis">立即购买</button>
+                      </div>
+                    </div>
 				    			</div>
 			    			</div>
 			    		</div>
@@ -180,4 +195,5 @@ export default {
 	.margin_right_10{margin-right: 0.2rem;}
 	.padding_left_5{padding-left: 0.1rem;}
 	.photo{width: 0.8rem;height: 0.8rem;border-radius: 50%;display: block;margin-right: 0.2rem;}
+  .jt{width: 0.4rem;}
 </style>
