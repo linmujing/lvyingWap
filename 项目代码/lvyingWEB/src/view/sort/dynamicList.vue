@@ -8,7 +8,7 @@
             <div v-for="(val,i) in item.lists" :key="i" class="margin_10">
               <van-row>
                 <van-col span="10">
-                  <div class="img_box">
+                  <div @click="toDetail" class="img_box">
                     <img :src="val.img" class="all_width all_height"/>
                   </div>
                 </van-col>
@@ -133,7 +133,14 @@ export default {
 //		console.log(this.$route.params.name)
 	},
 	methods: {
-    	
+    	toDetail(){
+    		this.$router.push({
+		       path:'/falvDetail',
+		       // query: {
+		       //   id: i
+		       // }
+		    })
+    	}
     }
 }
 </script>

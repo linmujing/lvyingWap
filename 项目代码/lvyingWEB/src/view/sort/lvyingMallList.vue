@@ -7,7 +7,7 @@
         <div class="padding_10">
           <div class="juc_wrap_between">
             <div v-for="item in 4" class="width_48 border_999 margin_bottom_20 padding_5 box_sizing">
-              <div>
+              <div @click="toDetail">
                 <img src="../../../static/images/img/book.png" class="all_width">
               </div>
               <div class="van-ellipsis margin_top_5 title">知识产权许可使用合同起草</div>
@@ -39,8 +39,15 @@ export default {
 //		console.log(this.$route.params.name)
 	},
 	methods: {
-    	
+    toDetail(i){
+      this.$router.push({
+        path:'/bookDetail',
+        // query: {
+        //   id: i
+        // }
+      })
     }
+  }
 }
 </script>
 <style scoped lang='less'>
