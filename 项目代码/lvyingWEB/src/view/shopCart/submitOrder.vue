@@ -2,7 +2,7 @@
 
     <div class="body_bg">
 
-        <div style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}">
+        <div style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}" v-show="!addressData.addressPageShow">
 
             <!-- 购买信息 -->
             <div class="color_000 bg_fff line_height_60" v-if="pageState == 'a'">
@@ -13,16 +13,27 @@
 
             <!-- 地址 -->
             <div class="color_000 bg_fff line_height_60" v-if="pageState == 'b'">
-                <div class="padding_0_20 flex space_between">
-                    <div>收货人：李小冉</div>
-                    <div>电话号码：15642524562</div>
+                <div v-if="addressData.addressList.length != 0">
+                    <div class="padding_0_20 flex space_between">
+                        <div>收货人：{{addressData.addressList[0].name}}</div>
+                        <div>电话号码：{{addressData.addressList[0].phone}}</div>
+                    </div>
+                    <div class="padding_0_20 flex space_between">
+                        <div style="width:1.6rem;">收货地址：</div>
+                        <div> 
+                            {{ addressData.addressList[0].province.label +" "+ addressData.addressList[0].city.label }} 
+                            {{ addressData.addressList[0].county.label +" "+ addressData.addressList[0].addressDetail }}
+                            {{ addressData.addressList[0].postCode }}
+                        </div>
+                    </div>
+                    <div class="padding_0_20 flex space_between line_height_94 border_top_1px" @click="addressData.addressPageShow = true">
+                        <div style="width:1.6rem;">修改收货地址</div>
+                        <div> <img style="width:0.3rem;position:relative;top:0.06rem;" src="../../../static/images/icon/address_add.png" alt=""></div>
+                    </div>
                 </div>
-                <div class="padding_0_20 flex space_between">
-                    <div style="width:1.6rem;">收货地址：</div>
-                    <div> 湖南省 长沙市 芙蓉大道 三和街  三和街  三和街 808  1001100</div>
-                </div>
-                <div class="padding_0_20 flex space_between line_height_94 border_top_1px">
-                    <div style="width:1.6rem;">修改收货地址</div>
+                
+                <div v-else class="padding_0_20 flex space_between line_height_94 border_top_1px" @click="addressData.addressPageShow = true">
+                    <div style="width:1.6rem;">添加收货地址</div>
                     <div> <img style="width:0.3rem;position:relative;top:0.06rem;" src="../../../static/images/icon/address_add.png" alt=""></div>
                 </div>
             </div> 
@@ -82,7 +93,7 @@
         </div>
 
         <!-- 提交订单 -->
-        <div class="submit_cart padding_left_20 flex space_between bg_fff border_top_1px font_30">
+        <div class="submit_cart padding_left_20 flex space_between bg_fff border_top_1px font_30" v-show="!addressData.addressPageShow">
             <div>
                 <span class="submit_total padding_right_20 color_cart_ccc2">
                      实付金额：<span class="color_00aa88">￥ {{cartDate.listTotal}}</span>
@@ -95,18 +106,30 @@
 
         <!-- 优惠券列表 -->
         <van-popup v-model="showList" position="bottom">
-        <van-coupon-list
-            :coupons="coupons"
-            :chosen-coupon="chosenCoupon"
-            :disabled-coupons="disabledCoupons"
-            @change="onChange"
-            @exchange="onExchange"
-        />
+            <van-coupon-list
+                :coupons="coupons"
+                :chosen-coupon="chosenCoupon"
+                :disabled-coupons="disabledCoupons"
+                @change="onChange"
+                @exchange="onExchange"
+            />
         </van-popup>
+
+        <!-- 地址列表选择 -->
+        <div v-show="addressData.addressPageShow" style="padding-top:0.94rem;">
+            <div class="flex space_between line_height_94 bg_fff" style="position:fixed;top:0;width:100%;z-index:100;">
+                <div class="padding_0_20">选择地址</div>
+                <div class="padding_0_20 color_00aa88" @click="addressData.addressPageShow = false">关闭</div>
+            </div>
+            <Address :pState="1" @hidebox="listenAddressChoose" ></Address>
+        </div>
     </div>
 
 </template>
 <script>
+// 地址组件
+import Address from '../../components/Address.vue'
+
     const coupon = {
     available: 1,
     discount: 0,
@@ -121,7 +144,7 @@
 
 export default {
     components : {
-    	
+    	Address
     },
     data() {
         return {
@@ -195,6 +218,27 @@ export default {
                 ],
             },  
 
+            /*收货地址数据*/
+            addressData:{
+                // 地址列表隐藏与展示
+                addressPageShow: false,
+
+                // 收货地址数据列表
+                addressList:[
+                {
+                    id: 1,
+                    name:'律师之家',
+                    phone:'15874252525',
+                    province: { value: '1', label: '湖南省'},
+                    city: { value: '1', label: '长沙市'},
+                    county: { value: '1', label: '芙蓉区'},
+                    addressDetail: '芙蓉大道 中心街 23号',
+                    postCode: '10010',
+                }
+                ]
+
+            },
+
             /*优惠券弹框*/
             showList: false,
             chosenCoupon: -1,
@@ -220,7 +264,17 @@ export default {
             
             this.pageState == 'a' ? this.pageState = 'b' : this.pageState = 'a';
 
-        }
+        },
+
+        // 监听地址选择
+        listenAddressChoose(data){
+
+            this.addressData.addressList = [];
+            this.addressData.addressList.push(data);
+
+            this.addressData.addressPageShow = false;
+
+        },
     }
 }
 </script>

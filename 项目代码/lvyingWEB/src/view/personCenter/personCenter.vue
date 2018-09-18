@@ -61,6 +61,10 @@ export default {
                     text: '我的售后',
                     imgSrc: '../../../static/images/icon/person_icon_5.png',
                     url: 'myAfterService'
+                },{
+                    text: '我的地址',
+                    imgSrc: '../../../static/images/icon/person_icon_5.png',
+                    url: 'myAddress'
                 },
             ]
 

@@ -3,7 +3,7 @@
     <div class="body_bg">
 
         <!-- 我的地址 -->
-        <Address :pState = '3'></Address>
+        <Address :pState = '0'></Address>
 
     </div>
 

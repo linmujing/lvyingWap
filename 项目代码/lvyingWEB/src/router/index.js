@@ -243,10 +243,10 @@ const router = new Router({
       component: resolve => require(['@/view/personCenter/refundingMoney'],resolve)
     },
     {
-      path: '/myOrder/myAddress',
+      path: '/myAddress',
       name: 'myAddress',
       meta:{
-        title:'退货退款',
+        title:'我的地址',
       },
       component: resolve => require(['@/view/personCenter/myAddress'],resolve)
     },
