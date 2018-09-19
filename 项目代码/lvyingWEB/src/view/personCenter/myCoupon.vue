@@ -78,14 +78,14 @@ export default {
                         content: '满200减5',
                         time: '2018.08.01-2018.08.31',
                         state:'2',
-                        stateImg:'../../../static/images/image/coupon-icon_01.png',
+                        stateImg:'./static/images/image/coupon-icon_01.png',
                         platform:''
                     },{
                         price: '20',
                         content: '满1000减20',
                         time: '2018.08.01-2018.08.31',
                         state:'3',
-                        stateImg:'../../../static/images/image/coupon-icon_02.png',
+                        stateImg:'./static/images/image/coupon-icon_02.png',
                         platform:''
                     },{
                         price: '3',

@@ -115,7 +115,7 @@ export default {
                                 price: '88.01',
                                 num: 1,
                                 describe: '多行文字多行文字多行文字多行文字多行文字多行文字',
-                                imgSrc: '../../../static/images/image/book_01.png'
+                                imgSrc: './static/images/image/book_01.png'
                             },
                             {
                                 index2: 1,
@@ -123,7 +123,7 @@ export default {
                                 price: '101.01',
                                 num: 1,
                                 describe: '多行文字多行文字多行文字',
-                                imgSrc: '../../../static/images/image/book_01.png'
+                                imgSrc: './static/images/image/book_01.png'
                             }
                         ]
                     },
@@ -140,7 +140,7 @@ export default {
                                 price: '88.01',
                                 num: 1,
                                 describe: '多行文字多行文字多行文字',
-                                imgSrc: '../../../static/images/image/book_01.png'
+                                imgSrc: './static/images/image/book_01.png'
                             },
                             {
                                 index2: 1,
@@ -148,7 +148,7 @@ export default {
                                 price: '101.01',
                                 num: 1,
                                 describe: '多行文字多行文字多行文字',
-                                imgSrc: '../../../static/images/image/book_01.png'
+                                imgSrc: './static/images/image/book_01.png'
                             }
                         ]
                     }

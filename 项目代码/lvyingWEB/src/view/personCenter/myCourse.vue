@@ -43,23 +43,23 @@ export default {
                     type: 1,
                     typeImg: '',
                     title: '我是标题很长',
-                    imgsrc:'../../../static/images/img/class.png',
+                    imgsrc:'./static/images/img/class.png',
                     auther: '来源',
                     id:''
                 },
                 {
                     type: 2,
-                    typeImg: '../../../static/images/icon/play_01.png',
+                    typeImg: './static/images/icon/play_01.png',
                     title: '我是标题很长',
-                    imgsrc:'../../../static/images/img/class.png',
+                    imgsrc:'./static/images/img/class.png',
                     auther: '来源',
                     id:''
                 },
                                 {
                     type: 3,
-                    typeImg: '../../../static/images/icon/play_02.png',
+                    typeImg: './static/images/icon/play_02.png',
                     title: '我是标题很长',
-                    imgsrc:'../../../static/images/img/class.png',
+                    imgsrc:'./static/images/img/class.png',
                     auther: '来源',
                     id:''
                 },
@@ -67,23 +67,23 @@ export default {
                     type: 1,
                     typeImg: '',
                     title: '我是标题很长',
-                    imgsrc:'../../../static/images/img/class.png',
+                    imgsrc:'./static/images/img/class.png',
                     auther: '来源',
                     id:''
                 },
                 {
                     type: 2,
-                    typeImg: '../../../static/images/icon/play_01.png',
+                    typeImg: './static/images/icon/play_01.png',
                     title: '我是标题很长',
-                    imgsrc:'../../../static/images/img/class.png',
+                    imgsrc:'./static/images/img/class.png',
                     auther: '来源',
                     id:''
                 },
                                 {
                     type: 3,
-                    typeImg: '../../../static/images/icon/play_02.png',
+                    typeImg: './static/images/icon/play_02.png',
                     title: '我是标题很长',
-                    imgsrc:'../../../static/images/img/class.png',
+                    imgsrc:'./static/images/img/class.png',
                     auther: '来源',
                     id:''
                 }
