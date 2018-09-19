@@ -36,7 +36,7 @@
                         <van-radio name="2">缺货</van-radio>
                     </van-radio-group>
                 </div>
-                <div class="logistics_item flex border_bottom_1px line_height_100 margin_left_20" style="height:0.94rem;">
+                <div class="logistics_item flex border_bottom_1px line_height_100" style="height:0.94rem;">
                     <span>退款金额</span>
                     <div> ￥{{refundData.Money}} </div>  
                 </div>
@@ -78,7 +78,7 @@ export default {
                 {
                     title: '这是商品的标题这是商品的标题这是商品的标题',
                     price: '100.00',
-                    imgSrc: './static/images/image/book_01.png',
+                    imgSrc: '../static/images/image/book_01.png',
                 }
             ]
 
@@ -91,8 +91,8 @@ export default {
         submitComment(){
 
             this.$dialog.confirm({
-                message: '评价成功',
-                confirmButtonText: '查看评价',
+                message: '提交成功',
+                confirmButtonText: '查看',
                 cancelButtonText: '返回'
             }).then(() => {
 
