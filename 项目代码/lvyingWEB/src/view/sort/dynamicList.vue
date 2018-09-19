@@ -55,28 +55,28 @@ export default {
 	    			name: '全部',
 	    			lists: [
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12345,
 		    				price: '500.00'
 	    				},
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12345,
 		    				price: '500.00'
 	    				},
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12345,
 		    				price: '500.00'
 	    				},
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12345,
@@ -88,7 +88,7 @@ export default {
 	    			name: '在职',
 	    			lists: [
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议21',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 23235,
@@ -100,21 +100,21 @@ export default {
 	    			name: '入职',
 	    			lists: [
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议qqq',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12,
 		    				price: '200.00'
 	    				},
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议qqq',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12,
 		    				price: '200.00'
 	    				},
 	    				{
-	    					img: '../../../static/images/img/class.png',
+	    					img: '../static/images/img/class.png',
 		    				title: '审核同业禁止协议qqq',
 		    				info: '知识产权许可使用合同起草知识产权许可使用合同起草',
 		    				people: 12,

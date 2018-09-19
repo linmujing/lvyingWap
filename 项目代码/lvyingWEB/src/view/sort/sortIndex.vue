@@ -228,7 +228,7 @@ export default {
 <style>
 	.van-badge{font-size: 0.28rem;}
 	.van-badge-group{background-color: #f8f8f8;}
-	.van-badge--select{border-color: #00AA88;!important;}
+	.van-badge--select{border-color: #00AA88!important;}
 </style>
 <style scoped lang='less'>
  	/*引入共用less文件*/

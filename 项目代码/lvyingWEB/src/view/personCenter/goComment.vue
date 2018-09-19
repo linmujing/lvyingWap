@@ -181,7 +181,7 @@ export default {
                 left:0.1rem;
                 width:0.6rem;
                 height:0.5rem;
-                background: url(../../../static/images/icon/img_up.png) no-repeat center center ;
+                background: url(../static/images/icon/img_up.png) no-repeat center center ;
                 background-size: cover; 
             }
         }
