@@ -2,7 +2,7 @@
   <div>
 		<van-tabbar v-model="navData.active" @change="toggle">
 		  <van-tabbar-item v-for="(item, index ) in navData.list" :key="index">
-		    <span>{{item.text}}</span>
+		    <span class="color_title">{{item.text}}</span>
 		    <img
 		      slot="icon"
 		      slot-scope="props"
@@ -30,26 +30,26 @@ export default {
 					{
 						text:'首页',
 						url:'/shopMallIdex',
-						normal: '../../static/images/icon/home.png',
-						active: '../../static/images/icon/_home.png'
+						normal: '../static/images/icon/home.png',
+						active: '../static/images/icon/_home.png'
 					},
 					{
 						text:'分类',
 						url:'/sortIndex',
-						normal: '../../static/images/icon/sort.png',
-						active: '../../static/images/icon/_sort.png'
+						normal: '../static/images/icon/sort.png',
+						active: '../static/images/icon/_sort.png'
 					},
 					{
 						text:'购物车',
 						url:'/shoppingCart',
-						normal: '../../static/images/icon/cart.png',
-						active: '../../static/images/icon/_cart.png'
+						normal: '../static/images/icon/cart.png',
+						active: '../static/images/icon/_cart.png'
 					},
 					{
 						text:'我的',
 						url:'/personCenter',
-						normal: '../../static/images/icon/user.png',
-						active: '../../static/images/icon/_user.png'
+						normal: '../static/images/icon/user.png',
+						active: '../static/images/icon/_user.png'
 					}
 				]
 
@@ -78,8 +78,8 @@ export default {
 }
 </script>
 <style>
-	.van-tabbar-item--active{color:#00AA88}
+	.van-tabbar-item--active{color:#00AA88!important;}
 </style>
 <style scoped>
-
+	.van-tabbar-item--active{color:#00AA88}
 </style>

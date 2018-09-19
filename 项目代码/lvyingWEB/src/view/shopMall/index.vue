@@ -40,8 +40,8 @@ export default {
         		{title: '音频课程', path: 'audioCourse'}
         	],
         	images: [
-		      '../../../static/images/img/banner.png',
-		      '../../../static/images/img/banner.png'
+		      '../static/images/img/banner.png',
+		      '../static/images/img/banner.png'
 		    ],
 		    
         }
