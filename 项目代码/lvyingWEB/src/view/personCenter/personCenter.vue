@@ -6,7 +6,7 @@
         <div class="person_center_header flex padding_0_20 bg_fff"  >
             <div class="head_img table_block padding_right_20">
                 <p class="td_block">
-                    <span style="background-image:url(../../../static/images/image/my_head.png);"></span>
+                    <span :style="{backgroundImage: 'url('+imgHeadUrl+')'}"></span>
                 </p>
             </div>
             <div class="username table_block">
@@ -66,7 +66,8 @@ export default {
                     imgSrc: './static/images/icon/person_icon_5.png',
                     url: 'myAddress'
                 },
-            ]
+            ],
+            imgHeadUrl:'./static/images/image/my_head.png'
 
         }
         
