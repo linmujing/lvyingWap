@@ -33,7 +33,7 @@
                 <div class="logistics_item padding_0_20 padding_top_30">
                     <div class="upload_box border_1" >
                         <textarea  style="width:100%;height: 2.85rem; border:0;" name="" id="" ></textarea>
-                        <i class="upload" style="background: url(../../../static/images/icon/img_up.png) no-repeat center center ;">
+                        <i class="upload" style="background-image: url(../../../static/images/icon/img_up.png);">
                             <van-uploader :after-read="onRead">
                             </van-uploader>
                         </i>
@@ -78,7 +78,7 @@ export default {
                         {
                             title: '这是商品的标题这是商品的标题这是商品的标题',
                             price: '100.00',
-                            imgSrc: './static/images/image/book_01.png',
+                            imgSrc: '../static/images/image/book_01.png',
                         }
                     ]
                 },
@@ -181,8 +181,9 @@ export default {
                 left:0.1rem;
                 width:0.6rem;
                 height:0.5rem;
-                background: url(../static/images/icon/img_up.png) no-repeat center center ;
                 background-size: cover; 
+                background-position: center center ;
+                background-repeat: no-repeat;
             }
         }
 

@@ -15,7 +15,8 @@
 					  	<div v-for="(item,index) in tabData[tabIndex].lists" :key="index">
 							<div @click="toList(1)" class="font_16 padding_10 van-ellipsis">{{item.title}}</div>
 							<div class="flex_warp">
-								<div v-for="(val,index) in item.items" :key="index" @click="toList(2)" class="sort">
+								<div v-for="(val, index2) in item.items" :key="index2" @click="toList(2)" class="sort">
+
 									<div class="all_width">
 										<img :src="val.img" class="all_width all_height"/>
 									</div>
