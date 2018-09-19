@@ -43,27 +43,27 @@ export default {
             personNavData: [
                 {
                     text: '我的课程',
-                    imgSrc: '../../../static/images/icon/person_icon_1.png',
+                    imgSrc: './static/images/icon/person_icon_1.png',
                     url: 'myCourse'
                 },{
                     text: '我的订单',
-                    imgSrc: '../../../static/images/icon/person_icon_2.png',
+                    imgSrc: './static/images/icon/person_icon_2.png',
                     url: 'myOrder'
                 },{
                     text: '我的优惠券',
-                    imgSrc: '../../../static/images/icon/person_icon_3.png',
+                    imgSrc: './static/images/icon/person_icon_3.png',
                     url: 'myCoupon'
                 },{
                     text: '我的评价',
-                    imgSrc: '../../../static/images/icon/person_icon_4.png',
+                    imgSrc: './static/images/icon/person_icon_4.png',
                     url: 'myComment'
                 },{
                     text: '我的售后',
-                    imgSrc: '../../../static/images/icon/person_icon_5.png',
+                    imgSrc: './static/images/icon/person_icon_5.png',
                     url: 'myAfterService'
                 },{
                     text: '我的地址',
-                    imgSrc: '../../../static/images/icon/person_icon_5.png',
+                    imgSrc: './static/images/icon/person_icon_5.png',
                     url: 'myAddress'
                 },
             ]

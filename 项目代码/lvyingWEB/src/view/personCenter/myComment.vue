@@ -58,25 +58,25 @@ export default {
                 {
                     text: '小熊猫',
                     time: '2013-08-24 12:00:00',
-                    headimg: '../../../static/images/image/my_head.png',
+                    headimg: './static/images/image/my_head.png',
                     commentText: '这是很多文字的评价，这是很多文字的评价，这是很多文字的评价，这是很多文字的评价，这是很多文字的评价，',
                     items:[
                         {
                             title: '这是商品的标题这是商品的标题这是商品的标题',
                             price: '100.00',
-                            imgSrc: '../../../static/images/image/book_01.png',
+                            imgSrc: './static/images/image/book_01.png',
                         }
                     ]
                 },{
                     text: '小熊猫',
                     time: '2013-08-24 12:00:00',
-                    headimg: '../../../static/images/image/my_head.png',
+                    headimg: './static/images/image/my_head.png',
                     commentText: '这是很多文字的评价，这是很多文字的评价，这是很多文字的评价，这是很多文字的评价，这是很多文字的评价，',
                     items:[
                         {
                             title: '这是商品的标题这是商品的标题这是商品的标题',
                             price: '100.00',
-                            imgSrc: '../../../static/images/image/book_01.png',
+                            imgSrc: './static/images/image/book_01.png',
                         }
                     ]
                 },

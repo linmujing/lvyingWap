@@ -103,14 +103,14 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         },
                         {
                             title: '法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程',
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     },
                     {
@@ -126,7 +126,7 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     },
                     {
@@ -142,7 +142,7 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     },
                     {
@@ -158,7 +158,7 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     },
                     {
@@ -173,7 +173,7 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     },
                     {
@@ -188,7 +188,7 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     },
                     {
@@ -203,7 +203,7 @@ export default {
                             price: '100.00',
                             number: '1',
                             total: '100.00',
-                            imgSrc:'../../../static/images/image/book_01.png'
+                            imgSrc:'./static/images/image/book_01.png'
                         }],
                     }
                 ],

@@ -73,7 +73,7 @@ export default {
                         {
                             title: '这是商品的标题这是商品的标题这是商品的标题',
                             price: '100.00',
-                            imgSrc: '../../../static/images/image/book_01.png',
+                            imgSrc: './static/images/image/book_01.png',
                         }
                     ]
                 },
