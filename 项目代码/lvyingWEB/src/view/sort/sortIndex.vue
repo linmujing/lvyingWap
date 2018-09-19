@@ -15,7 +15,7 @@
 					  	<div v-for="(item,index) in tabData[tabIndex].lists" :key="index">
 							<div @click="toList(1)" class="font_16 padding_10 van-ellipsis">{{item.title}}</div>
 							<div class="flex_warp">
-								<div v-for="val in item.items" @click="toList(2)" class="sort">
+								<div v-for="val in item.items" :key="val" @click="toList(2)" class="sort">
 									<div class="all_width">
 										<img :src="val.img" class="all_width all_height"/>
 									</div>
@@ -228,7 +228,7 @@ export default {
 <style>
 	.van-badge{font-size: 0.28rem;}
 	.van-badge-group{background-color: #f8f8f8;}
-	.van-badge--select{border-color: #00AA88;!important;}
+	.van-badge--select{border-color: #00AA88 !important;}
 </style>
 <style scoped lang='less'>
  	/*引入共用less文件*/
