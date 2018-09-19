@@ -24,7 +24,7 @@
     	<!--提供商-->
     	<div class="bg_fff margin_top_20 padding_10">
     		<div class="title">提供商</div>
-    		<div class="margin_top_10">
+    		<div @click="toSupplier" class="margin_top_10">
     			<van-row>
 				  <van-col span="5">
 				  	<img src="../../../static/images/img/falv.png" class="img_box" />
@@ -113,8 +113,8 @@
       </div>
 		
 		<!--加入购物车底部-->
-		<div class="bg_fff">
-			<van-goods-action>
+		<div>
+			<van-goods-action class="bg_fff">
 			  <van-goods-action-mini-btn icon="shop" text="店铺" />
 			  <van-goods-action-mini-btn icon="cart" text="购物车" to="/shoppingCart" />
 			  <van-goods-action-big-btn text="加入购物车" @click="addCart" style="background: #F09105;color: #fff;"/>
@@ -146,6 +146,14 @@ export default {
     	//立即购买
     	buyNow(){
     		this.$toast('立即购买');
+    	},
+    	toSupplier(){
+    		this.$router.push({
+		       path:'/supplierStore',
+		       // query: {
+		       //   id: i
+		       // }
+		    })
     	}
     	
     }
