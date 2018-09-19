@@ -148,7 +148,7 @@
     	</div>
 		
 		<!--加入购物车底部-->
-		<div>
+		<div class="bg_fff">
 			<van-goods-action>
 			  <van-goods-action-mini-btn icon="shop" text="店铺" />
 			  <van-goods-action-mini-btn icon="cart" text="购物车" to="/shoppingCart" />

@@ -56,23 +56,23 @@ export default {
 							title: "行业（企业）",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职1'
 								},
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职2'
 								},
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职3'
 								},
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职4'
 								},
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职4'
 								}
 							]
@@ -81,7 +81,7 @@ export default {
 							title: "行业（企业）2",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								}
 							]
@@ -90,11 +90,11 @@ export default {
 							title: "行业（企业）3",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职1'
 								},
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职2'
 								}
 							]
@@ -103,7 +103,7 @@ export default {
 							title: "行业（企业）2",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								}
 							]
@@ -117,7 +117,7 @@ export default {
 							title: "法律（企业）",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								}
 							]
@@ -131,11 +131,11 @@ export default {
 							title: "视频课程1",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								},
 				                {
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								}
 							]
@@ -149,11 +149,11 @@ export default {
 							title: "音频课程1",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								},
 				                {
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								}
 							]
@@ -167,11 +167,11 @@ export default {
 							title: "律瀛商城1",
 							items:[
 								{
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								},
 				                {
-									img: "../../../static/images/img/class.png",
+									img: "../static/images/img/class.png",
 									arr:'入职'
 								}
 							]
@@ -228,7 +228,7 @@ export default {
 <style>
 	.van-badge{font-size: 0.28rem;}
 	.van-badge-group{background-color: #f8f8f8;}
-	.van-badge--select{border-color: #00AA88;}
+	.van-badge--select{border-color: #00AA88;!important;}
 </style>
 <style scoped lang='less'>
  	/*引入共用less文件*/
