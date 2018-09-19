@@ -85,8 +85,8 @@ export default {
     data() {
         return {
           images: [
-            '../../../static/images/img/banner.png',
-            '../../../static/images/img/banner.png'
+            '../static/images/img/banner.png',
+            '../static/images/img/banner.png'
           ],
         }
         
