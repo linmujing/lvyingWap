@@ -292,14 +292,115 @@ export default {
     },
     data() {
         return {
-        	value: ''
+          videoArr:[],
+          musicArr:[],
+          careerArr:[],
+          logicArr:[],
+          lvyingArr:[],
+          banner: [],
+          bgUrl: '',
+          value: 0
         }
         
+    },
+    mounted(){
+      this.getNavTitle()
+      this.getCaseProduct()
     },
     methods: {
     	onSearch(){
     		console.log('搜索')
-    	}
+    	},
+      //获取橱窗对象
+      getCaseProduct(){
+        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: 1})).then((res)=>{
+
+          if(res.data.code == 200){
+            let {content}=res.data;
+            // 保存轮播数据
+            this.banner = eval(res.data.content[6].caseUrl)
+            var bgUrl = eval(res.data.content[3].caseUrl)
+            this.bgUrl = bgUrl[0].src
+            sessionStorage.setItem("Banner", JSON.stringify(eval(res.data.content[6].caseUrl)));
+            for(let item of content){
+              if(item.caseName=="视频推荐"){
+                this.getProductShowCase(item.productCode, item.productSortBy, 1)
+              }else if(item.caseName=="音频推荐"){
+                this.getProductShowCase(item.productCode, item.productSortBy, 2)
+              }else if(item.caseName=="行业动态管控"){
+                this.getProductShowCase(item.productCode, item.productSortBy, 3)
+              }else if(item.caseName=="法律动态管控"){
+                this.getProductShowCase(item.productCode, item.productSortBy, 4)
+              }else if(item.caseName=="律赢商城" || item.caseName=="律瀛商城"){
+                this.getProductShowCase(item.productCode, item.productSortBy, 5)
+              }
+            }
+          }else{
+            this.$Message.warning(res.data.message);
+          }
+        })
+          .catch((error) => {
+            console.log('发生错误！', error);
+          });
+      },
+      //获取推荐商品
+      getProductShowCase(productCode, productSortBy, type){
+        var params = this.$Qs.stringify({'productCode': productCode, 'productSortBy': productSortBy})
+        this.$api.getProductShowCase( params )
+
+          .then( (res) => {
+
+            if(res.data.code == 200){
+
+              switch (type) {
+                case 1:
+                  this.videoArr = res.data.content
+                  break
+                case 2:
+                  this.musicArr = res.data.content
+                  break
+                case 3:
+                  this.careerArr = res.data.content
+                  break
+                case 4:
+                  this.logicArr = res.data.content
+                  break
+                case 5:
+                  this.lvyingArr = res.data.content
+                  break
+              }
+
+            }else{
+
+              this.$Message.warning(res.data.message);
+
+            }
+          })
+          .catch((error) => {
+            console.log('发生错误！', error);
+          });
+      },
+      // 获取导航标题
+      getNavTitle(){
+        this.$api.getProductCatList( this.$Qs.stringify({'parentId': '0'}) )
+
+          .then( (res) => {
+
+            if(res.data.code == 200){
+              this.navDataModel = res.data.content
+              // 导航标题信息
+              sessionStorage.setItem("NavTitle", JSON.stringify(res.data.content));
+
+            }else{
+
+              this.$Message.warning(res.data.message);
+
+            }
+          })
+          .catch((error) => {
+            console.log('发生错误！', error);
+          });
+      },
     }
 }
 </script>

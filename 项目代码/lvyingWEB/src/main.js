@@ -7,12 +7,14 @@ import App from './App'
 import router from './router'
 import Vant from 'vant'
 import axios from 'axios'
+import Qs from 'qs'
 
 
 // 引入接口配置文件
 import * as api from './api/api'
 Vue.prototype.$api = api
 Vue.prototype.$axios = axios
+Vue.prototype.$Qs = Qs
 
 // 引入rem
 import './common/js/rem'
