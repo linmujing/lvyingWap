@@ -37,7 +37,7 @@
 						  	<span class="title">视频课程</span>
 						  </van-col>
 						  <van-col span="6">
-						  	<div class="more" @click="moreList()">
+						  	<div class="more" @click="moreList(3)">
                   <span>查看更多》</span>
 						  	</div>
 						  </van-col>
@@ -46,7 +46,7 @@
 			  		<div v-for="item in videoArr" class="padding_10 bg_fff">
 			  			<van-row>
 						  <van-col span="10">
-						  	<div @click="toDetail">
+						  	<div @click="toDetail(item.productCode,3)">
 						  		<img :src="item.productProfileUrl" class="all_width height_110px"/>
 						  	</div>
 						  </van-col>
@@ -67,7 +67,7 @@
 						  		<div class="margin_top_10">
                     <van-row>
                       <van-col span="6">
-                        <div class="flex_warp van-ellipsis" @click="toDetail">
+                        <div class="flex_warp van-ellipsis" @click="toDetail(item.productCode,3)">
                           <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                           <span class="font_12 color_666">试听</span>
                         </div>
@@ -96,7 +96,7 @@
                   <span class="title">音频课程</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList()">
+                  <div class="more" @click="moreList(4)">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -105,7 +105,7 @@
             <div v-for="item in musicArr" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
-                  <div @click="toDetail">
+                  <div @click="toDetail(item.productCode,4)">
                     <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
@@ -126,7 +126,7 @@
                     <div class="margin_top_10">
                       <van-row>
                         <van-col span="6">
-                          <div class="flex_warp van-ellipsis" @click="toDetail">
+                          <div class="flex_warp van-ellipsis" @click="toDetail(item.productCode,4)">
                             <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                             <span class="font_12 color_666">试听</span>
                           </div>
@@ -147,7 +147,7 @@
             </div>
           </div>
 			  	<!--广告-->
-          <div>
+          <div v-show="bgUrl">
             <img :src="bgUrl" class="all_width height_110px"/>
           </div>
           <!--行业动态-->
@@ -158,7 +158,7 @@
                   <span class="title">行业动态管控</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList()">
+                  <div class="more" @click="moreList(1)">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -167,7 +167,7 @@
             <div v-for="item in careerArr" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
-                  <div @click="toDetail">
+                  <div @click="toDetail(item.productCode,1)">
                     <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
@@ -207,7 +207,7 @@
                   <span class="title">法律动态管控</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList()">
+                  <div class="more" @click="moreList(2)">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -216,7 +216,7 @@
             <div v-for="item in logicArr" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
-                  <div @click="toDetail">
+                  <div @click="toDetail(item.productCode,2)">
                     <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
@@ -259,7 +259,7 @@
                   <span class="title">律瀛商城</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList()">
+                  <div class="more" @click="moreList(5)">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -267,7 +267,7 @@
             </div>
             <div class="juc_wrap_around bg_fff">
               <div v-for="item in lvyingArr" class="width_45 border_999 margin_bottom_20 padding_10 box_sizing">
-                <div @click="toDetail">
+                <div @click="toDetail(item.productCode,5)">
                   <img :src="item.productProfileUrl" class="all_width height_110px"/>
                 </div>
                 <div class="van-ellipsis margin_top_5 title">{{item.productTitle}}</div>
@@ -312,7 +312,7 @@ export default {
     	},
       //获取橱窗对象
       getCaseProduct(){
-        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: 1})).then((res)=>{
+        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: 1})).then((res)=>{
           if(res.data.code == 200){
             let {content}=res.data;
             // 保存轮播数据
@@ -400,20 +400,44 @@ export default {
           });
       },
       // 查看更多
-      moreList(){
-        this.$router.push({
-          path:'/lvyingMallList',
-          query: {
-            typeId: 1
-          }
-        })
+      moreList(id){
+    	  console.log(id)
+        switch (id) {
+          case 1:
+          case 2:
+            this.$router.push({
+              path:'/dynamicList',
+              query: {
+                typeId: id
+              }
+            })
+            break
+          case 3:
+          case 4:
+            this.$router.push({
+              path:'/videoList',
+              query: {
+                typeId: id
+              }
+            })
+            break
+          case 5:
+            this.$router.push({
+              path:'/lvyingMallList',
+              query: {
+                typeId: id
+              }
+            })
+            break
+        }
       },
       // 跳转到详情
-      toDetail(){
+      toDetail(code,id){
         this.$router.push({
-          path:'/videoDetail',
+          path:'/falvDetail',
           query: {
-            typeId: 1
+            typeId: id,
+            productCode: code
           }
         })
       }
