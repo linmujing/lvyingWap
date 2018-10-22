@@ -1,12 +1,12 @@
 <template>
     <div >
     	<div style="margin-bottom: 50px">
-    	
+
 			<van-row>
 				<!--侧边栏-->
 			  	<van-col span="7">
 				  	<van-badge-group :active-key="activeKey" v-bind:style="{height: fullHeight - 50 + 'px'}" class="all_width scroll">
-					  <van-badge v-for="(item,index) in tabData" :key="index" :title="item.name" @click="onClick" class="van-ellipsis"/>
+					  <van-badge v-for="(item,index) in navTitle" :key="index" :title="item.name" @click="onClick" class="van-ellipsis"/>
 					</van-badge-group>
 			  	</van-col>
 			  	<!--内容-->
@@ -26,14 +26,14 @@
 						</div>
 					</div>
 			  	</van-col>
-			  
+
 			</van-row>
-			
+
     	</div>
-    	
-	    
+
+
     	<FooterBar :curIndex = '1'></FooterBar>
-		
+
     </div>
 </template>
 <script>
@@ -43,7 +43,7 @@ export default {
         FooterBar
     },
     data() {
-        return {
+      return {
 		    activeKey: 0,
 		    //页面高度
 		    fullHeight: '',
@@ -180,14 +180,21 @@ export default {
 					]
 				}
 			],
-        }
-        
+        navTitle: [
+          {name: '行业动态管控', id: 1},
+          {name: '法律动态管控', id: 2},
+          {name: '视频课程', id: 3},
+          {name: '音频课程', id: 4},
+          {name: '律瀛商城', id: 5}
+        ],
+      }
+
     },
     mounted(){
     	//获取屏幕高度
     	this.fullHeight = document.documentElement.clientHeight || document.body.clientHeight;
-	},
-	methods: {
+	  },
+	  methods: {
     	onClick(key) {
     		console.log(key)
 	      this.activeKey = key;
@@ -233,8 +240,8 @@ export default {
 </style>
 <style scoped lang='less'>
  	/*引入共用less文件*/
-    @import '../shopMall/shopMall.less'; 
-    
+    @import '../shopMall/shopMall.less';
+
     .sort{
     	width: 21%;
     	margin-bottom: 0.2rem;

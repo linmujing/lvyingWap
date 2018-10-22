@@ -1,7 +1,16 @@
 <template>
     <div class="body_bg">
     	<div>
-			  	<!--搜索-->
+        <!--轮播-->
+        <div>
+          <van-swipe :autoplay="4000">
+            <van-swipe-item v-for="(item,index) in banner" :key="index">
+              <img :src="item.src" class="all_width"/>
+            </van-swipe-item>
+          </van-swipe>
+        </div>
+
+        <!--搜索-->
 			  	<div class="bg_fff">
 			  		<van-row>
 					  <van-col span="20">
@@ -28,39 +37,37 @@
 						  	<span class="title">视频课程</span>
 						  </van-col>
 						  <van-col span="6">
-						  	<div class="more">
-						  		<router-link tag="a" to="">
-						  			<span>查看更多》</span>
-						  		</router-link>
+						  	<div class="more" @click="moreList()">
+                  <span>查看更多》</span>
 						  	</div>
 						  </van-col>
 						</van-row>
 			  		</div>
-			  		<div v-for="item in 2" class="padding_10 bg_fff">
+			  		<div v-for="item in videoArr" class="padding_10 bg_fff">
 			  			<van-row>
 						  <van-col span="10">
-						  	<div>
-						  		<img src="../../../static/images/img/class.png" class="all_width"/>
+						  	<div @click="toDetail">
+						  		<img :src="item.productProfileUrl" class="all_width height_110px"/>
 						  	</div>
 						  </van-col>
 						  <van-col span="14">
 						  	<div class="class_box">
-						  		<div class="title van-ellipsis">知识产权许可使用合同起草</div>
-						  		<div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草</div>
+						  		<div class="title van-ellipsis">{{item.productTitle}}</div>
+						  		<div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
 						  		<div class="margin_top_10">
 						  			<van-row>
 							  			<van-col span="12">
-							  				<span class="color_title font_16">￥500.00</span>
+							  				<span class="color_title font_16">￥{{item.productPrice}}</span>
 							  			</van-col>
 							  			<van-col span="12">
-							  				<div class="more"><span>1234人看过</span></div>
+							  				<div class="more"><span>{{item.saleCount}}人看过</span></div>
 							  			</van-col>
 							  		</van-row>
 						  		</div>
 						  		<div class="margin_top_10">
                     <van-row>
                       <van-col span="6">
-                        <div class="flex_warp van-ellipsis">
+                        <div class="flex_warp van-ellipsis" @click="toDetail">
                           <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                           <span class="font_12 color_666">试听</span>
                         </div>
@@ -89,39 +96,37 @@
                   <span class="title">音频课程</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more">
-                    <router-link tag="a" to="">
-                      <span>查看更多》</span>
-                    </router-link>
+                  <div class="more" @click="moreList()">
+                    <span>查看更多》</span>
                   </div>
                 </van-col>
               </van-row>
             </div>
-            <div v-for="item in 2" class="padding_10 bg_fff">
+            <div v-for="item in musicArr" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
-                  <div>
-                    <img src="../../../static/images/img/class.png" class="all_width"/>
+                  <div @click="toDetail">
+                    <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
                 <van-col span="14">
                   <div class="class_box">
-                    <div class="title van-ellipsis">知识产权许可使用合同起草</div>
-                    <div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草</div>
+                    <div class="title van-ellipsis">{{item.productTitle}}</div>
+                    <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
                     <div class="margin_top_10">
                       <van-row>
                         <van-col span="12">
-                          <span class="color_title font_16">￥500.00</span>
+                          <span class="color_title font_16">￥{{item.productPrice}}</span>
                         </van-col>
                         <van-col span="12">
-                          <div class="more"><span>1234人看过</span></div>
+                          <div class="more"><span>{{item.saleCount}}人看过</span></div>
                         </van-col>
                       </van-row>
                     </div>
                     <div class="margin_top_10">
                       <van-row>
                         <van-col span="6">
-                          <div class="flex_warp van-ellipsis">
+                          <div class="flex_warp van-ellipsis" @click="toDetail">
                             <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                             <span class="font_12 color_666">试听</span>
                           </div>
@@ -143,7 +148,7 @@
           </div>
 			  	<!--广告-->
           <div>
-            <img src="../../../static/images/img/ad.png" class="all_width"/>
+            <img :src="bgUrl" class="all_width height_110px"/>
           </div>
           <!--行业动态-->
           <div>
@@ -153,32 +158,30 @@
                   <span class="title">行业动态管控</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more">
-                    <router-link tag="a" to="">
-                      <span>查看更多》</span>
-                    </router-link>
+                  <div class="more" @click="moreList()">
+                    <span>查看更多》</span>
                   </div>
                 </van-col>
               </van-row>
             </div>
-            <div v-for="item in 2" class="padding_10 bg_fff">
+            <div v-for="item in careerArr" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
-                  <div>
-                    <img src="../../../static/images/img/class.png" class="all_width"/>
+                  <div @click="toDetail">
+                    <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
                 <van-col span="14">
                   <div class="class_box">
-                    <div class="title van-ellipsis">知识产权许可使用合同起草</div>
-                    <div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草知识产权许可使用合同起草</div>
+                    <div class="title van-ellipsis">{{item.productTitle}}</div>
+                    <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
                     <div class="margin_top_10">
                       <van-row>
                         <van-col span="12">
-                          <span class="color_title font_16">￥500.00</span>
+                          <span class="color_title font_16">￥{{item.productPrice}}</span>
                         </van-col>
                         <van-col span="12">
-                          <div class="more"><span>1234人看过</span></div>
+                          <div class="more"><span>{{item.saleCount}}人看过</span></div>
                         </van-col>
                       </van-row>
                     </div>
@@ -204,32 +207,30 @@
                   <span class="title">法律动态管控</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more">
-                    <router-link tag="a" to="">
-                      <span>查看更多》</span>
-                    </router-link>
+                  <div class="more" @click="moreList()">
+                    <span>查看更多》</span>
                   </div>
                 </van-col>
               </van-row>
             </div>
-            <div v-for="item in 2" class="padding_10 bg_fff">
+            <div v-for="item in logicArr" class="padding_10 bg_fff">
               <van-row>
                 <van-col span="10">
-                  <div>
-                    <img src="../../../static/images/img/class.png" class="all_width"/>
+                  <div @click="toDetail">
+                    <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
                 <van-col span="14">
                   <div class="class_box">
-                    <div class="title van-ellipsis">知识产权许可使用合同起草</div>
-                    <div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草知识产权许可使用合同起草</div>
+                    <div class="title van-ellipsis">{{item.productTitle}}</div>
+                    <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
                     <div class="margin_top_10">
                       <van-row>
                         <van-col span="12">
-                          <span class="color_title font_16">￥500.00</span>
+                          <span class="color_title font_16">￥{{item.productPrice}}</span>
                         </van-col>
                         <van-col span="12">
-                          <div class="more"><span>1234人看过</span></div>
+                          <div class="more"><span>{{item.saleCount}}人看过</span></div>
                         </van-col>
                       </van-row>
                     </div>
@@ -258,23 +259,21 @@
                   <span class="title">律瀛商城</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more">
-                    <router-link tag="a" to="">
-                      <span>查看更多》</span>
-                    </router-link>
+                  <div class="more" @click="moreList()">
+                    <span>查看更多》</span>
                   </div>
                 </van-col>
               </van-row>
             </div>
             <div class="juc_wrap_around bg_fff">
-              <div v-for="item in 4" class="width_45 border_999 margin_bottom_20 padding_10 box_sizing">
-                <div>
-                  <img src="../../../static/images/img/book.png" class="all_width">
+              <div v-for="item in lvyingArr" class="width_45 border_999 margin_bottom_20 padding_10 box_sizing">
+                <div @click="toDetail">
+                  <img :src="item.productProfileUrl" class="all_width height_110px"/>
                 </div>
-                <div class="van-ellipsis margin_top_5 title">知识产权许可使用合同起草</div>
-                <div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草知识产权许可使用合同起草</div>
+                <div class="van-ellipsis margin_top_5 title">{{item.productTitle}}</div>
+                <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
                 <div class="juc_between align_center margin_top_10">
-                  <span class="color_title font_16 van-ellipsis">￥500.00</span>
+                  <span class="color_title font_16 van-ellipsis">￥{{item.productPrice}}</span>
                   <button class="btn_title van-ellipsis">立即购买</button>
                 </div>
               </div>
@@ -282,13 +281,13 @@
           </div>
 
     	</div>
-		
+
     </div>
 </template>
 <script>
 export default {
     components : {
-    	
+
     },
     data() {
         return {
@@ -301,7 +300,7 @@ export default {
           bgUrl: '',
           value: 0
         }
-        
+
     },
     mounted(){
       this.getNavTitle()
@@ -313,8 +312,7 @@ export default {
     	},
       //获取橱窗对象
       getCaseProduct(){
-        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: 1})).then((res)=>{
-
+        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: 1})).then((res)=>{
           if(res.data.code == 200){
             let {content}=res.data;
             // 保存轮播数据
@@ -336,7 +334,7 @@ export default {
               }
             }
           }else{
-            this.$Message.warning(res.data.message);
+            this.$toast.fail(res.data.message);
           }
         })
           .catch((error) => {
@@ -372,7 +370,7 @@ export default {
 
             }else{
 
-              this.$Message.warning(res.data.message);
+              this.$toast.fail(res.data.message);
 
             }
           })
@@ -393,7 +391,7 @@ export default {
 
             }else{
 
-              this.$Message.warning(res.data.message);
+              this.$toast.fail(res.data.message);
 
             }
           })
@@ -401,13 +399,31 @@ export default {
             console.log('发生错误！', error);
           });
       },
+      // 查看更多
+      moreList(){
+        this.$router.push({
+          path:'/lvyingMallList',
+          query: {
+            typeId: 1
+          }
+        })
+      },
+      // 跳转到详情
+      toDetail(){
+        this.$router.push({
+          path:'/videoDetail',
+          query: {
+            typeId: 1
+          }
+        })
+      }
     }
 }
 </script>
 <style scoped lang='less'>
  	/*引入共用less文件*/
-    @import './shopMall.less'; 
-   
+    @import './shopMall.less';
+
    	/*搜索框*/
 	.search_box{
 		margin: 0.2rem;

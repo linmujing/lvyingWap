@@ -1,8 +1,8 @@
 <template>
   <div id="app">
-    
+
     <router-view/>
-    
+
   </div>
 </template>
 
@@ -31,4 +31,10 @@ export default {
     background-color: #00aa88;
     border: 1px solid #00aa88;
 }
+.van-ellipsis p{
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+p{margin: 0}
 </style>

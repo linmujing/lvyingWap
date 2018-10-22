@@ -3,24 +3,16 @@
     	<div style="margin-bottom: 60px">
 	    	<van-tabs color="#00AA88" @click="changeNav"  v-model="active" sticky>
 			  	<van-tab v-for="(item,index) in tabTitle" :key="index" :title="item.title">
-				  	<!--轮播-->
-				  	<div>
-				  		<van-swipe :autoplay="3000">
-						  <van-swipe-item v-for="(image, index) in images" :key="index">
-						    <img :src="image" class="all_width"/>
-						  </van-swipe-item>
-						</van-swipe>
-				  	</div>
-				  	
+
 				  	<router-view></router-view>
-			  	
+
 				</van-tab>
 			</van-tabs>
     	</div>
-    	
-	    
+
+
     	<FooterBar :curIndex = '0'></FooterBar>
-		
+
     </div>
 </template>
 <script>
@@ -32,7 +24,7 @@ export default {
     data() {
         return {
         	active: 0,
-        	tabTitle: [  
+        	tabTitle: [
         		{title: '推荐', path: 'shopMallIdex'},
         		{title: '行业动态管控', path: 'industryDynamic'},
         		{title: '法律动态管控', path: 'lawDynamic'},
@@ -43,9 +35,9 @@ export default {
 		      '../static/images/img/banner.png',
 		      '../static/images/img/banner.png'
 		    ],
-		    
+
         }
-        
+
     },
     methods: {
     	//tab栏切换
@@ -72,5 +64,5 @@ export default {
 </style>
 <style scoped lang='less'>
  	/*引入共用less文件*/
-    @import './shopMall.less'; 
+    @import './shopMall.less';
 </style>
