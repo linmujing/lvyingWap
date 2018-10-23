@@ -3,15 +3,26 @@
 
     	<div class="bg_fff">
 	    	<div>
-	    		<img :src="dataDetail.productProfileUrl" class="all_width" />
+          <div v-if="typeId === 3">
+            <Video :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
+          </div>
+          <div v-else-if="typeId === 4">
+            <Audio :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
+          </div>
+          <div v-else>
+            <img :src="dataDetail.productProfileUrl" class="all_width" />
+          </div>
 	    	</div>
 	    	<div class="padding_10">
 	    		<div class="van-ellipsis title">{{dataDetail.productTitle}}</div>
 	    		<div class="color_999 margin_top_5 van-ellipsis" v-html="dataDetail.productDesc"></div>
 	    		<div class="margin_top_10 juc_center_between">
-                  <span class="color_title font_16">￥{{dataDetail.productOrgPrice}}</span>
-                  <div class="color_999 font_12">{{dataDetail.saleCount}}人看过</div>
-                </div>
+            <div>
+              <span class="color_title font_16">￥{{dataDetail.productOrgPrice}}</span>
+              <del v-show="typeBook" class="color_999">￥80.00</del>
+            </div>
+            <div class="color_999 font_12">{{dataDetail.saleCount}}人看过</div>
+          </div>
 	    	</div>
     	</div>
       <!--提供商-->
@@ -23,8 +34,8 @@
               <img src="../../../static/images/img/falv.png" class="img_box" />
             </van-col>
             <van-col span="19">
-              <div class="font_16">法律教育网</div>
-              <div class="color_999 margin_top_5">教育网成立于XXXX一直致力于XXXX</div>
+              <div class="font_16">{{merchantInfo.orgName}}</div>
+              <div class="color_999 margin_top_5 font_12">{{merchantInfo.personIntroduce}}</div>
             </van-col>
           </van-row>
         </div>
@@ -33,51 +44,53 @@
     	<!--简介-->
     	<div class="bg_fff margin_top_20">
     		<van-tabs color="#00AA88" v-model="active" sticky>
-				<van-tab v-for="(item,index) in subTab" :key="index" :title="item">
-					<!--简介-->
+				  <van-tab v-for="(item,index) in subTab" :key="index" :title="item">
+					  <!--简介-->
 			    	<div v-if="index === 0" class="margin_top_10">
               <div class="padding_10" v-html="dataDetail.productDesc"></div>
 			    	</div>
 			    	<!--全程动态管控系统-->
-			    	<div v-if="index === 0 || index === 1">
-			    		<div class="div_line"></div>
-			    		<div class="title padding_10">全程动态管控系统</div>
-			    		<div class="padding_10">
-			    			<div class="align_center font_12">
-                  <div class="align_center">
-                    <span class="padding_5">项目启动</span>
-                    <img src="../../../static/images/icon/jt.png" class="jt">
+			    	<div v-show="!typeBook">
+              <div v-if="index === 0 || index === 1">
+                <div class="div_line"></div>
+                <div class="title padding_10">全程动态管控系统</div>
+                <div class="padding_10">
+                  <div class="align_center font_12">
+                    <div class="align_center">
+                      <span class="padding_5">项目启动</span>
+                      <img src="../../../static/images/icon/jt.png" class="jt">
+                    </div>
+                    <div class="align_center">
+                      <span class="padding_5">调研</span>
+                      <img src="../../../static/images/icon/jt.png" class="jt">
+                    </div>
+                    <div class="align_center">
+                      <span class="padding_5">入职</span>
+                      <img src="../../../static/images/icon/jt.png" class="jt">
+                    </div>
+                    <div class="align_center">
+                      <span class="padding_5">在职</span>
+                      <img src="../../../static/images/icon/jt.png" class="jt">
+                    </div>
+                    <div class="align_center">
+                      <span class="padding_5">离职</span>
+                    </div>
                   </div>
-                  <div class="align_center">
-                    <span class="padding_5">调研</span>
-                    <img src="../../../static/images/icon/jt.png" class="jt">
-                  </div>
-                  <div class="align_center">
-                    <span class="padding_5">入职</span>
-                    <img src="../../../static/images/icon/jt.png" class="jt">
-                  </div>
-                  <div class="align_center">
-                    <span class="padding_5">在职</span>
-                    <img src="../../../static/images/icon/jt.png" class="jt">
-                  </div>
-                  <div class="align_center">
-                    <span class="padding_5">离职</span>
-                  </div>
-                </div>
-			    			<div v-for="(item,index) in 4" :key="index">
-			    				<div class="margin_top_10 padding_10 van-hairline--bottom">
-				    				<p>1.1.1专项服务合同</p>
-                    <div class="juc_center_between padding_left_20">
-                      <div class="van-ellipsis color_999">视频音频详细讲解</div>
-                      <div>
-                        <Button class="btn_gary van-ellipsis margin_right_10">查看详情</Button>
-                        <button class="btn_title van-ellipsis">立即购买</button>
+                  <div v-for="(item,index) in 4" :key="index">
+                    <div class="margin_top_10 padding_10 van-hairline--bottom">
+                      <p>1.1.1专项服务合同</p>
+                      <div class="juc_center_between padding_left_20">
+                        <div class="van-ellipsis color_999">视频音频详细讲解</div>
+                        <div>
+                          <Button class="btn_gary van-ellipsis margin_right_10">查看详情</Button>
+                          <button class="btn_title van-ellipsis">立即购买</button>
+                        </div>
                       </div>
                     </div>
-				    			</div>
-			    			</div>
-			    		</div>
-			    	</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 			    	<!--商品评价-->
 			    	<div v-if="index === 0 || index === 2">
 			    		<div class="div_line"></div>
@@ -109,52 +122,78 @@
     	</div>
 
     	<!--推荐-->
-    	<div class="margin_top_20 bg_fff">
-    		<div class="padding_10 juc_center_between">
-    			<div v-if="showCourse" class="title">热门课程</div>
-    			<div v-else class="title">热门课程</div>
-    			<!--<div class="color_666 font_12">查看更多》</div>-->
-    		</div>
-    		<div v-for="item in recommendList" class="padding_10 bg_fff">
-	  			<van-row>
-				  <van-col span="10">
-				  	<div @click="jumpDetail(item.productCode)">
-				  		<img :src="item.productProfileUrl" class="all_width height_110px"/>
-				  	</div>
-				  </van-col>
-				  <van-col span="14">
-				  	<div class="class_box">
-				  		<div class="title van-ellipsis">{{item.productTitle}}</div>
-				  		<div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
-				  		<div class="margin_top_10">
-				  			<van-row>
-					  			<van-col span="12">
-					  				<span class="color_title font_16">￥{{item.productPrice}}</span>
-					  			</van-col>
-					  			<van-col span="12">
-					  				<div class="more"><span>{{item.saleCount}}人看过</span></div>
-					  			</van-col>
-					  		</van-row>
-				  		</div>
-				  		<div class="margin_top_10 juc_center_between">
-				  			<div>
-                  <div v-if="showCourse" class="flex_warp van-ellipsis" @click="jumpDetail(item.productCode)">
-                    <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
-                    <span class="font_12 color_666 padding_left_5">试听</span>
-                  </div>
-                  <button v-else class="btn_warning width_40px align_center juc_center">
-                    <van-icon name="cart" size="16px" color="#fff" />
-                  </button>
+    	<div v-if="recommendList.length > 0" class="margin_top_20 bg_fff">
+        <!--热门书籍-->
+        <div v-if="typeBook">
+          <div class="padding_10 juc_center_between">
+            <div class="title">热门书籍</div>
+            <!--<div class="color_666 font_12">查看更多》</div>-->
+          </div>
+          <div class="padding_10">
+            <div class="juc_wrap_between">
+              <div v-for="item in recommendList" class="width_48 border_999 margin_bottom_20 padding_5 box_sizing">
+                <div @click="jumpDetail(item.productCode)">
+                  <img :src="item.productProfileUrl" class="all_width height_110px"/>
                 </div>
-                <div>
+                <div class="van-ellipsis margin_top_5 title">{{item.productTitle}}</div>
+                <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
+                <div class="juc_between align_center margin_top_10">
+                  <span class="color_title font_16 van-ellipsis">￥{{item.productPrice}}</span>
                   <button class="btn_title van-ellipsis">立即购买</button>
                 </div>
-				  		</div>
-				  	</div>
-				  </van-col>
-				</van-row>
-	  		</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--课程和推荐-->
+    		<div v-else>
+          <div class="padding_10 juc_center_between">
+            <div v-if="showCourse" class="title">热门课程</div>
+            <div v-else class="title">热门推荐</div>
+            <!--<div class="color_666 font_12">查看更多》</div>-->
+          </div>
+          <div v-for="item in recommendList" class="padding_10 bg_fff">
+            <van-row>
+              <van-col span="10">
+                <div @click="jumpDetail(item.productCode)">
+                  <img :src="item.productProfileUrl" class="all_width height_110px"/>
+                </div>
+              </van-col>
+              <van-col span="14">
+                <div class="class_box">
+                  <div class="title van-ellipsis">{{item.productTitle}}</div>
+                  <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
+                  <div class="margin_top_10">
+                    <van-row>
+                      <van-col span="12">
+                        <span class="color_title font_16">￥{{item.productPrice}}</span>
+                      </van-col>
+                      <van-col span="12">
+                        <div class="more"><span>{{item.saleCount}}人看过</span></div>
+                      </van-col>
+                    </van-row>
+                  </div>
+                  <div class="margin_top_10 juc_center_between">
+                    <div>
+                      <div v-if="showCourse" class="flex_warp van-ellipsis" @click="jumpDetail(item.productCode)">
+                        <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
+                        <span class="font_12 color_666 padding_left_5">试听</span>
+                      </div>
+                      <button v-else class="btn_warning width_40px align_center juc_center">
+                        <van-icon name="cart" size="16px" color="#fff" />
+                      </button>
+                    </div>
+                    <div>
+                      <button class="btn_title van-ellipsis">立即购买</button>
+                    </div>
+                  </div>
+                </div>
+              </van-col>
+            </van-row>
+          </div>
+        </div>
     	</div>
+
 
 		<!--加入购物车底部-->
 		<div>
@@ -169,7 +208,13 @@
     </div>
 </template>
 <script>
+import Video from '../../components/Video.vue'
+import Audio from '../../components/Audio.vue'
 export default {
+  components : {
+    Video,
+    Audio
+  },
   data() {
       return {
         active: 0,
@@ -188,6 +233,21 @@ export default {
         // 推荐产品
         recommendList: [],
         showCourse: false,
+        // 商户信息对象
+        merchantInfo: {},
+        // 商品属性
+        productProperty: '',
+        // 如果是实物
+        typeBook: false,
+        // 课程数据
+        productSection: [],
+        videoData: {
+          playStatus: false,
+          videoSrc: ''
+        },
+        audioData: {
+          audioSrc: ''
+        }
       }
 
   },
@@ -199,14 +259,18 @@ export default {
     productCode() {
       this.getProductInfo()
       this.getEvaluateList(this.pageSize)
+      this.judgeProperty()
     }
   },
   mounted(){
-    if(this.$route.query.typeId){
-      var typeId = parseInt(this.$route.query.typeId)
-      this.typeId = typeId
-      typeId === 3 || typeId === 4 ? this.showCourse = true : this.showCourse = false
-    }
+    // if(this.$route.query.typeId == null){
+    //   // this.showCourse = false
+    //   this.judgeProperty()
+    // }else {
+    //   this.typeId = parseInt(this.$route.query.typeId)
+    //   this.typeId === 3 || this.typeId === 4 ? this.showCourse = true : this.showCourse = false
+    // }
+    this.judgeProperty()
     this.getProductInfo()
     this.getEvaluateList(this.pageSize)
 	},
@@ -222,18 +286,40 @@ export default {
             var result = res.data.content
             this.dataDetail = result
             //获取推荐产品
-            this.getProductShowCase('P121212121213,P121212121212,P121212121211,P121212121214') //测试
-            // if(!result.productRecommendCode == '' || !result.productRecommendCode == null){
-            //   this.getProductShowCase(result.productRecommendCode)
-            // }
-            // this.merchantCode = result.merchantCode
+            if(!result.productRecommendCode == '' || !result.productRecommendCode == null){
+              this.getProductShowCase(result.productRecommendCode)
+            }
+            // 获取商户信息
+            this.getMerchantInfo(result.merchantCode)
+            // 商品属性
+            this.productProperty = result.productProperty
             // //获取优惠券列表
             // this.getProductCoupon(this.productCode, result.merchantCode)
             //商品评分
             result.productScore == null ? this.valueCustomText = 0 : this.valueCustomText = result.productScore
-            // // 课程目录
-            // this.productSection = eval(result.productSection)
-            // console.log(this.productSection)
+            // 课程目录
+            var productSection = eval(result.productSection)
+            console.log(productSection)
+            var videoData = []
+            var audioData = []
+            for (var i=0;i<productSection.length;i++){
+              var section = productSection[i]
+              // if(!section.videoUrl == ''){
+              //   videoSection.push(section)
+              // }
+              // if(!section.voiceUrl == ''){
+              //   audioSection.push(section)
+              // }
+              //获取试用视频音频数据tatuss = 0
+              if(parseInt(section.videoStatus) === 0){
+                videoData.push(section)
+              }
+              if(parseInt(section.voiceStatus) === 0){
+                audioData.push(section)
+              }
+            }
+            this.videoData.videoSrc = videoData[0].videoUrl
+            this.audioData.audioSrc = audioData[0].voiceUrl
 
           }else {
             this.$toast.fail(res.data.message);
@@ -303,6 +389,22 @@ export default {
       this.pageSize += 3
       this.getEvaluateList(this.pageSize)
     },
+    //获取商户详细信息
+    getMerchantInfo(code){
+      this.$api.getMerchantInfo( this.$Qs.stringify({'merchantCode': code}) )
+
+        .then( (res) => {
+          // console.log(res);
+          if(res.data.code == 200){
+            this.merchantInfo = res.data.content
+          }else {
+            this.$toast.fail(res.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
     // 跳转到详情
     jumpDetail(code){
       this.$router.push({
@@ -317,9 +419,51 @@ export default {
       this.$router.push({
         path:'/supplierStore',
         query: {
-          merchantCode: dataDetail.merchantCode
+          merchantCode: this.dataDetail.merchantCode
         }
       })
+    },
+    // 判断商品属性
+    judgeProperty(){
+      //@attr 商品属性1-实物，2-音频 3-视频 4-文档 包含多个使用逗号链接
+     if(this.$route.query.typeId == null){
+       // 如果没有参数typeId
+       var attr = this.productProperty
+       var arr = this.productProperty.split(',')
+       if(arr.length > 1){
+         this.typeId = 1
+         this.showCourse = false
+       }else {
+         this.showCourse = true
+         switch (attr) {
+           case '1':
+             this.typeId = 5
+             this.typeBook = true
+             this.subTab[1] = ''
+             break
+           case '2':
+             this.typeId = 4
+             break
+           case '3':
+             this.typeId = 3
+             break
+         }
+       }
+     }else {
+       // 如果有参数typeId
+       this.typeId = parseInt(this.$route.query.typeId)
+       switch (this.typeId) {
+         case 3 :
+         case 4 :
+           this.showCourse = true
+           break
+         case 5 :
+           this.showCourse = true
+           this.typeBook = true
+           this.subTab[1] = ''
+           break
+       }
+     }
     },
     //加入购物车
     addCart(){
@@ -330,7 +474,7 @@ export default {
       this.$toast('立即购买');
     }
 
-    }
+  }
 }
 </script>
 <style scoped lang='less'>
@@ -344,4 +488,5 @@ export default {
 	.padding_left_5{padding-left: 0.1rem;}
 	.photo{width: 0.8rem;height: 0.8rem;border-radius: 50%;display: block;margin-right: 0.2rem;}
   .jt{width: 0.4rem;}
+  .width_48{width: 48%}
 </style>

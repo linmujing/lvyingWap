@@ -3,9 +3,9 @@
 
       <!--轮播-->
       <div>
-        <van-swipe :autoplay="3000">
-          <van-swipe-item v-for="(image, index) in images" :key="index">
-            <img :src="image" class="all_width"/>
+        <van-swipe :autoplay="4000">
+          <van-swipe-item v-for="(item,index) in banner" :key="index">
+            <img :src="item.src" class="all_width"/>
           </van-swipe-item>
         </van-swipe>
       </div>
@@ -19,44 +19,44 @@
             </van-col>
             <van-col span="19">
               <div class="juc_center_between">
-                <div class="font_16">法律教育网</div>
+                <div class="font_16">{{merchantInfo.orgName}}</div>
                 <div class="color_999 font_12">
-                  <span>客户数：80</span>
-                  <span class="padding_left_10">用户数：1280</span>
+                  <span>客户数：{{merchantInfo.ciCount}}</span>
+                  <span class="padding_left_10">用户数：{{merchantInfo.productCount}}</span>
                 </div>
               </div>
-              <div class="color_999 margin_top_5">教育网成立于XXXX一直致力于XXXX</div>
+              <div class="color_999 margin_top_5">{{merchantInfo.personIntroduce}}</div>
             </van-col>
           </van-row>
         </div>
       </div>
 
 		  <div class="margin_top_20 bg_fff">
-        <div v-for="item in 4" class="padding_10 bg_fff">
+        <div v-for="item in productList" class="padding_10 bg_fff">
           <van-row>
             <van-col span="10">
-              <div>
-                <img src="../../../static/images/img/class.png" class="all_width"/>
+              <div @click="jumpDetail(item.productCode)">
+                <img :src="item.productProfileUrl" class="all_width height_110px"/>
               </div>
             </van-col>
             <van-col span="14">
               <div class="class_box">
-                <div class="title van-ellipsis">知识产权许可使用合同起草</div>
-                <div class="van-ellipsis margin_top_5 color_666">知识产权许可使用合同起草</div>
+                <div class="title van-ellipsis">{{item.productTitle}}</div>
+                <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
                 <div class="margin_top_10">
                   <van-row>
                     <van-col span="12">
-                      <span class="color_title font_16">￥500.00</span>
+                      <span class="color_title font_16">￥{{item.productPrice}}</span>
                     </van-col>
                     <van-col span="12">
-                      <div class="more"><span>1234人看过</span></div>
+                      <div class="more"><span>{{item.saleCount}}人看过</span></div>
                     </van-col>
                   </van-row>
                 </div>
                 <div class="margin_top_10">
                   <van-row>
                     <van-col span="6">
-                      <div class="flex_warp van-ellipsis">
+                      <div class="flex_warp van-ellipsis" @click="jumpDetail(item.productCode)">
                         <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                         <span class="font_12 color_666">试听</span>
                       </div>
@@ -75,28 +75,92 @@
             </van-col>
           </van-row>
         </div>
-        <div class="padding_10 text_center van-hairline--top color_999">查看更多》</div>
+        <div @click="seeMore" class="padding_10 text_center van-hairline--top color_999">查看更多》</div>
       </div>
 
     </div>
 </template>
 <script>
 export default {
-    data() {
-        return {
-          images: [
-            '../static/images/img/banner.png',
-            '../static/images/img/banner.png'
-          ],
-        }
-        
-    },
-    mounted(){
+  data() {
+      return {
+        images: [
+          '../static/images/img/banner.png',
+          '../static/images/img/banner.png'
+        ],
+        banner: JSON.parse(sessionStorage.getItem("Banner")),
+        merchantCode: this.$route.query.merchantCode,
+        merchantInfo: {},
+        productList: [],
+        total: 0,
+        pageSize: 4,
+      }
 
+  },
+  mounted(){
+    this.getProductList(this.pageSize)
+    this.getMerchantInfo()
 	},
 	methods: {
+    // 获取商品列表
+    getProductList(pageSize){
+      this.$api.getProductList( this.$Qs.stringify({'pageNo': 1, 'pageSize': pageSize, 'merchantCode': this.merchantCode, 'orderByStr': 10}) )
 
-    }
+        .then( (res) => {
+          // console.log(res);
+          if(res.data.code == 200){
+            var result = res.data.content
+            this.productList = result.list
+            this.total = result.count
+
+          }else {
+            this.$toast.fail(res.data.message);
+
+          }
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
+    //获取商户详细信息
+    getMerchantInfo(){
+      this.$api.getMerchantInfo( this.$Qs.stringify({'merchantCode': this.merchantCode}) )
+
+        .then( (res) => {
+          // console.log(res);
+          if(res.data.code == 200){
+
+            this.merchantInfo = res.data.content
+
+          }else {
+
+            this.$toast.fail(res.data.message);
+
+          }
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
+    // 跳转到详情
+    jumpDetail(code){
+      this.$router.push({
+        path:'/falvDetail',
+        query: {
+          productCode: code
+        }
+      })
+    },
+    // 查看更多评价
+    seeMore(){
+      if(this.pageSize >= this.total){
+        this.$toast('已经没有更多了');
+        return
+      }
+      this.pageSize += 4
+      this.getProductList(this.pageSize)
+    },
+  }
 }
 </script>
 <style type="text/css">
