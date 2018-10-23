@@ -2,56 +2,106 @@
 
     <div>
 
-        <div v-if="cartDate.cartList.length">
+        <div v-if="cartList.length">
             <!-- 购物车页面 -->
             <div class="body_bg padding_bottom_30" style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}">
 
                 <!-- 商品种数 -->
                 <div class="goods_number padding_0_20 bg_fff flex space_between">
-                    <div>共 {{cartDate.cartList.length}} 门课程</div>
-                    <div><span class="color_red" @click="deleteAllItem" >清空</span></div>
+                    <div>共 {{cartList.length}} 门课程</div>
+                    <div><span class="color_red" @click="deleteAllItem" >删除选中</span></div>
                  </div>
 
                 <!-- 购物车列表 -->
                 <div class="goods_box">
                     <ul class="goods_list">
-                        <li class="margin_top_30 bg_fff" v-for="(items,index1) in cartDate.cartList" :key="index1" >
-                            <div class="header flex space_between padding_0_20 border_bottom_1px">
-                                <div>
-                                    <van-checkbox v-model="items.itemState"   @change="checkboxChange(index1)" >{{items.itemTitle}}</van-checkbox>
-                                </div>
-                                <div>
-                                    <span class="delete_btn"  @click="deleteItem(index1)">删除</span>
-                                </div>
-                            </div>
-                            <ul class="items_list">
-                                <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
-                                    <div class="content flex space_between border_bottom_1px" style="position:relative;">
-                                        <div class="item table_block">
-                                            <span class="td_block"><van-checkbox v-model="item.state" @change="checkboxChange(index1,index2)"></van-checkbox></span>
-                                            <span class="td_block padding_left_30">
-                                                <i class="img_middle_center img_box border_1">
-                                                    <img  :src="item.imgSrc" alt="">
-                                                </i>
-                                            </span>
-                                            <span class="td_block padding_left_30 ">
-                                                <p  class="" style="word-wrap:break-word;">
-                                                    <span style="position:relative;top:-0.6rem;">{{item.describe}}</span>   
-                                                    <span class="font_20" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{item.price}}</span>
-                                                </p>
-                                            </span>
-                                        </div>
-                                        <div class="item table_block">
-                                            <p class="padding_right_20" style="position:absolute;top:1.2rem;right:0">
-                                                <van-stepper v-model="item.num" integer  @change="numberChange(index1,index2)" />
-                                            </p>
-                                        </div>
+                        <li class="margin_top_30 bg_fff" v-for="(items,index1) in cartList" :key="index1" >
+
+                            <!-- 单个商品 -->
+                            <div  v-if="items.itemType == '1'">
+                                <div class="header flex space_between padding_0_20 border_bottom_1px">
+                                    <div>
+                                        <van-checkbox v-model="items.itemState"   @change="calculatePrice" >{{items.itemTitle}}</van-checkbox>
                                     </div>
-                                </li>
-                            </ul>
-                            <div class="items_total flex flex_end padding_0_20">
-                                <div >小计：￥{{items.itemTotal}}</div>
+                                    <div>
+                                        <span class="delete_btn"  @click="deleteAllItem">删除</span>
+                                    </div>
+                                </div>
+                                <ul class="items_list">
+                                    <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
+                                        <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                            <div class="item table_block">
+                                                <span class="td_block"><van-checkbox v-model="item.state" @change="calculatePrice"></van-checkbox></span>
+                                                <span class="td_block padding_left_30">
+                                                    <i class="img_middle_center img_box border_1">
+                                                        <img  :src="item.imgSrc" alt="">
+                                                    </i>
+                                                </span>
+                                                <span class="td_block padding_left_30 ">
+                                                    <p  class="" style="word-wrap:break-word;">
+                                                        <span style="position:relative;top:-0.6rem;" v-html="item.describe"></span>   
+                                                        <span class="font_20" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{item.price}}</span>
+                                                    </p>
+                                                </span>
+                                            </div>
+                                            <div class="item table_block">
+                                                <p class="padding_right_20" style="position:absolute;top:1.2rem;right:0">
+                                                    <van-stepper v-model="item.num" integer  @change="calculatePrice" />
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                                <div class="items_total flex flex_end padding_0_20">
+                                    <div >小计：￥{{items.itemTotal}}</div>
+                                </div>
                             </div>
+
+                            <!-- 组合包商品 -->
+                            <div v-else>
+                                <div class="header flex space_between padding_0_20 border_bottom_1px">
+                                    <div>
+                                        <van-checkbox v-model="items.itemState"   @change="calculatePrice" >组合包 {{items.itemTitle}} </van-checkbox>
+                                    </div>
+                                    <div>
+                                        <span class="delete_btn"  @click="deleteCartItemData(items.productCode)">删除</span>
+                                    </div>
+                                </div>
+                                <!-- 平台遍历 -->
+                                <div v-for="(item,index2) in items.items" :key="index2">
+                                    <div class="padding_left_20 line_height_50">{{item.itemTitle}}</div>
+                                    <ul class="items_list">
+                                        <li class="padding_left_20" v-for="(child,index3) in item.items" :key="index3">
+                                            <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                                <div class="item table_block">
+                                                    <span class="td_block" style="width:20px;">&nbsp;</span>
+                                                    <span class="td_block padding_left_30">
+                                                        <i class="img_middle_center img_box border_1">
+                                                            <img  :src="child.imgSrc" alt="">
+                                                        </i>
+                                                    </span>
+                                                    <span class="td_block padding_left_30 ">
+                                                        <p  class="" style="word-wrap:break-word;">
+                                                            <span style="position:relative;top:-0.6rem;" v-html="child.describe"></span>   
+                                                            <span class="font_20" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{child.price}}</span>
+                                                        </p>
+                                                    </span>
+                                                </div>
+                                                <div class="item table_block">
+                                                    <p class="padding_right_20" style="position:absolute;top:1.48rem;right:0.5rem">
+                                                        ×{{child.num}}
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                
+                                <div class="items_total flex flex_end padding_0_20">
+                                    <div >小计：￥{{items.itemTotal}}</div>
+                                </div>
+                            </div>
+
                         </li>
                     </ul>
                 </div>
@@ -72,7 +122,7 @@
             </div>
         </div>
 
-        <div class="img_middle_center"  :style="{ height: windowHeight + 'px' }" v-if="!cartDate.cartList.length">
+        <div class="img_middle_center"  :style="{ height: windowHeight + 'px' }" v-if="!cartList.length">
             <img  style="height:auto;width:50%;" src="../../../static/images/image/not_goods.png" alt="">
         </div>
 
@@ -100,60 +150,20 @@ export default {
                 listDeleteState: false,
                 // 总价格
                 listTotal: 0.00,
-                // 大列表
-                cartList:[
-                    {
-                       
-                        itemState: false,
-                        itemTitle: '机构法院',
-                        itemTotal: 0.00,
-                        // 小列表
-                        items:[
-                            {
-                                index2: 0,
-                                state: false,
-                                price: '88.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            },
-                            {
-                                index2: 1,
-                                state: false,
-                                price: '101.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            }
-                        ]
-                    },
-                    {
-                       
-                        itemState: false,
-                        itemTitle: '机构法院',
-                        itemTotal: 0.00,
-                        // 小列表
-                        items:[
-                            {
-                                index2: 0,
-                                state: false,
-                                price: '88.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            },
-                            {
-                                index2: 1,
-                                state: false,
-                                price: '101.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            }
-                        ]
-                    }
-                ],
-            },  
+            }, 
+                        
+            //购物车数据列表大列表
+            cartList:[] ,
+            // 购物车删除多个商品存值
+            cartId:'',
+
+            /*购物车列表参数*/
+            cartParams:{
+                pageNo: 1,
+                pageSize: 30,
+                dataSize: 0 ,
+                ciCode: ''
+            }, 
 
             /*删除提示弹框对象*/
             modelDate:{
@@ -167,53 +177,25 @@ export default {
     },
     methods: {
 
-        /*加减小组件*/
-        // @param index1 购物车大列表下标 
-        // @param index2 购物车小列表下标
-        numberChange(index1,index2){
-
-            // 计算小计与合计
-            this.calculatePrice();
-
-        },
-     
-
-        /*checkbox监听*/
-        // 商品选择 
-        // @param index1 购物车大列表下标 
-        // @param index2 购物车小列表下标
-        checkboxChange(index1,index2){
-
-            // 监听商品是否选中 || 监听商家店里所有商品是否选中
-            if( index2 == undefined){
-                
-                for(let i = 0 ; i < this.cartDate.cartList[index1].items.length; i++ ){
-
-                    this.cartDate.cartList[index1].items[i].state = this.cartDate.cartList[index1].itemState;
-
-                }
-
-            }
-
-            //  // 计算小计与合计
-            this.calculatePrice();
-
-        },
         // 设置checkbox 全选或取消全选
         setAllCheckboxChange(){
 
-            //  获取全选大列表状态
+            // 获取全选大列表状态
             let isAll = this.cartDate.listState;
 
-            let n = this.cartDate.cartList.length;
-            
+            let n = this.cartList.length;
+
             for(let i = 0 ; i < n ; i++ ){
 
-                this.cartDate.cartList[i].itemState = isAll;
+                this.cartList[i].itemState = isAll;
 
-                for(let x = 0 ; x < this.cartDate.cartList[i].items.length; x++ ){
+                if(this.cartList[i].itemType == '1'){
 
-                    this.cartDate.cartList[i].items[x].state = isAll;
+                    for(let x = 0 ; x < this.cartList[i].items.length; x++ ){
+
+                        this.cartList[i].items[x].state = isAll;
+
+                    }
 
                 }
             }
@@ -227,94 +209,124 @@ export default {
         // 计算小计与合计
         calculatePrice(){
 
-            // 获取商品个数
-            let m = this.cartDate.cartList.length;
+            //获取商品个数
+            let m = this.cartList.length;
 
-            // 计算小计
+            //计算小计
             for(let x = 0 ; x < m ; x++){
-  
-                let n = this.cartDate.cartList[x].items.length;
 
-                // 重置小计
-                this.cartDate.cartList[x].itemTotal = 0;
+                let n = this.cartList[x].items.length;
 
-                for(let i = 0 ; i < n ; i++){
-                    
-                    let item = this.cartDate.cartList[x].items[i];
+                if(this.cartList[x].itemType == '1'){
 
-                    // 判断是否选中
-                    if(item.state){
+                    //重置小计
+                    this.cartList[x].itemTotal = 0;
 
-                        this.cartDate.cartList[x].itemTotal += item.num * (item.price * 10000);
+                    for(let i = 0 ; i < n ; i++){
 
-                    } 
+                        let item = this.cartList[x].items[i];
+
+                        //判断是否选中
+                        if(item.state){
+
+                            this.cartList[x].itemTotal += item.num * (item.price * 10000);
+
+                        }
+
+                    }
+
+                    this.cartList[x].itemTotal = (this.cartList[x].itemTotal / 10000).toFixed(2);
+
+                }else{
+
+                    //重置小计
+                    this.cartList[x].itemTotal = 0;
+
+                    if(this.cartList[x].itemState){
+
+                        for(let i = 0 ; i < n ; i++){
+
+                            let item = this.cartList[x].items[i];
+
+                            for(let child of item.items){
+
+                                this.cartList[x].itemTotal += child.num * (child.price * 10000);
+
+                            }
+
+                        }
+
+                        this.cartList[x].itemTotal = (this.cartList[x].itemTotal / 10000).toFixed(2);
+                    }
 
                 }
 
-                this.cartDate.cartList[x].itemTotal = (this.cartDate.cartList[x].itemTotal / 10000).toFixed(2);
-
             }
 
-            // 重置合计
+            //重置合计
             this.cartDate.listTotal = 0;
-            
-            // 计算合计
+
+            //计算合计
             for(let i = 0 ; i < m ; i++){
-                
-                let item = this.cartDate.cartList[i];
 
-                // 判断是否选中
+                let item = this.cartList[i];
 
+                //判断是否选中
                 this.cartDate.listTotal += item.itemTotal *10000;
 
-
-            }  
+            }
 
             this.cartDate.listTotal = (this.cartDate.listTotal / 10000).toFixed(2);
 
         },
 
         /*购物车数据删除操作*/
-        // 删除单个商品
-        // @param index1 购物车大列表下标 
-        deleteItem(index1){
-            
-            //  先判断是否已选择商品
-            let hasGoods = false;
+        // 删除所有选中的商品
+        deleteAllItem(){
 
-            for(let i = 0 ; i < this.cartDate.cartList[index1].items.length; i++){
+            //获取商品个数
+            let m = this.cartList.length;
 
-                if(this.cartDate.cartList[index1].items[i].state){
+            //购物车商品编码
+            let cartId = '';
 
-                    hasGoods = true;
+            //判断是否有选中
+            for(let x = 0 ; x < m ; x++){
+
+                let n = this.cartList[x].items.length;
+
+                //判断是否选中
+                if(this.cartList[x].itemType == '2' && this.cartList[x].itemState){
+
+                    cartId =='' ? cartId = this.cartList[x].cartId : cartId +=  ',' + this.cartList[x].cartId ;
+
+                }else{
+
+                    for(let i = 0 ; i < n ; i++){
+
+                        let item = this.cartList[x].items[i];
+
+                        //判断是否选中
+                        if(item.state){
+
+                            cartId =='' ? cartId = item.cartId : cartId +=  ',' + item.cartId ;
+
+                        }
+
+                    }
 
                 }
 
-            } 
+            }
 
-            if(!hasGoods){
+            if(cartId == ''){
 
-                this.$toast('请选择商品！');
+                this.$Message.warning('您还没有选择商品！');
                 return ;
 
             }
 
-            this.modelDate.index1 = index1;
-            this.modelDate.deleteType = 'a';
-
-            this.$dialog.confirm({
-                message: '确定删除购物车中所选商品吗？'
-            }).then(() => {
-
-                this.deleteModelOk();
-
-            }).catch(() => {
-            
-            });
-
-        },  
-        // 删除所有选中的商品
-        deleteAllItem(){
+            this.cartId = cartId;
 
             this.modelDate.deleteType = 'b';
 
@@ -322,14 +334,14 @@ export default {
                 message: '确定清空购物车吗？'
             }).then(() => {
 
-                this.cartDate.cartList = [];
+                this.deleteCartItemData(cartId)
 
             }).catch(() => {
             
             });
 
         },
-        //  弹框确定
+        // 弹框确定
         deleteModelOk(){
             
             // a 为删除单个
@@ -338,12 +350,12 @@ export default {
                 //  获取商品下标
                 let index1 = this.modelDate.index1; 
 
-                deleteThis(this.cartDate.cartList[index1].items);
+                deleteThis(this.cartList[index1].items);
 
                 //  判断小列表是否还有商品,没有就删除
-                if(this.cartDate.cartList[index1].items.length == 0){
+                if(this.cartList[index1].items.length == 0){
 
-                    this.cartDate.cartList.splice(index1,1);
+                    this.cartList.splice(index1,1);
 
                 }
 
@@ -365,22 +377,22 @@ export default {
             }else{
 
                 // 获取商品个数
-                let m = this.cartDate.cartList.length;
+                let m = this.cartList.length;
 
                 // 计算小计
                 for(let x = 0 ; x < m ; x++){
     
-                    let n = this.cartDate.cartList[x].items.length;
+                    let n = this.cartList[x].items.length;
 
                     for(let i = 0 ; i < n ; i++){
                         
-                        let item = this.cartDate.cartList[x].items[i];
+                        let item = this.cartList[x].items[i];
 
                         // 判断是否选中
                         if(item.state){
 
                             // 删除当前商品
-                            this.cartDate.cartList[x].items.splice(i,1);
+                            this.cartList[x].items.splice(i,1);
 
                             return this.deleteModelOk();
                         } 
@@ -388,9 +400,9 @@ export default {
                     }
 
                     // 判断小列表是否还有商品,没有就删除
-                    if(this.cartDate.cartList[x].items.length == 0){
+                    if(this.cartList[x].items.length == 0){
 
-                        this.cartDate.cartList.splice(x,1);
+                        this.cartList.splice(x,1);
 
                         return this.deleteModelOk();
 
@@ -405,13 +417,274 @@ export default {
 
         },
 
-        //  //  去结算页面
-        //  goBuy(){
+        /**数据**/
+        // 获取购物车列表
+        getCartListData(){
 
-        //      //  去结算页面
-        //      this.$router.push({ name: 'submitOrder', params: { type: true} })
+            this.$toast.loading({                 
+                mask: true,                
+                message: '加载中...'            
+            });
 
-        //  }
+            let param = this.$Qs.stringify({ 'pageNo': this.cartParams.pageNo, 'pageSize': this.cartParams.pageSize , 'ciCode': this.cartParams.ciCode }) ;
+
+            this.$api.catGetCartList( param )
+
+            .then( (res) => {
+                this.allCount=res.data.content.count;
+                console.log(res)
+
+                if(res.data.code == 200){
+                  
+                    let data = res.data.content.list ;
+
+                    // 购物车商品商户分类
+                    let arr = [], merchantArr = [];
+
+                    if (data == null || data.length == 0) { return ;}
+
+                    for(let i = 0 ; i < data.length; i++){
+
+                        // productType 为1时，该商品为单个商品  为2时，商品为组合包
+                        if(data[i].productInfo.productType == '1'){
+
+                            // 单个商品
+                            let index = merchantArr.indexOf(data[i].merchantInfo.merchantNm) ;
+
+                            if( index == -1  ){
+
+                                merchantArr.push(data[i].merchantInfo.merchantNm);
+
+                                // 压入商户
+                                arr.push({
+                                    id: '',
+                                    itemType: data[i].productInfo.productType ,
+                                    itemState: false,
+                                    itemTitle: data[i].merchantInfo.merchantNm,
+                                    itemTotal: 0.00,
+                                    //小列表
+                                    items:[]
+                                });
+
+                                index = merchantArr.indexOf(data[i].merchantInfo.merchantNm);
+
+                                // 压入商品
+                                arr[index].items.push({
+                                    cartId: data[i].id,
+                                    productCode: data[i].productCode,
+                                    state: false,
+                                    price: data[i].productInfo.productPrice,
+                                    num: 1,//data[i].productInfo.productNum,
+                                    productTitle: data[i].productInfo.productTitle,
+                                    describe: data[i].productInfo.productDesc,
+                                    imgSrc: data[i].productInfo.productProfileUrl
+                                })
+
+                            }else{
+
+                                // 压入商品
+                                arr[index].items.push({
+                                    cartId: data[i].id,
+                                    productCode: data[i].productCode,
+                                    state: false,
+                                    price: data[i].productInfo.productPrice,
+                                    num: 1 ,//data[i].productCount,
+                                    productTitle: data[i].productInfo.productTitle,
+                                    describe: data[i].productInfo.productDesc,
+                                    imgSrc: data[i].productInfo.productProfileUrl
+                                })
+
+                            }
+
+                        }else{
+
+                            // 组合包商品
+                            merchantArr.push(data[i].productCode);
+
+                            // 压入组合包
+                            arr.push({
+                                id: '',
+                                cartId: data[i].id,
+                                itemType: data[i].productInfo.productType ,
+                                itemState: false,
+                                itemTitle: data[i].productInfo.productTitle,
+                                itemTotal: 0.00,
+                                productCode: data[i].productCode,
+                                num: 1,
+                                productSubCode: data[i].productInfo.productSubCode,
+                                //小列表
+                                items:[]
+                            });
+
+                        }
+
+                    }
+
+                    // 压入到购物车
+                    this.cartList = arr;
+
+                    this.merchantAllArr=merchantArr;
+
+                    // 购物车二次加载 获取组合包的值
+                    this.getGroupCartItem()
+
+
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }
+
+            })
+            .catch((error) => {
+
+                console.log('发生错误！', error);
+
+            });
+
+
+        },
+
+        // 购物车二次加载 获取组合包的值
+        getGroupCartItem(){
+
+            // 获取购物车一次加载列表
+            let CartList = this.cartList ;
+
+            for(let i = 0; i < CartList.length; i++ ){
+
+                if(CartList[i].itemType == '2'){
+
+                    // 获取组合包商品
+                    this.$api.getProductShowCase( this.$Qs.stringify({ 'productCode': CartList[i].productSubCode }) )
+
+                    .then( (res) => {
+
+                        console.log(res)
+
+                        if(res.data.code == 200){
+
+                            let Data = res.data.content ;
+
+                            // 对组合包里的商品进行商户分类
+                            let arr2 = [], merchantArr2 = [] ;
+
+                            for(let child of Data){
+
+                                let childIndex = merchantArr2.indexOf(child.merchantCode);
+
+                                if(childIndex == -1){
+
+                                    merchantArr2.push(child.merchantCode);
+
+                                    arr2.push({
+                                        id: '',
+                                        itemTitle: child.merchantNm,
+                                        itemTotal: 0.00,
+                                        //小列表
+                                        items:[]
+                                    })
+
+                                    childIndex = merchantArr2.indexOf(child.merchantCode);
+
+                                    // 压入商品
+                                    arr2[childIndex].items.push({
+                                        productCode: child.productCode,
+                                        price: child.productPrice,
+                                        num: 1, //child.productNum,
+                                        productTitle: child.productTitle,
+                                        describe: child.productDesc,
+                                        imgSrc: child.productProfileUrl
+                                    })
+
+                                }else{
+
+                                    // 压入商品
+                                    arr2[childIndex].items.push({
+                                        productCode: child.productCode,
+                                        price: child.productPrice,
+                                        num: 1,//child.productNum,
+                                        productTitle: child.productTitle,
+                                        describe: child.productDesc,
+                                        imgSrc: child.productProfileUrl
+                                    })
+
+                                }
+
+                            }
+                            console.log(arr2)
+
+                            CartList[i].items = arr2;
+
+                        }else{
+
+                            this.$toast(res.data.message);
+
+                        }
+
+                    })
+
+                }
+
+            }
+
+           console.log(CartList);
+
+        },
+
+        // 删除购物车商品
+        //@param cartId string 购物车商品编号
+        deleteCartItemData(cartId){
+
+            this.$toast.loading({                 
+                mask: true,                 
+                message: '加载中...'             
+            });
+
+            let param = this.$Qs.stringify({ 'recordId': cartId }) ;
+
+            this.$api.deleteCart( param )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                
+
+                if(res.data.code == 200){
+
+                    this.$toast(res.data.message);
+
+                    // 获取购物车列表
+                    this.getCartListData();
+
+                    this.setAllCheckboxChange();
+
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }
+
+            })
+            .catch((error) => {
+
+                
+                console.log('发生错误！', error);
+
+            });
+
+            this.modelDate.deleteModelValue = false;
+
+        }
+    },
+    mounted(){
+
+        // 获取用户cicode
+        this.cartParams.ciCode = this.$store.state.userData.cicode ;
+
+        // 获取购物车列表
+        this.getCartListData()
     }
 }
 </script>

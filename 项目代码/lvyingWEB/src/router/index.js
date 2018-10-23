@@ -9,6 +9,14 @@ const router = new Router({
   routes: [
     {path: '/', redirect: 'shopMallIdex'},
     {
+      path: '/Login',
+      name: 'Login',
+      component:resolve => require(['@/view/user/login'],resolve),
+      meta:{
+        title:'登录',
+      }
+    },
+    {
       path: '/',
       name: 'Index',
       meta:{
