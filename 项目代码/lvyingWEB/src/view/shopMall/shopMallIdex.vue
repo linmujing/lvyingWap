@@ -265,7 +265,7 @@
                 </van-col>
               </van-row>
             </div>
-            <div class="juc_wrap_around bg_fff">
+            <div class="juc_wrap_between bg_fff padding_20">
               <div v-for="item in lvyingArr" class="width_45 border_999 margin_bottom_20 padding_10 box_sizing">
                 <div @click="toDetail(item.productCode,5)">
                   <img :src="item.productProfileUrl" class="all_width height_110px"/>
