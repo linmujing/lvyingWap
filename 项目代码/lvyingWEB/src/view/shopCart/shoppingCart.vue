@@ -415,7 +415,7 @@ export default {
             this.modelDate.deleteType = 'b';
 
             this.$dialog.confirm({
-                message: '确定该商品吗？'
+                message: '确定删除该商品吗？'
             }).then(() => {
 
                 this.deleteCartItemData(cartId)
