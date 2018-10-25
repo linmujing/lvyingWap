@@ -63,10 +63,7 @@ export default {
 
             }
 
-            this.$toast.loading({
-                mask: true,
-                message: '加载中...'
-            });
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({ 'ciPhone': this.username, 'passWord': this.password })  ;
 
@@ -75,6 +72,8 @@ export default {
             .then( (res) => {
 
                 console.log(res)
+
+                this.$toast.clear();
 
                 if(res.data.code == 200){
 

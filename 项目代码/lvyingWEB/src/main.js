@@ -23,6 +23,10 @@ import 'vant/lib/vant-css/index.css';
 
 Vue.config.productionTip = false
 
+// 图片懒加载
+import { Lazyload } from 'vant';
+Vue.use(Lazyload);
+
 Vue.use(Vant)
 
 /* eslint-disable no-new */

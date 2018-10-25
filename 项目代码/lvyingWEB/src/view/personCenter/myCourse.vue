@@ -1,23 +1,27 @@
 <template>
 
-    <div class="">
+    <div>
 
-        <!-- 课程列表 -->
-        <div class="course_list flex_warp" v-if="courseData.length != 0">
+        <van-list v-model="pageData.loading" :finished="pageData.finished" @load="onLoad" >
+            <div>
+                <!-- 课程列表 -->
+                <div class="course_list" v-if="courseData.length != 0" style="display: flex;flex-wrap: wrap;">
 
-            <div class="items" v-for="(items, index ) in courseData" :key="index">
-                <div class="img_box"> 
-                    <img :src="items.imgsrc" alt="">
-                    <i v-if="items.type != 1" :style="{ backgroundImage: 'url('+ items.typeImg + ')'}"></i>
-                </div>
-                <div class="line_height_60 text_ellipsis">{{items.title}} </div>
-                <div class="flex space_between">
-                    <span class="line_height_50 font_20 color_cart_ccc2 ">{{items.auther}}</span>
-                    <van-button size="small"  type="primary" >查看详情</van-button>
+                    <div class="items" v-for="(items, index ) in courseData" :key="index">
+                        <div class="img_box"> 
+                            <img :src="items.imgSrc"  v-lazy="items.imgSrc" alt="">
+                            <i v-if="items.type != 1" :style="{ backgroundImage: 'url('+ items.typeImg + ')'}"></i>
+                        </div>
+                        <div class="line_height_60 text_ellipsis">{{items.title}} </div>
+                        <div class="flex space_between">
+                            <span class="line_height_50 font_20 color_cart_ccc2 ">{{items.source}}</span>
+                            <van-button size="small"  type="primary" >查看详情</van-button>
+                        </div>
+                    </div>
+
                 </div>
             </div>
-
-        </div>
+        </van-list>
 
         <!-- 暂无课程 -->
         <div style="padding-top:3rem; text-align:center; color:#999;" v-if="courseData.length == 0">
@@ -38,64 +42,90 @@ export default {
         return {
 
             // 课程数据
-            courseData: [
-                {
-                    type: 1,
-                    typeImg: '',
-                    title: '我是标题很长',
-                    imgsrc:'./static/images/img/class.png',
-                    auther: '来源',
-                    id:''
-                },
-                {
-                    type: 2,
-                    typeImg: './static/images/icon/play_01.png',
-                    title: '我是标题很长',
-                    imgsrc:'./static/images/img/class.png',
-                    auther: '来源',
-                    id:''
-                },
-                                {
-                    type: 3,
-                    typeImg: './static/images/icon/play_02.png',
-                    title: '我是标题很长',
-                    imgsrc:'./static/images/img/class.png',
-                    auther: '来源',
-                    id:''
-                },
-                {
-                    type: 1,
-                    typeImg: '',
-                    title: '我是标题很长',
-                    imgsrc:'./static/images/img/class.png',
-                    auther: '来源',
-                    id:''
-                },
-                {
-                    type: 2,
-                    typeImg: './static/images/icon/play_01.png',
-                    title: '我是标题很长',
-                    imgsrc:'./static/images/img/class.png',
-                    auther: '来源',
-                    id:''
-                },
-                                {
-                    type: 3,
-                    typeImg: './static/images/icon/play_02.png',
-                    title: '我是标题很长',
-                    imgsrc:'./static/images/img/class.png',
-                    auther: '来源',
-                    id:''
-                }
-            ]
+            courseData: [],
+            // 分页
+            pageData:{
+                total: 8,
+                pageSize: 10,
+                current: 1,
+                loading: false,
+                finished: false
+            },
             
         }
-        
+ 
     },
     methods: {
 
+        // 获取我的课程
+        getMyCourse(){
 
-   
+            let pageNo = this.pageData.current;
+            let pageSize = this.pageData.pageSize;
+            let ciCode = this.$store.state.userData.cicode;
+            let param = this.$Qs.stringify({pageNo,pageSize,ciCode})
+
+            this.$api.getmyCourseList(param).then((res)=>{
+
+                console.log(res);
+
+                if(res.data.code == 200){
+
+                    let  data = res.data.content.list, arr= [];
+                    this.pageData.total = res.data.content.count;
+                    this.pageData.current++;
+
+                    for(let item of data){
+                        this.courseData.push({
+                            title: item.productName,
+                            type: '0',
+                            productCode: item.productCode,
+                            source: item.merchantNm,
+                            imgSrc: item.productProfileUrl,
+                        })
+                    }
+
+                    // 加载状态结束
+                    this.pageData.loading = false;
+
+                    // 数据全部加载完成
+                    if ( this.courseData.length >= this.pageData.total ) {
+
+                        this.pageData.finished = true;
+                        this.$toast('没有更多了！');
+
+                    }
+
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }
+
+            })
+            .catch((error) => {
+                this.$toast('加载失败,请刷新重试!');
+                console.log('发生错误！', error);
+            });
+
+        },
+        // 加载更多
+        onLoad() {
+
+            // 异步更新数据
+            setTimeout(() => {
+
+                // 获取我的课程
+                this.getMyCourse();
+
+            }, 1000);
+
+        },
+
+
+    },
+    mounted(){
+
 
     }
 }
@@ -120,7 +150,6 @@ export default {
     @import '../../style/common.less';
 
     .course_list{
-        
         .items{
             width: 44vw;
             height: 50vw;

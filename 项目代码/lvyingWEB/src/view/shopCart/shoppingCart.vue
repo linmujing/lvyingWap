@@ -21,7 +21,7 @@
                             <div  v-if="items.itemType == '1'">
                                 <div class="header flex space_between padding_0_20 border_bottom_1px">
                                     <div>
-                                        <van-checkbox v-model="items.itemState"   @change="calculatePrice" >{{items.itemTitle}}</van-checkbox>
+                                        <van-checkbox v-model="items.itemState"   @change="checkboxChange(index1)" >{{items.itemTitle}}</van-checkbox>
                                     </div>
                                     <div>
                                         <span class="delete_btn"  @click="deleteAllItem">删除</span>
@@ -31,7 +31,7 @@
                                     <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
                                         <div class="content flex space_between border_bottom_1px" style="position:relative;">
                                             <div class="item table_block">
-                                                <span class="td_block"><van-checkbox v-model="item.state" @change="calculatePrice"></van-checkbox></span>
+                                                <span class="td_block"><van-checkbox v-model="item.state" @change="checkboxChange(index1, index2)"></van-checkbox></span>
                                                 <span class="td_block padding_left_30">
                                                     <i class="img_middle_center img_box border_1">
                                                         <img  :src="item.imgSrc" alt="">
@@ -64,7 +64,7 @@
                                         <van-checkbox v-model="items.itemState"   @change="calculatePrice" >组合包 {{items.itemTitle}} </van-checkbox>
                                     </div>
                                     <div>
-                                        <span class="delete_btn"  @click="deleteCartItemData(items.productCode)">删除</span>
+                                        <span class="delete_btn"  @click="deleteItem(items.cartId)">删除</span>
                                     </div>
                                 </div>
                                 <!-- 平台遍历 -->
@@ -149,7 +149,7 @@ export default {
                 // 全部删除状态
                 listDeleteState: false,
                 // 总价格
-                listTotal: 0.00,
+                listTotal: '0.00',
             }, 
                         
             //购物车数据列表大列表
@@ -162,7 +162,7 @@ export default {
                 pageNo: 1,
                 pageSize: 30,
                 dataSize: 0 ,
-                ciCode: ''
+                ciCode: this.$store.state.userData.cicode 
             }, 
 
             /*删除提示弹框对象*/
@@ -176,7 +176,75 @@ export default {
         
     },
     methods: {
+        /*checkbox监听*/
+        //商品选择
+        //@param index1 购物车大列表下标
+        checkboxChange(index1, index2){
 
+            if(index2 == undefined){
+
+                // 监听商户下所有商品是否选中
+                let states = this.cartList[index1].itemState ;
+
+                for(let i = 0 ; i < this.cartList[index1].items.length; i++){
+
+                    this.cartList[index1].items[i].state = states;
+
+                }
+
+            }else{
+                
+                // 只有商户下有一个没有被选中，商户的就不选中
+                let states = true;
+
+                for(let i = 0 ; i < this.cartList[index1].items.length; i++){
+
+                    if(!this.cartList[index1].items[i].state){
+                        states = false;
+                    }
+
+                }
+
+                this.cartList[index1].itemState = states;
+
+            }
+
+            // 所有选项是否全部选中
+            let AllStates = true ;
+
+            let All = this.cartList ;
+
+            for(let i = 0 ; i < All.length; i++ ){
+
+                if(this.cartList[i].itemType == '1'){
+
+                    for(let x = 0 ; x < All[i].items.length; x++){
+
+                        if(!All[i].items[x].state){
+
+                            AllStates = false;
+
+                        }
+
+                    }
+                }else{
+
+                    if(!this.cartList[i].itemState){
+
+                        AllStates = false;
+
+                    }
+
+                }
+
+            }
+
+            this.cartDate.listState = AllStates;
+
+            //计算小计与合计
+            this.calculatePrice();
+
+        },
         // 设置checkbox 全选或取消全选
         setAllCheckboxChange(){
 
@@ -281,6 +349,22 @@ export default {
         },
 
         /*购物车数据删除操作*/
+        // 删除单个商品
+        deleteItem(cartId){
+
+            this.cartId = cartId;
+
+            this.$dialog.confirm({
+                message: '确定删除该商品吗？'
+            }).then(() => {
+
+                this.deleteCartItemData(cartId)
+
+            }).catch(() => {
+            
+            });
+
+        },
         // 删除所有选中的商品
         deleteAllItem(){
 
@@ -321,7 +405,7 @@ export default {
 
             if(cartId == ''){
 
-                this.$Message.warning('您还没有选择商品！');
+                this.$toast('您还没有选择商品！');
                 return ;
 
             }
@@ -331,7 +415,7 @@ export default {
             this.modelDate.deleteType = 'b';
 
             this.$dialog.confirm({
-                message: '确定清空购物车吗？'
+                message: '确定该商品吗？'
             }).then(() => {
 
                 this.deleteCartItemData(cartId)
@@ -341,96 +425,19 @@ export default {
             });
 
         },
-        // 弹框确定
-        deleteModelOk(){
-            
-            // a 为删除单个
-            if(this.modelDate.deleteType == 'a'){
-
-                //  获取商品下标
-                let index1 = this.modelDate.index1; 
-
-                deleteThis(this.cartList[index1].items);
-
-                //  判断小列表是否还有商品,没有就删除
-                if(this.cartList[index1].items.length == 0){
-
-                    this.cartList.splice(index1,1);
-
-                }
-
-                //  删除当前选中的商品
-                function deleteThis(data){
-                   console.log(data)
-                    for(let i = 0 ; i < data.length; i++){
-
-                        if(data[i].state){
-
-                            data.splice(i,1);
-                            return deleteThis(data);
-
-                        }
-                        
-                    }
-                }
-
-            }else{
-
-                // 获取商品个数
-                let m = this.cartList.length;
-
-                // 计算小计
-                for(let x = 0 ; x < m ; x++){
-    
-                    let n = this.cartList[x].items.length;
-
-                    for(let i = 0 ; i < n ; i++){
-                        
-                        let item = this.cartList[x].items[i];
-
-                        // 判断是否选中
-                        if(item.state){
-
-                            // 删除当前商品
-                            this.cartList[x].items.splice(i,1);
-
-                            return this.deleteModelOk();
-                        } 
-
-                    }
-
-                    // 判断小列表是否还有商品,没有就删除
-                    if(this.cartList[x].items.length == 0){
-
-                        this.cartList.splice(x,1);
-
-                        return this.deleteModelOk();
-
-                    }
-                    
-                }
-
-            }
-
-            // 计算小计与合计
-            this.calculatePrice();
-
-        },
 
         /**数据**/
         // 获取购物车列表
         getCartListData(){
 
-            this.$toast.loading({                 
-                mask: true,                
-                message: '加载中...'            
-            });
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({ 'pageNo': this.cartParams.pageNo, 'pageSize': this.cartParams.pageSize , 'ciCode': this.cartParams.ciCode }) ;
 
             this.$api.catGetCartList( param )
 
             .then( (res) => {
+
                 this.allCount=res.data.content.count;
                 console.log(res)
 
@@ -461,7 +468,7 @@ export default {
                                     itemType: data[i].productInfo.productType ,
                                     itemState: false,
                                     itemTitle: data[i].merchantInfo.merchantNm,
-                                    itemTotal: 0.00,
+                                    itemTotal: '0.00',
                                     //小列表
                                     items:[]
                                 });
@@ -531,6 +538,7 @@ export default {
 
                 }else{
 
+                    this.$toast.clear();
                     this.$toast(res.data.message);
 
                 }
@@ -538,6 +546,7 @@ export default {
             })
             .catch((error) => {
 
+                this.$toast.clear();
                 console.log('发生错误！', error);
 
             });
@@ -612,7 +621,7 @@ export default {
                                 }
 
                             }
-                            console.log(arr2)
+                            // console.log(arr2)
 
                             CartList[i].items = arr2;
 
@@ -628,7 +637,8 @@ export default {
 
             }
 
-           console.log(CartList);
+            this.$toast.clear();
+            console.log(CartList);
 
         },
 
@@ -636,10 +646,7 @@ export default {
         //@param cartId string 购物车商品编号
         deleteCartItemData(cartId){
 
-            this.$toast.loading({                 
-                mask: true,                 
-                message: '加载中...'             
-            });
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({ 'recordId': cartId }) ;
 
@@ -649,7 +656,7 @@ export default {
 
                 console.log(res)
 
-                
+                this.$toast.clear();
 
                 if(res.data.code == 200){
 
@@ -679,9 +686,6 @@ export default {
         }
     },
     mounted(){
-
-        // 获取用户cicode
-        this.cartParams.ciCode = this.$store.state.userData.cicode ;
 
         // 获取购物车列表
         this.getCartListData()

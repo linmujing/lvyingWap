@@ -135,9 +135,9 @@ export default {
                     id: 1,
                     name:'律师之家',
                     phone:'15874252525',
-                    province: { value: '120000', label: '天津市'},
-                    city: { value: '120100', label: '天津市'},
-                    county: { value: '120101', label: '和平区'},
+                    province: { value: '', label: '天津市'},
+                    city: { value: '', label: '天津市'},
+                    county: { value: '', label: '和平区'},
                     addressDetail: '芙蓉大道 中心街 23号',
                     postCode: '10010',
                     default: false, 
@@ -385,7 +385,7 @@ export default {
         /**地址弹框功能**/
         // 确定
         onConfirm(e){
-            
+            // console.log(e)
             // 地址取值
             let arr = e;
             this.addressModelData.province.value = arr[0].code || '';
@@ -401,8 +401,30 @@ export default {
             // 关闭地址弹框
             this.addressModelValue = false ;
 
-        }
+        },
 
+        /**辅助函数**/
+        // 地区编码获取
+        // @param value string 地址名
+        // return i string 地址编码
+        getAddressCode(value){
+
+            let code = '';
+            let area = this.areaList;
+
+            for(let key in area){
+
+                for(let i in arr[key]){
+
+                    if(arr[key][i] == value){
+
+                        return i
+
+                    }
+
+                }
+            }
+        }
 
     },
     mounted(){

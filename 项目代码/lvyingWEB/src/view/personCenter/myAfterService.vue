@@ -2,7 +2,7 @@
 
     <div class="body_bg">
 
-        <!-- 售后选项卡 -->
+        <!-- 换货选项卡 -->
         <div class="order_type">
             <van-tabs  @click="changeType" v-model="orderData.orderTypeIndex"  sticky>
                 <van-tab v-for="(item, index) in orderData.orderType" :key="index" :title="item.text"  >
@@ -10,54 +10,53 @@
             </van-tabs>
         </div>
 
-        <!-- 售后列表 -->
-        <div class="order_list" style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}" v-if="orderData.orderList.length != 0">
-            <ul>
-                <li class="bg_fff margin_bottom_30" v-for="(items, index) in orderData.orderList" :key="index">
-                    <div class="flex space_between line_height_80 padding_0_20 border_bottom_1px">
-                        <span>订单号：{{items.orderId}}</span>
-                        <span class="color_cart_ccc2 font_20" > {{items.startTime}} </span>
-                    </div>
-                    <div class="lists" v-for="(item, index2) in items.items" :key="index2">
-                        <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
-                            <div class="item table_block" style="height:2.2rem;">
-                                <span class="td_block">
-                                    <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
-                                        <img  :src="item.imgSrc" alt="">
-                                    </i>
-                                </span>
-                                <span class="td_block padding_left_30">
-                                    <p  class="" style="word-wrap:break-word;">
-                                        <span style="position:relative;top:-0.5rem;"> {{item.title}} </span>   
-                                        <span class="font_20" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{item.price}}</span>
+        <!-- 换货列表 -->
+        <div class="order_list" style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}" v-if="orderList.length != 0">
+            <van-list v-model="pageData.loading" :finished="pageData.finished" @load="onLoad" >
+                <ul>
+                    <li class="bg_fff margin_bottom_30" v-for="(items, index) in orderList" :key="index">
+                        <div class="flex space_between line_height_80 padding_0_20 border_bottom_1px">
+                            <span>订单号：{{items.orderId}}</span>
+                            <span class="color_cart_ccc2 font_20" > {{items.createDate}} </span>
+                        </div>
+                        <div class="lists">
+                            <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
+                                <div class="item table_block" style="height:2.2rem;">
+                                    <span class="td_block">
+                                        <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
+                                            <img  :src="items.productWxProfileUrl" :data-productCode="items.productCode" alt="">
+                                        </i>
+                                    </span>
+                                    <span class="td_block padding_left_30">
+                                        <p  class="" style="word-wrap:break-word;">
+                                            <span style="position:relative;top:-0.5rem;"> {{items.productTitle}} </span>   
+                                            <span class="font_20" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{items.productOrgPrice}}</span>
+                                        </p>
+                                    </span>
+                                </div>
+                                <div class="item table_block" style="height:2.2rem;">
+                                    <p class="color_cart_ccc1 font_20" style="position:absolute;top:1.27rem;right:0.2rem">
+                                    x 1
                                     </p>
-                                </span>
+                                </div>
                             </div>
-                            <div class="item table_block" style="height:2.2rem;">
-                                <p class="color_cart_ccc1 font_20" style="position:absolute;top:1.27rem;right:0.2rem">
-                                x {{item.number}}
-                                </p>
-                            </div>
-                        </div>
 
-                    </div>   
-                    <div class="items_total flex flex_end margin_left_20 padding_right_20 line_height_100 border_bottom_1px">
-                        <div >实付：￥ {{items.itemstotal}}</div>
-                    </div>
-                    <div class="items_total flex space_between padding_0_20 line_height_100">
-                        <div class="color_cart_ccc2">{{items.payStateText}}</div>
-                        <div >
-                            <van-button size="small"  type="primary" >查看</van-button>
+                        </div>   
+                        <div class="items_total flex space_between padding_0_20 line_height_100">
+                            <div class="color_cart_ccc2">{{items.isExchange == 1 ? '申请中' : '换货成功'}}</div>
+                            <div >
+                                <!-- <van-button size="small"  type="primary" >查看</van-button> -->
+                            </div>
                         </div>
-                    </div>
-                </li>
-            </ul>
+                    </li>
+                </ul>
+            </van-list >
         </div>
 
-        <!-- 暂无售后信息 -->
-        <div class="bg_fff" style="padding-top:3rem; text-align:center; color:#999;" v-if="orderData.orderList.length == 0">
+        <!-- 暂无换货信息 -->
+        <div class="bg_fff" style="padding-top:3rem; text-align:center; color:#999;" v-if="orderList.length == 0">
             <img style="width:2.5rem;" src="../../../static/images/image/not_have.png" alt="">
-            <p>暂无售后信息</p>
+            <p>暂无换货信息</p>
         </div>
 
     </div>
@@ -75,17 +74,16 @@ export default {
             //  可用屏幕高度
             windowHeight: document.documentElement.clientHeight - 44,
 
-            /* 售后数据对象 */
+            /* 换货数据对象 */
             orderData:{
-                // 售后类型下标
+                // 换货类型下标
                 orderTypeIndex: 0,
-                // 售后类型
+                // 换货类型
                 orderType:[
-                    { text: '全部', value: ''},
-                    { text: '退货', value: ''},
-                    { text: '退货退款', value: ''},
+                    { text: '申请换货', value: ''},
+                    { text: '换货成功', value: ''},
                 ],
-                // 售后数据
+                // 换货数据
                 orderList:[
                     {
                         payState: '',
@@ -96,14 +94,14 @@ export default {
                         orderId: '2018080511600',
                         itemstotal: '100.00',
                         items:[{
-                            title: '法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程',
+                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
                             price: '100.00',
                             number: '1',
                             total: '100.00',
                             imgSrc:'./static/images/image/book_01.png'
                         },
                         {
-                            title: '法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程',
+                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
                             price: '100.00',
                             number: '1',
                             total: '100.00',
@@ -119,7 +117,7 @@ export default {
                         orderId: '2018080511600',
                         itemstotal: '100.00',
                         items:[{
-                            title: '法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程',
+                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
                             price: '100.00',
                             number: '1',
                             total: '100.00',
@@ -134,7 +132,7 @@ export default {
                         orderId: '2018080511600',
                         itemstotal: '100.00',
                         items:[{
-                            title: '法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程法律顾问课程',
+                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
                             price: '100.00',
                             number: '1',
                             total: '100.00',
@@ -144,19 +142,103 @@ export default {
                 ],
         
             },
+
+            // 换货数据
+            orderList:[],
+
+            // 分页
+            pageData:{
+                total: 0,
+                pageSize: 5,
+                current: 1,
+                loading: false,
+                finished: false
+            },
             
         }
         
     },
     methods: {
 
-        /**切换售后类型**/ 
-        // params index 售后类型下标
+        /**切换换货类型**/ 
+        // params index 换货类型下标
         changeType(index){
 
-            console.log(index)
+            console.log(this.orderData.orderTypeIndex)
+            this.getOrderProductList();
 
-        }
+        },
+        // 获取换货列表
+        getOrderProductList(){
+
+            let param = this.$Qs.stringify({
+                'pageNo': this.pageData.current, 
+                'pageSize': this.pageData.pageSize, 
+                'ciCode': this.$store.state.userData.cicode , 
+                'isExchange': this.orderData.orderTypeIndex+1
+                }) 
+            
+            this.$api.getOrderProductList( param )
+
+            .then( (res) => {
+
+                console.log(res);
+                if(res.data.code == 200){
+
+                    let  data = res.data.content.list ;
+                    this.pageData.total = res.data.content.count;
+                    this.pageData.current++;
+
+                    for(let item of data){
+                        this.orderList.push({
+                            orderId: item.orderCode ,
+                            createDate: item.createDate,
+                            isExchange : item.isExchange ,
+                            productWxProfileUrl: item.ProductInfo.productWxProfileUrl,
+                            productCode: item.ProductInfo.productCode,
+                            productTitle: item.ProductInfo.productTitle,
+                            productOrgPrice: item.ProductInfo.productOrgPrice,
+                        })
+                    }
+
+                    // 加载状态结束
+                    this.pageData.loading = false;
+
+                    // 数据全部加载完成
+                    if ( this.orderList.length >= this.pageData.total ) {
+
+                        this.pageData.finished = true;
+                        this.$toast('没有更多了！');
+
+                    }
+
+                }else {
+
+                    this.$toast(res.data.message);
+
+                }
+
+            })
+            .catch((error) => {
+
+                this.$toast('加载失败,请刷新重试!');
+                console.log('发生错误！', error);
+
+            });
+
+        },
+        // 加载更多
+        onLoad() {
+
+            // 异步更新数据
+            setTimeout(() => {
+
+                // 获取我的换货
+                this.getOrderProductList();
+
+            }, 1000);
+
+        },
    
 
     }

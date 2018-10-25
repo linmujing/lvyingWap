@@ -11,7 +11,7 @@
             </div>
             <div class="username table_block">
                 <p class="td_block">
-                   微信号 1025555
+                   微信号 <span class="color_cart_ccc1">{{wxName}}</span>
                 </p>
             </div>
         </div>
@@ -67,7 +67,8 @@ export default {
                     url: 'myAddress'
                 },
             ],
-            imgHeadUrl:'./static/images/image/my_head.png'
+            imgHeadUrl:'',
+            wxName: '',
 
         }
         
@@ -91,6 +92,12 @@ export default {
     },
     mounted(){
     
+        this.wxName = this.$store.state.userData.ciphone;
+
+        // 头像
+        let headImg = this.$store.state.userData.ciProfileUrl;
+        this.imgHeadUrl =  headImg ? headImg : './static/images/image/my_head.png';
+
 
     }
 }
