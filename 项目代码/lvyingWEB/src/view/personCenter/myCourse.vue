@@ -10,7 +10,7 @@
                     <div class="items" v-for="(items, index ) in courseData" :key="index">
                         <div class="img_box"> 
                             <img :src="items.imgSrc"  v-lazy="items.imgSrc" alt="">
-                            <i v-if="items.type != 1" :style="{ backgroundImage: 'url('+ items.typeImg + ')'}"></i>
+                            <!-- <i v-if="items.type != 1" :style="{ backgroundImage: 'url('+ items.typeImg + ')'}"></i> -->
                         </div>
                         <div class="line_height_60 text_ellipsis">{{items.title}} </div>
                         <div class="flex space_between">
@@ -163,6 +163,7 @@ export default {
 
                 img{
                     width: 100%;
+                    height: 2.5rem;
                 }
                 i{
                     position: absolute;

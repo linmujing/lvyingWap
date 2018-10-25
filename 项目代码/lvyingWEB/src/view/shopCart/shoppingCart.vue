@@ -448,8 +448,6 @@ export default {
                     // 购物车商品商户分类
                     let arr = [], merchantArr = [];
 
-                    if (data == null || data.length == 0) { return ;}
-
                     for(let i = 0 ; i < data.length; i++){
 
                         // productType 为1时，该商品为单个商品  为2时，商品为组合包

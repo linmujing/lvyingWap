@@ -96,7 +96,7 @@ export default {
 
         // 头像
         let headImg = this.$store.state.userData.ciProfileUrl;
-        this.imgHeadUrl =  headImg ? headImg : './static/images/image/my_head.png';
+        this.imgHeadUrl =  headImg != null && headImg != undefined && headImg != 'null'? headImg : './static/images/image/my_head.png';
 
 
     }

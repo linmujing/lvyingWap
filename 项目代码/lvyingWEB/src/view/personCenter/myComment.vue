@@ -97,10 +97,10 @@ export default {
                         this.commentData.push({
                             createDate: item.createDate,
                             commentDesc: item.commentDesc,
-                            productWxProfileUrl: item.ProductInfo.productWxProfileUrl,
-                            productCode: item.ProductInfo.productCode,
-                            productTitle: item.ProductInfo.productTitle,
-                            productOrgPrice: item.ProductInfo.productOrgPrice,
+                            productWxProfileUrl: item.productInfo.productProfileUrl,
+                            productCode: item.productInfo.productCode,
+                            productTitle: item.productInfo.productTitle,
+                            productOrgPrice: item.productInfo.productOrgPrice,
                         })
                     }
 
@@ -141,6 +141,10 @@ export default {
         },
     },
     mounted(){
+
+                // 头像
+        let headImg = this.$store.state.userData.ciProfileUrl;
+        this.userHeadUrl =  headImg != null && headImg != undefined && headImg != 'null'? headImg : './static/images/image/my_head.png';
 
     }
 }
