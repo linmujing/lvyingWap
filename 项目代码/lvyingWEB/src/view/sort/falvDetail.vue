@@ -54,37 +54,61 @@
               <div v-if="index === 0 || index === 1">
                 <div class="div_line"></div>
                 <div class="title padding_10">全程动态管控系统</div>
-                <div class="padding_10">
-                  <div class="align_center font_12">
-                    <div class="align_center">
-                      <span class="padding_5">项目启动</span>
-                      <img src="../../../static/images/icon/jt.png" class="jt">
-                    </div>
-                    <div class="align_center">
-                      <span class="padding_5">调研</span>
-                      <img src="../../../static/images/icon/jt.png" class="jt">
-                    </div>
-                    <div class="align_center">
-                      <span class="padding_5">入职</span>
-                      <img src="../../../static/images/icon/jt.png" class="jt">
-                    </div>
-                    <div class="align_center">
-                      <span class="padding_5">在职</span>
-                      <img src="../../../static/images/icon/jt.png" class="jt">
-                    </div>
-                    <div class="align_center">
-                      <span class="padding_5">离职</span>
+                <!--课程目录-->
+                <div v-if="showCourse" class="padding_10">
+                  <!--<p class="color_666">第一张  <span class="font_12">&nbsp;&nbsp;&nbsp;&nbsp;入职管理</span></p>-->
+                  <div v-for="(item,index) in productSection" :key="index">
+                    <div class="margin_top_10 padding_10 body_bg juc_center_between">
+                      <div class="color_666 flex">
+                        <!--<div class="width_20px">{{index + 1}}</div>-->
+                        <div class="font_12 van-ellipsis">{{item.sectionName}}</div>
+                      </div>
+                      <!--视频-->
+                      <div v-if="typeId == 3" class="align_center">
+                        <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
+                        <div v-if="parseInt(item.videoStatus) === 0" class="width_70px">
+                          <button class="btn_warning" @click="audition(item)">试听</button>
+                        </div>
+                        <div v-else class="width_70px">
+                          <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                        </div>
+                      </div>
+                      <!--音频-->
+                      <div v-if="typeId == 4" class="align_center">
+                        <span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>
+                        <div v-if="parseInt(item.voiceStatus) === 0" class="width_70px">
+                          <button class="btn_warning" @click="audition(item)">试听</button>
+                        </div>
+                        <div v-else class="width_70px">
+                          <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                        </div>
+                      </div>
                     </div>
                   </div>
-                  <div v-for="(item,index) in 4" :key="index">
+                </div>
+                <!--动态管控-->
+                <div v-else class="padding_10">
+                  <div class="align_center font_12">
+                    <div class="align_center" v-for="(item,index) in sectionNav" @click="classBtn(index,item.sectionIndex)">
+                      <span class="padding_5" :class="{color_title: classCur == index}">{{item.sectionName}}</span>
+                      <img v-show="index != (sectionNav.length-1) " src="../../../static/images/icon/jt.png" class="jt">
+                    </div>
+                  </div>
+                  <div v-for="(item,index) in sectionList" :key="index">
                     <div class="margin_top_10 padding_10 van-hairline--bottom">
-                      <p>1.1.1专项服务合同</p>
+                      <!--<p>1.1.1专项服务合同</p>-->
                       <div class="juc_center_between padding_left_20">
-                        <div class="van-ellipsis color_999">视频音频详细讲解</div>
-                        <div>
-                          <Button class="btn_gary van-ellipsis margin_right_10">查看详情</Button>
+                        <div class="van-ellipsis color_999">{{item.sectionName}}</div>
+                        <div v-show="courseBtn == 1">
+                          <Button @click="courseStates" class="btn_gary van-ellipsis margin_right_10">查看详情</Button>
                           <button class="btn_title van-ellipsis">立即购买</button>
                         </div>
+                      </div>
+                      <div v-show="courseBtn == 2" class="margin_top_10">
+                        <button @click="toCourse" class="btn_plain van-ellipsis margin_right_10">视频</button>
+                        <button @click="toCourse" class="btn_plain van-ellipsis margin_right_10">音频</button>
+                        <button class="btn_plain van-ellipsis margin_right_10">文字预览</button>
+                        <button v-show="parseInt(item.docStatus) === 0" class="btn_plain van-ellipsis">下载</button>
                       </div>
                     </div>
                   </div>
@@ -221,7 +245,8 @@ export default {
         subTab: ['简介','全程动态管控系统','商品评价'],
         star: 4,
         typeId: 0,
-        productCode: this.$route.query.productCode,
+        productCode: 'P154036432807121',
+        // productCode: this.$route.query.productCode,
         // 产品详情数据
         dataDetail: {},
         // 评价列表
@@ -241,13 +266,23 @@ export default {
         typeBook: false,
         // 课程数据
         productSection: [],
+        proSection: '',
         videoData: {
           playStatus: false,
           videoSrc: ''
         },
         audioData: {
           audioSrc: ''
-        }
+        },
+        // 课程状态
+        courseBtn: 1,
+        // 动态管控课程
+        sectionNav: [],
+        sectionList: [],
+        sectionSize: 6,
+        sectionCont: 0,
+        sectionIndex: 0,
+        classCur: 0,
       }
 
   },
@@ -297,19 +332,21 @@ export default {
             // this.getProductCoupon(this.productCode, result.merchantCode)
             //商品评分
             result.productScore == null ? this.valueCustomText = 0 : this.valueCustomText = result.productScore
+            // 动态管控列表
+            this.sectionNav = result.productSectionIndexList
+            this.sectionIndex = result.productSectionIndexList[0].sectionIndex
+            // 动态管控课程目录
+            this.sectionList = result.productSectionList
+
             // 课程目录
             var productSection = eval(result.productSection)
+            this.proSection = result.productSection
+            this.productSection = productSection
             console.log(productSection)
             var videoData = []
             var audioData = []
             for (var i=0;i<productSection.length;i++){
               var section = productSection[i]
-              // if(!section.videoUrl == ''){
-              //   videoSection.push(section)
-              // }
-              // if(!section.voiceUrl == ''){
-              //   audioSection.push(section)
-              // }
               //获取试用视频音频数据tatuss = 0
               if(parseInt(section.videoStatus) === 0){
                 videoData.push(section)
@@ -405,6 +442,34 @@ export default {
           console.log('发生错误！', error);
         });
     },
+    // 获取动态管控列表
+    getSectionIndex(sectionIndex){
+      let params = this.$Qs.stringify({'pageNo': 1, 'pageSize': this.sectionSize,'productSectionIndex': sectionIndex, 'productSection': this.proSection});
+      this.$api.getProductCommentList( params )
+
+        .then( (res) => {
+          console.log(res);
+          if(res.data.code == 200){
+            var result = res.data.content
+            var arr = []
+            for (var i = 0; i < result.list.length; i++) {
+              arr.push(result.list[i].productInfo.productSectionList)
+            }
+            this.sectionList = arr
+            this.sectionCont = result.count
+            console.log(arr)
+
+          }else if (res.data.code == 500){
+
+            this.$Message.warning(res.data.message);
+
+          }
+
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
     // 跳转到详情
     jumpDetail(code){
       this.$router.push({
@@ -413,6 +478,54 @@ export default {
           productCode: code
         }
       })
+    },
+    // 跳转到课程
+    toCourse(){
+      switch (this.typeId) {
+        case 1:
+        case 2:
+          this.$router.push({
+            path:'/seeFalv',
+            query: {
+
+            }
+          })
+          break
+        case 3:
+        case 4:
+          this.$router.push({
+            path:'/seeVideo',
+            query: {
+
+            }
+          })
+          break
+      }
+    },
+    courseStates(){
+      this.courseBtn = 2
+    },
+    // 试听
+    audition(item){
+      if (this.typeId == 3) {
+        if(item.videoUrl == ''){
+          this.$toast('对不起，当前没有播放源！');
+          return false;
+        }
+        this.videoData.videoSrc = item.videoSrc
+      }else if (this.typeId == 4) {
+        if(item.voiceUrl == ''){
+          this.$toast('对不起，当前没有播放源！');
+          return false;
+        }
+        this.audioData.audioSrc = item.voiceUrl
+      }
+    },
+    //课程
+    classBtn(i,sIndex){
+      this.classCur = i;
+      this.sectionIndex = sIndex
+      this.getSectionIndex(sIndex)
     },
     // 跳转到提供商店铺
     goStore(){

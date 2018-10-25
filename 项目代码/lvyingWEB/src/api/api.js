@@ -3,12 +3,12 @@ import axios from 'axios';
 
 
 var instance = axios.create({
-    // baseURL: 'http://localhost:8080/',          // 本地测试
-    // baseURL: 'http://www.luyingjiaoyu.com/law-web-api/', // 正式环境
-    baseURL: 'http://114.115.133.96:8899/law-web-api/', // 测试环境
-    // baseURL: "/api/",                                      // 本地环境
-    timeout: 20000,                                // 请求超时设置
-    headers: { "Accept": "application/json" },
+  // baseURL: 'http://localhost:8080/',          // 本地测试
+  // baseURL: 'http://www.luyingjiaoyu.com/law-web-api/', // 正式环境
+  // baseURL: 'http://114.115.133.96:8899/law-web-api/', // 测试环境
+  baseURL: "/api/",                                      // 本地环境
+  timeout: 20000,                                // 请求超时设置
+  headers: { "Accept": "application/json" },
 });
 
 
@@ -51,7 +51,9 @@ export const getProductList = params => { return instance.post(`product/info/get
 export const getProductCatList = params => { return instance.post(`product/cat/getProductCatList`, params ); };
 // 获取橱窗推荐
 export const getProductShowCase = params => { return instance.post(`product/info/getShowCaseProduct`, params ); };
-// 获取橱窗列表
+// 详情页点击横向导航获取内容列表
+export const getSectionIndex = params => { return instance.post(`product/info/getProductSectionIndexContent`, params ); };
+// // 获取橱窗列表
 export const getProductShowCaseList = params => { return instance.post(`system/showCase/getShowCaseList`, params ); };
 
 /** 系统接口 **/
@@ -122,10 +124,9 @@ export const getProductCommentList = params => { return instance.post(`order/com
 export const getOrderTrack = params => { return instance.post(`order/track/getOrderTrack`, params ); };
 
 /** 订单交易 **/
-// 阿里支付回调
-export const aliPayNotify = params => { return instance.post(`/trade/aliPay/aliPayNotify`, params ); };
 // 阿里支付请求
-export const aliPayRequest = params => { return instance.post(`/trade/aliPay/aliPayRequest`, params ); };
+export const aliPayRequest = params => { return instance.post(`/trade/aliPay/aliPay`, params ); };
+
 // 微信支付回调
 export const payBack = params => { return instance.post(`/trade/weixinPay/payBack`, params ); };
 // 阿微信支付请求
