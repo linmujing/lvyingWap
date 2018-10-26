@@ -45,10 +45,10 @@
                     </div>
                     <div class="margin_top_10">
                       <div class="juc_center_between">
-                        <button class="btn_warning width_40px align_center juc_center">
+                        <button class="btn_warning width_40px align_center juc_center" @click="addProductCart(item.productCode)">
                           <van-icon name="cart" size="16px" color="#fff" />
                         </button>
-                        <button class="btn_title">立即购买</button>
+                        <button class="btn_title"  @click='goBuy(item.productCode)'>立即购买</button>
                       </div>
                     </div>
                   </div>
@@ -95,10 +95,10 @@
                     </div>
                     <div class="margin_top_10">
                       <div class="juc_center_between">
-                        <button class="btn_warning width_40px align_center juc_center">
+                        <button class="btn_warning width_40px align_center juc_center" @click="addProductCart(item.productCode)">
                           <van-icon name="cart" size="16px" color="#fff" />
                         </button>
-                        <button class="btn_title">立即购买</button>
+                        <button class="btn_title" @click='goBuy(item.productCode)'>立即购买</button>
                       </div>
                     </div>
                   </div>
@@ -218,8 +218,40 @@ export default {
             typeId: 1
           }
         })
+      },
+
+      /** 数据 **/
+      // 添加商品到购物车 MT
+      addProductCart(code){
+        if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
+          this.$Message.warning('您还没有登录，请登录后再尝试！');
+          return ;
+        }
+        let param = {
+          ciCode:this.$store.state.userData.cicode,
+          productCode: code,
+          productCount:1
+        }
+        // 存储商品信息
+        this.$store.commit('cart/addToCart', param);
+        this.$store.dispatch('cart/addCartTo', param);
+      },
+      // 立即购买
+      goBuy(code){
+        if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
+          this.$Message.warning('您还没有登录，请登录后再尝试！');
+          return ;
+        }
+        // 页面跳转
+        this.$router.push({
+          path:'/submitOrder',
+          query: {
+            productCode: code
+          }
+        })
       }
-    }
+    
+  }
 }
 </script>
 <style scoped lang='less'>
