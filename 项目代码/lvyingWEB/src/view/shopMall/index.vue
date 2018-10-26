@@ -12,14 +12,17 @@
 
 
     	<FooterBar :curIndex = '0'></FooterBar>
+		<Message></Message>
 
     </div>
 </template>
 <script>
 import FooterBar from '../../components/FooterBar.vue'
+import Message from '../../components/Message.vue'
 export default {
     components : {
-        FooterBar
+		FooterBar,
+		Message
     },
     data() {
         return {

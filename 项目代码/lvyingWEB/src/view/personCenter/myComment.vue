@@ -132,10 +132,8 @@ export default {
 
             // 异步更新数据
             setTimeout(() => {
-
                 // 获取我的评论
                 this.getProductCommentList();
-
             }, 1000);
 
         },
