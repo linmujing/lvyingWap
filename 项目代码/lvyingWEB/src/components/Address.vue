@@ -14,7 +14,8 @@
                             <span> {{ items.phone }} </span>
                         </div>
                         <div class="color_999 line_height_40 margin_top_20 margin_right_20"> 
-                            {{ items.province.label + items.city.label + items.county.label + items.addressDetail }} 
+                            <input type="text" readonly="readonly" style="border:0;width:6rem;background:rgba(0,0,0,0)"
+                                v-model="items.province.label + items.city.label + items.county.label + items.addressDetail">
                         </div>
                         <!-- 选择地址 -->
                         <div class="choose_icon" v-show="addressState == 1" @click="chooseAddressItem(index)">

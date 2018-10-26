@@ -40,7 +40,7 @@
                                                 <span class="td_block padding_left_30 ">
                                                     <p  class="" style="word-wrap:break-word;">
                                                         <span style="position:relative;top:-0.6rem;" v-html="item.describe"></span>   
-                                                        <span class="font_20" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{item.price}}</span>
+                                                        <span class="font_26" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{item.price}}</span>
                                                     </p>
                                                 </span>
                                             </div>
@@ -61,7 +61,7 @@
                             <div v-else>
                                 <div class="header flex space_between padding_0_20 border_bottom_1px">
                                     <div>
-                                        <van-checkbox v-model="items.itemState"   @change="calculatePrice" >组合包 {{items.itemTitle}} </van-checkbox>
+                                        <van-checkbox v-model="items.itemState"   @change="checkboxChange(index1)" >组合包 {{items.itemTitle}} </van-checkbox>
                                     </div>
                                     <div>
                                         <span class="delete_btn"  @click="deleteItem(items.cartId)">删除</span>
@@ -69,7 +69,7 @@
                                 </div>
                                 <!-- 平台遍历 -->
                                 <div v-for="(item,index2) in items.items" :key="index2">
-                                    <div class="padding_left_20 line_height_50">{{item.itemTitle}}</div>
+                                    <div class="margin_left_20 line_height_80 border_bottom_1px">{{item.itemTitle}}</div>
                                     <ul class="items_list">
                                         <li class="padding_left_20" v-for="(child,index3) in item.items" :key="index3">
                                             <div class="content flex space_between border_bottom_1px" style="position:relative;">
@@ -83,13 +83,13 @@
                                                     <span class="td_block padding_left_30 ">
                                                         <p  class="" style="word-wrap:break-word;">
                                                             <span style="position:relative;top:-0.6rem;" v-html="child.describe"></span>   
-                                                            <span class="font_20" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{child.price}}</span>
+                                                            <span class="font_26" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{child.price}}</span>
                                                         </p>
                                                     </span>
                                                 </div>
                                                 <div class="item table_block">
-                                                    <p class="padding_right_20" style="position:absolute;top:1.48rem;right:0.5rem">
-                                                        ×{{child.num}}
+                                                    <p class="padding_right_20 color_cart_ccc1" style="position:absolute;top:1.5rem;right:0.5rem">
+                                                        X {{child.num}}
                                                     </p>
                                                 </div>
                                             </div>
@@ -109,14 +109,15 @@
                 <!-- 提交订单 -->
                 <div class="submit_cart padding_left_20 flex space_between bg_fff border_top_1px font_30">
                     <div>
-                        <van-checkbox v-model="cartDate.listState" @change="setAllCheckboxChange"></van-checkbox>
+                        <div style="position:absolute;top:0;left:0;z-index:99;width:0.7rem;height:100%;" @click="setAllCheckboxChange"></div>
+                        <van-checkbox v-model="cartDate.listState" ></van-checkbox>
                     </div>
                     <div class="flex">
                         <span class="submit_total padding_right_20">
                             <p style="padding-top:5px;">实付金额：<span>￥ {{cartDate.listTotal}}</span></p>
                             <input readonly="readonly" value="（若购买享有优惠，相应金额将在订单结算页面扣减）"/>
                         </span>
-                        <span class="submit_btn bg_00aa88">去结算</span>
+                        <span class="submit_btn bg_00aa88" @click="goBuy">去结算</span>
                     </div>
                 </div>
             </div>
@@ -176,6 +177,53 @@ export default {
         
     },
     methods: {
+
+        // 去结算页面
+        goBuy(){
+
+            let CodeAndCount = '';
+
+            // 限制组合包为单个下单
+            let typeNum = 0, typeNum2 = 0;
+
+            for(let item of this.cartList){
+
+                if(item.itemType == '2'){
+
+                    if(item.itemState){
+
+                        CodeAndCount += CodeAndCount == '' ? `${item.productCode}-${item.num}` : `,${item.productCode}-${item.num}`;
+                        typeNum ++;
+
+                    }
+
+                }else{
+
+                    for(let item2 of item.items){
+
+                        if(item2.state){
+
+                            CodeAndCount += CodeAndCount == '' ? `${item2.productCode}-${item2.num}` : `,${item2.productCode}-${item2.num}`;
+                            typeNum2 ++;
+
+                        }
+                    }
+
+                }
+
+            }
+
+            if(CodeAndCount == ''){ this.$toast('请选择商品！'); return; }
+
+            if(typeNum > 1){ this.$toast('组合包只能单独下单！'); return; }
+
+            if(typeNum > 0 && typeNum2 > 0){ this.$toast('组合包只能单独下单！'); return; }
+
+            // 去结算页面
+            this.$router.push({ path: '/submitOrder', query: { productCode: CodeAndCount , sourceType: 'cart'} })
+
+        },
+
         /*checkbox监听*/
         //商品选择
         //@param index1 购物车大列表下标
@@ -209,13 +257,13 @@ export default {
 
             }
 
-            // 所有选项是否全部选中
+            // 所有选项是否全部选中 
             let AllStates = true ;
 
             let All = this.cartList ;
 
             for(let i = 0 ; i < All.length; i++ ){
-
+  
                 if(this.cartList[i].itemType == '1'){
 
                     for(let x = 0 ; x < All[i].items.length; x++){
@@ -227,6 +275,7 @@ export default {
                         }
 
                     }
+
                 }else{
 
                     if(!this.cartList[i].itemState){
@@ -245,8 +294,12 @@ export default {
             this.calculatePrice();
 
         },
+        
         // 设置checkbox 全选或取消全选
         setAllCheckboxChange(){
+
+            this.cartDate.listState = !this.cartDate.listState;
+            console.log(this.cartDate.listState)
 
             // 获取全选大列表状态
             let isAll = this.cartDate.listState;
@@ -704,7 +757,7 @@ export default {
         font-size: 0.26rem;
     }
     .van-stepper__minus {
-        border-radius: 2px 0 0 2px;
+        border-radius: 0.04rem 0 0 0.04rem;
     }
     /* 弹框样式 */
     .van-dialog__confirm, .van-dialog__confirm:active{

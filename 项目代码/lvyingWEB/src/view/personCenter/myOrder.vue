@@ -19,9 +19,15 @@
                             <span>订单号：{{items.orderCode}}</span>
                             <span class="color_cart_ccc2 font_20" > {{items.orderTime}} </span>
                         </div>
+                        <div class="line_height_80 padding_0_20 border_bottom_1px" v-if="items.isCombination != 0">
+                            <span>组合包</span>
+                        </div>
                         <div class="lists" v-for="(item, index2) in items.orderItem" :key="index2">
                             <!-- 普通商品 -->
-                            <div class="padding_left_20" >商户名称 {{item.itemName}}</div>
+                            <div class="flex space_between padding_0_20 line_height_60 font_24 border_bottom_1px" >
+                                <span>子订单号：{{ item.itemCode }}</span>
+                                <span class="color_cart_ccc2 font_20" > {{item.itemName}} </span>
+                            </div>
                             <div v-for="(child, index3) in item.childItem" :key="index3">
                                 <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
                                     <div class="item table_block" style="height:2.2rem;">
@@ -38,8 +44,8 @@
                                         </span>
                                     </div>
                                     <div class="item table_block" style="height:2.2rem;">
-                                        <p class="color_cart_ccc1 font_24" style="position:absolute;top:1.56rem;right:0.2rem">
-                                        x {{child.num}}
+                                        <p class="color_cart_ccc1 font_26" style="position:absolute;top:1.52rem;right:0.3rem">
+                                            X {{child.num}}
                                         </p>
                                     </div>
                                 </div>
@@ -302,7 +308,7 @@ export default {
                                 itemTime: items.createDate,
                                 itemCode: items.orderMerchantCode,
                                 itemAmount: items.orderAmount,
-                                itemName: items.merchantCode,
+                                itemName: items.orderProductList[0].merchantInfo.merchantNm,
                                 itemTrackNo: items.trackNo,
                                 childItem:[]
                             })

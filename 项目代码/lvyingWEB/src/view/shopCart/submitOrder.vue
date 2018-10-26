@@ -5,92 +5,122 @@
         <div style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}" v-show="!addressData.addressPageShow">
 
             <!-- 购买信息 -->
-            <div class="color_000 bg_fff line_height_60" v-if="pageState == 'a'">
+            <!-- <div class="color_000 bg_fff line_height_60" v-if="pageState == 'a'">
                 <div class="padding_0_20">购买账号： 微信登录账号</div>
                 <div class="padding_0_20">手机号： 1341234569874</div>
                 <div class="border_top_1px padding_0_20 line_height_94" >购买后不支持退款、转让，请确认后再提交订单。</div>
-            </div>
+            </div> -->
 
             <!-- 地址 -->
-            <div class="color_000 bg_fff line_height_60" v-if="pageState == 'b'">
+            <div class="color_000 bg_fff line_height_60" >
                 <div v-if="addressData.addressList.length != 0">
                     <div class="padding_0_20 flex space_between">
-                        <div>收货人：{{addressData.addressList[0].name}}</div>
-                        <div>电话号码：{{addressData.addressList[0].phone}}</div>
+                        <div><span  class="color_cart_ccc1">收货人：</span>  <span>{{addressData.addressList[0].name}}</span></div>
+                        <div><span  class="color_cart_ccc1">电话号码：</span> <span>{{addressData.addressList[0].phone}}</span></div>
                     </div>
                     <div class="padding_0_20 flex space_between">
-                        <div style="width:1.6rem;">收货地址：</div>
-                        <div> 
-                            {{ addressData.addressList[0].province.label +" "+ addressData.addressList[0].city.label }} 
-                            {{ addressData.addressList[0].county.label +" "+ addressData.addressList[0].addressDetail }}
-                            {{ addressData.addressList[0].postCode }}
+                        <div class="color_cart_ccc1" style="width:1.6rem;">收货地址：</div>
+                        <div v-for="(lists,index) in addressData.addressList" :key="index" v-if="index == 0"> 
+                            <input type="text" readonly="readonly" style="border:0;width:5.5rem;" 
+                            v-model="lists.province.label + lists.city.label + lists.county.label  + lists.addressDetail" />
+                            
                         </div>
                     </div>
                     <div class="padding_0_20 flex space_between line_height_94 border_top_1px" @click="addressData.addressPageShow = true">
-                        <div style="width:1.6rem;">修改收货地址</div>
+                        <div style="width:2rem;">修改收货地址</div>
                         <div> <img style="width:0.3rem;position:relative;top:0.06rem;" src="../../../static/images/icon/address_add.png" alt=""></div>
                     </div>
                 </div>
                 
                 <div v-else class="padding_0_20 flex space_between line_height_94 border_top_1px" @click="addressData.addressPageShow = true">
-                    <div style="width:1.6rem;">添加收货地址</div>
+                    <div style="width:2rem;">添加收货地址</div>
                     <div> <img style="width:0.3rem;position:relative;top:0.06rem;" src="../../../static/images/icon/address_add.png" alt=""></div>
                 </div>
             </div> 
 
             <!-- 商品列表 -->
-            <div>
-                <ul class="goods_list">
-                    <li class="margin_top_30 bg_fff" v-for="(items,index1) in cartDate.cartList" :key="index1" >
-                        <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80">
-                            <div>{{items.itemTitle}}</div>
-                        </div>
-                        <ul class="items_list">
-                            <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
-                                <div class="content flex space_between border_bottom_1px" style="position:relative;">
-                                    <div class="item table_block">
-                                        <span class="td_block padding_left_30">
-                                            <i class="img_middle_center img_box border_1">
-                                                <img  :src="item.imgSrc" alt="">
-                                            </i>
-                                        </span>
-                                        <span class="td_block padding_left_30 ">
-                                            <p  class="" style="word-wrap:break-word;">
-                                                <span style="position:relative;top:-0.6rem;">{{item.describe}}</span>   
-                                                <span class="font_20" style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
+            <div  class="margin_top_30" >
+                <!-- 普通商品 -->
+                <div v-if="!isGroup">
+                    <ul class="goods_list">
+                        <li class="bg_fff" v-for="(items,index1) in cartDate.cartList" :key="index1" >
+                            <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80">
+                                <div>{{items.itemTitle}}</div>
+                            </div>
+                            <ul class="items_list">
+                                <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
+                                    <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                        <div class="item table_block">
+                                            <span class="td_block padding_left_30">
+                                                <i class="img_middle_center img_box border_1">
+                                                    <img  :src="item.imgSrc" alt="">
+                                                </i>
+                                            </span>
+                                            <span class="td_block padding_left_30 ">
+                                                <p  class="" style="word-wrap:break-word;">
+                                                    <span style="position:relative;top:-0.6rem;" v-html="item.describe"> </span>   
+                                                    <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
+                                                </p>
+                                            </span>
+                                        </div>
+                                        <div class="item table_block">
+                                            <p class="padding_right_20" style="position:absolute;top:1.2rem;right:0">
+                                                <van-stepper v-model="item.num" integer  @change="calculatePrice" />
                                             </p>
-                                        </span>
+                                        </div>
                                     </div>
-                                    <div class="item table_block">
-                                        <p class="color_cart_ccc1 font_20" style="position:absolute;top:1.27rem;right:0.2rem">
-                                        x {{item.num}}
-                                        </p>
-                                    </div>
-                                </div>
-                            </li>
-                        </ul>
-                        <div class="items_total flex space_between margin_left_20 padding_right_20  line_height_94 border_bottom_1px color_cart_ccc2">
-                            <div >减免</div>
-                            <div >0.00</div>
-                        </div>
-                        <div class="items_total flex space_between margin_left_20 padding_right_20  line_height_94 border_bottom_1px color_cart_ccc2">
-                            <div >优惠券</div>
-                            <div class="color_00aa88" @click="showList = true">去选择</div>
-                        </div>
-                        <div class="items_total flex flex_end padding_0_20 line_height_94 color_cart_ccc2">
-                            <div >小计：￥{{items.itemTotal}}</div>
-                        </div>
-                    </li>
-                </ul> 
-
-                <!-- 配送方式 -->
-                <div class="items_total flex space_between padding_0_20 bg_fff line_height_94 color_cart_ccc2" style="margin:0.3rem 0;" v-if="pageState == 'b'">
-                    <div >配送方式</div>
-                    <div >快递免邮</div>
+                                </li>
+                            </ul>
+                            <div class="items_total flex flex_end padding_0_20 line_height_94 color_cart_ccc2">
+                                <div >小计：￥{{items.itemTotal}}</div>
+                            </div>
+                        </li>
+                    </ul> 
                 </div>
 
-            </div>
-        </div>
+                <!-- 组合包商品 -->
+                <div  v-if="isGroup" >
+                    <ul class="goods_list" v-for="(lists,index) in cartDate.cartList" :key="index">
+                        <li class="padding_0_20 border_bottom_1px line_height_80 bg_fff">组合包</li>
+                        <li class="bg_fff" v-for="(items,index1) in lists.items" :key="index1" >
+                            <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80 color_cart_ccc1">
+                                <div>{{items.itemTitle}}</div>
+                            </div>
+                            <ul class="items_list">
+                                <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
+                                    <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                        <div class="item table_block">
+                                            <span class="td_block padding_left_30">
+                                                <i class="img_middle_center img_box border_1">
+                                                    <img  :src="item.imgSrc" :data-productCode="item.productCode">
+                                                </i>
+                                            </span>
+                                            <span class="td_block padding_left_30 ">
+                                                <p  class="" style="word-wrap:break-word;">
+                                                    <span style="position:relative;top:-0.6rem;" v-html="item.describe"> </span>   
+                                                    <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
+                                                </p>
+                                            </span>
+                                        </div>
+                                        <div class="item table_block">
+                                            <p class="color_cart_ccc1" style="position:absolute;top:1.52rem;right:0.2rem">
+                                            X {{item.num}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                            <div class="items_total flex flex_end padding_0_20 line_height_94 color_cart_ccc2">
+                                <div >小计：￥{{items.itemTotal}}</div>
+                            </div>
+                        </li>
+                    </ul> 
+                </div>
+
+            </div>    
+        </div>  
+
+
 
         <!-- 提交订单 -->
         <div class="submit_cart padding_left_20 flex space_between bg_fff border_top_1px font_30" v-show="!addressData.addressPageShow">
@@ -100,20 +130,9 @@
                 </span>
             </div>
             <div >
-                <span class="submit_btn bg_00aa88" @click="changePage">提交订单</span>
+                <span class="submit_btn bg_00aa88" @click="submitOrderClick">确认订单</span>
             </div>
         </div>
-
-        <!-- 优惠券列表 -->
-        <van-popup v-model="showList" position="bottom">
-            <van-coupon-list
-                :coupons="coupons"
-                :chosen-coupon="chosenCoupon"
-                :disabled-coupons="disabledCoupons"
-                @change="onChange"
-                @exchange="onExchange"
-            />
-        </van-popup>
 
         <!-- 地址列表选择 -->
         <div v-show="addressData.addressPageShow" style="padding-top:0.94rem;">
@@ -130,18 +149,6 @@
 // 地址组件
 import Address from '../../components/Address.vue'
 
-    const coupon = {
-    available: 1,
-    discount: 0,
-    denominations: 150,
-    originCondition: 0,
-    reason: '',
-    value: 150,
-    name: '优惠券名称',
-    startAt: 1489104000,
-    endAt: 1514592000
-    };
-
 export default {
     components : {
     	Address
@@ -152,9 +159,6 @@ export default {
             //  可用屏幕高度
             windowHeight: document.documentElement.clientHeight - 50,
 
-            // 页面类型
-            pageState: 'a',
-
             /*购物车数据*/
             cartDate:{
                 // 全部列表状态
@@ -164,59 +168,11 @@ export default {
                 // 总价格
                 listTotal: 0.00,
                 // 大列表
-                cartList:[
-                    {
-                       
-                        itemState: false,
-                        itemTitle: '机构法院',
-                        itemTotal: 0.00,
-                        // 小列表
-                        items:[
-                            {
-                                index2: 0,
-                                state: false,
-                                price: '88.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            },
-                            {
-                                index2: 1,
-                                state: false,
-                                price: '101.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            }
-                        ]
-                    },
-                    {
-                       
-                        itemState: false,
-                        itemTitle: '机构法院',
-                        itemTotal: 0.00,
-                        // 小列表
-                        items:[
-                            {
-                                index2: 0,
-                                state: false,
-                                price: '88.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            },
-                            {
-                                index2: 1,
-                                state: false,
-                                price: '101.01',
-                                num: 1,
-                                describe: '多行文字多行文字多行文字',
-                                imgSrc: './static/images/image/book_01.png'
-                            }
-                        ]
-                    }
-                ],
+                cartList:[],
             },  
+
+            // 是否为组合包
+            isGroup: false,
 
             /*收货地址数据*/
             addressData:{
@@ -226,43 +182,106 @@ export default {
                 // 收货地址数据列表
                 addressList:[
                 {
-                    id: 1,
-                    name:'律师之家',
-                    phone:'15874252525',
-                    province: { value: '1', label: '湖南省'},
-                    city: { value: '1', label: '长沙市'},
-                    county: { value: '1', label: '芙蓉区'},
-                    addressDetail: '芙蓉大道 中心街 23号',
-                    postCode: '10010',
+                    addressCode: '',
+                    name: '',
+                    phone: '',
+                    province: { value: '' , label:'' } ,
+                    city: { value: '' , label: '' },
+                    county:  { value: '' , label:'' },
+                    addressDetail: '',
+                    isDefalut:  '',
                 }
                 ]
 
             },
 
-            /*优惠券弹框*/
-            showList: false,
-            chosenCoupon: -1,
-            coupons: [coupon],
-            disabledCoupons: [coupon]
+            // 用户信息
+            userData: {
+                ciCode: this.$store.state.userData.cicode,
+                phone: this.$store.state.userData.ciphone,
+                name: this.$store.state.userData.ciname
+            },
+
         }
         
     },
     methods: {
 
-        /*优惠券功能*/
-        // 选择
-        onChange(index) {
-            this.showList = false;
-            this.chosenCoupon = index;
-        },
-        onExchange(code) {
-            this.coupons.push(coupon);
+        // 监听地址选择
+        listenAddressChoose(data){
+
+            this.addressData.addressList = [];
+            this.addressData.addressList.push(data);
+
+            this.addressData.addressPageShow = false;
+
         },
 
-        // 切换页面
-        changePage(){
-            
-            this.pageState == 'a' ? this.pageState = 'b' : this.pageState = 'a';
+        /*订单数据计算*/    
+        // 计算小计与合计
+        calculatePrice(){
+
+            // 获取商品个数
+            let m = this.cartDate.cartList.length;
+
+            if(!this.isGroup){
+
+                // 计算小计
+                for(let x = 0 ; x < m ; x++){
+    
+                    let n = this.cartDate.cartList[x].items.length;
+
+                    // 重置小计
+                    this.cartDate.cartList[x].itemTotal = 0;
+
+                    for(let i = 0 ; i < n ; i++){
+                        
+                        let item = this.cartDate.cartList[x].items[i];
+
+                        this.cartDate.cartList[x].itemTotal += item.num * (item.price * 10000);
+
+                    }
+
+                    this.cartDate.cartList[x].itemTotal = (this.cartDate.cartList[x].itemTotal / 10000).toFixed(2);
+
+                }
+
+                // 重置合计
+                this.cartDate.listTotal = 0;
+                
+                // 计算合计
+                for(let i = 0 ; i < m ; i++){
+                    
+                    let item = this.cartDate.cartList[i];
+
+                    this.cartDate.listTotal += item.itemTotal *10000;
+
+                }  
+
+            }else{
+
+                // 组合包
+                for(let lists of this.cartDate.cartList){
+
+                    for(let items of lists.items){
+
+                        for(let item of items.items){
+                            
+                            items.itemTotal += item.num * (item.price * 10000);
+                        }
+
+                        this.cartDate.listTotal += items.itemTotal;
+                        items.itemTotal = (items.itemTotal/10000).toFixed(2);
+
+                    }
+
+                }
+
+            }
+
+            this.cartDate.listTotal = (this.cartDate.listTotal / 10000).toFixed(2);
+
+            this.$toast.clear()
 
         },
 
@@ -275,12 +294,490 @@ export default {
             this.addressData.addressPageShow = false;
 
         },
+
+        /*订单提交 生成订单*/   
+        submitOrderClick(){   
+            
+            if(this.addressData.addressList.length == 0){
+                
+                this.$toast("请先填写好订单地址！");
+                return;
+
+            }
+
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
+
+            let param = this.getOrderParam();
+            console.log(param)
+
+            this.$api.addOrderInfo(  this.$Qs.stringify(param) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    // 去结算页面
+                    this.$router.push({ path: '/confirmOrder', query: { orderCode: res.data.content} })
+
+
+                }else{
+
+                    this.$toast(res.data.message);  
+                    
+                }
+
+                this.$toast.clear()
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear();
+                console.log('发生错误！', error);
+
+            }); 
+ 
+        },
+        // 获取创建订单参数
+        getOrderParam(){
+
+            let productCodeAndCount = '';
+
+            if(!this.isGroup){
+
+                for(let lists of this.cartDate.cartList){
+
+                    for(let items of lists.items){
+    
+                            productCodeAndCount +=  productCodeAndCount=='' ? items.productCode + '-'+ items.num : ','+  items.productCode + '-'+ items.num;
+
+                    }
+
+                }
+            }else{
+
+                productCodeAndCount =  this.cartDate.cartList[0].productCode + '-'+ this.cartDate.cartList[0].num;
+
+            }
+
+            let param = {
+                ciCode: this.userData.ciCode,
+                ciName: this.userData.name,
+                orderSource: 1,
+                orderForm: this.$route.query.sourceType != 'cart' ? 1:0,
+                productCodeAndCount: productCodeAndCount,
+                addressCode: this.addressData.addressList[0].addressCode,
+            }
+
+            return param;
+            
+        },
+
+        /**获取产品提交订单的数据**/
+        // 获取产品详情数据
+        getProductDetailData(productCode){
+
+            let isCart = productCode.indexOf('-'), cartCode = productCode , cartNun = 1;
+
+            // 如果是从购物车来的数据
+            if(isCart != -1){
+                
+                cartCode = productCode.split('-')[0];
+                cartNun = productCode.split('-')[1];
+
+            }
+
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0})
+
+            let param = {'productCode': cartCode}
+
+            this.$api.getProductInfo(  this.$Qs.stringify(param) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    let data = res.data.content , arr = [];
+
+                    // 单个商品
+                    if(data.productType != '2'){
+
+                        // 压入商户
+                        arr.push({
+                            id: '',
+                            itemType: data.productType ,
+                            itemState: false,
+                            itemTitle: data.merchantNm,
+                            itemCode: data.merchantCode,
+                            itemTotal: 0.00,
+                            //小列表
+                            items:[]
+                        });
+
+                        // 压入商品
+                        arr[0].items.push({
+                            id: data.id,
+                            productCode: data.productCode,
+                            state: false,
+                            price: data.productPrice,
+                            num:  cartNun,
+                            name: data.productName,
+                            describe: data.productDesc,
+                            imgSrc: data.productProfileUrl
+                        })
+
+                    }else{
+
+                        // 组合包商品
+                        // 压入组合包
+                        arr.push({
+                            id: '',
+                            itemType: data.productType ,
+                            itemState: false,
+                            itemTitle: data.productTitle,
+                            itemTotal: 0.00,
+                            productCode: data.productCode,
+                            num: cartNun,
+                            productSubCode: data.productSubCode,
+                            //小列表
+                            items:[]
+                        });
+
+                        // 是否为组合包
+                        this.isGroup = true;
+
+                    }
+                    console.log(arr)
+                    // 压入到商品列表
+                    this.cartDate.cartList = arr;
+
+                    // 判断是否为组合包
+                    this.isGroup ? this.getGroupCartItem() : this.calculatePrice();   
+                    
+                    this.$toast.clear();
+
+                }else{
+
+                    this.$toast.clear()
+                    this.$toast(res.data.message);  
+                    
+                }
+                
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear();
+                console.log('发生错误！', error);
+
+            });
+        },
+        // 获取多个产品数据
+        getProductCartData(productCode){
+
+            let cartString = productCode.split(','), cartCode = [], cartNun = [], codeStr = '';
+
+            for(let item of cartString){
+
+                cartCode.push(item.split('-')[0]);
+                cartNun.push(item.split('-')[1]);
+                codeStr += codeStr== '' ? item.split('-')[0] : ',' + item.split('-')[0];
+            }
+
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0})
+              
+            this.$api.getProductShowCase( this.$Qs.stringify({ 'productCode': codeStr }) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    let Data = res.data.content ;
+
+                    // 对组合包里的商品进行商户分类
+                    let arr2 = [], merchantArr2 = [] ;
+
+                    for(let i = 0 ; i < Data.length; i++){
+
+                        let child = Data[i];
+
+                        let childIndex = merchantArr2.indexOf(child.merchantCode);
+
+                        if(childIndex == -1){
+
+                            merchantArr2.push(child.merchantCode);
+
+                            arr2.push({
+                                id: '',
+                                itemTitle: child.merchantNm,
+                                itemTotal: 0.00,
+                                //小列表
+                                items:[]
+                            })
+
+                            childIndex = merchantArr2.indexOf(child.merchantCode);
+
+                            // 压入商品
+                            arr2[childIndex].items.push({
+                                productCode: child.productCode,
+                                price: child.productPrice,
+                                num: cartNun[i], //child.productNum,
+                                productTitle: child.productTitle,
+                                describe: child.productDesc,
+                                imgSrc: child.productProfileUrl
+                            })
+
+                        }else{
+
+                            // 压入商品
+                            arr2[childIndex].items.push({
+                                productCode: child.productCode,
+                                price: child.productPrice,
+                                num: cartNun[i],//child.productNum,
+                                productTitle: child.productTitle,
+                                describe: child.productDesc,
+                                imgSrc: child.productProfileUrl
+                            })
+
+                        }
+
+                    } 
+                    // 压入到商品列表
+                    this.cartDate.cartList = arr2;    
+                    this.calculatePrice();        
+                   
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }
+
+                this.$toast.clear();
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear();
+                console.log('发生错误！', error);
+
+            });
+
+        },
+        // 组合包数据加载
+        getGroupCartItem(){
+
+            // 获取商品列表一次加载列表
+            let CartList = this.cartDate.cartList ;
+
+            for(let i = 0; i < CartList.length; i++ ){
+
+                if(CartList[i].itemType == '2'){
+
+                    // 获取组合包商品
+                    this.$api.getProductShowCase( this.$Qs.stringify({ 'productCode': CartList[i].productSubCode }) )
+
+                    .then( (res) => {
+
+                        console.log(res)
+
+                        if(res.data.code == 200){
+
+                            let Data = res.data.content ;
+
+                            // 对组合包里的商品进行商户分类
+                            let arr2 = [], merchantArr2 = [] ;
+
+                            for(let child of Data){
+
+                                let childIndex = merchantArr2.indexOf(child.merchantCode);
+
+                                if(childIndex == -1){
+
+                                    merchantArr2.push(child.merchantCode);
+
+                                    arr2.push({
+                                        id: '',
+                                        itemTitle: child.merchantNm,
+                                        itemTotal: 0.00,
+                                        //小列表
+                                        items:[]
+                                    })
+
+                                    childIndex = merchantArr2.indexOf(child.merchantCode);
+
+                                    // 压入商品
+                                    arr2[childIndex].items.push({
+                                        productCode: child.productCode,
+                                        price: child.productPrice,
+                                        num: 1, //child.productNum,
+                                        productTitle: child.productTitle,
+                                        describe: child.productDesc,
+                                        imgSrc: child.productProfileUrl
+                                    })
+
+                                }else{
+
+                                    // 压入商品
+                                    arr2[childIndex].items.push({
+                                        productCode: child.productCode,
+                                        price: child.productPrice,
+                                        num: 1,//child.productNum,
+                                        productTitle: child.productTitle,
+                                        describe: child.productDesc,
+                                        imgSrc: child.productProfileUrl
+                                    })
+
+                                }
+
+                            } 
+    
+                            CartList[i].items = arr2;
+                            console.log(CartList)
+
+                            this.calculatePrice();
+                        
+                        }else{
+
+                            this.$toast.clear()
+
+                            this.$toast(res.data.message);
+
+                        }
+
+                    })
+
+                }
+      
+            }    
+
+           this.cartDate.cartList = CartList;
+
+        },      
+
+        /**数据**/
+        // 获取地址列表
+        getAddressData(){
+
+            let param = this.$Qs.stringify({ 'pageNo': 1, 'pageSize': 10 ,'ciCode': this.userData.ciCode }) ;
+
+            this.$api.getAddressList( param )
+
+            .then( (res) => {
+
+                //console.log(res)
+
+                if(res.data.code == 200){
+
+                    let data = res.data.content.list , arr = [];
+
+                    if(data.length == 0){ this.addressData.addressList = []; return ;}
+
+                    if(this.addressData.addressList[0].addressCode == ""){
+
+                        arr.push({
+                            addressCode: data[0].addressCode,
+                            name:  data[0].addressPersonName,
+                            phone:  data[0].addressPhone,
+                            province: { value: data[0].province, label: data[0].province } ,
+                            city: { value: data[0].city, label: data[0].city},
+                            county:  { value: data[0].zone, label: data[0].zone },
+                            addressDetail:  data[0].address,
+                            isDefalut:  data[0].isDefalut,
+                        })
+
+                    }else{
+
+                        for(let item of data){
+
+                            if(this.addressData.addressList[0].addressCode == item.addressCode){
+
+                                arr.push({
+                                    addressCode: item.addressCode,
+                                    name:  item.addressPersonName,
+                                    phone:  item.addressPhone,
+                                    province: { value: item.province, label: item.province } ,
+                                    city: { value: item.city , label: item.city },
+                                    county:  { value: item.zone , label: item.zone },
+                                    addressDetail:  item.address,
+                                    isDefalut:  item.isDefalut,
+                                })
+
+                            }
+
+                        }
+
+                    }
+
+                    this.addressData.addressList = arr;
+
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }
+
+            })
+            .catch((error) => {
+
+                console.log('发生错误！', error);
+
+            });
+        },
+
+
+    },
+
+    computed: {
+        // 监听地址增删， 及时更新地址
+        listenAddressList() {  return this.$store.state.personCenter.addressState  }
+    },
+    watch: {
+        // 监听地址增删
+        listenAddressList:function (val){  this.getAddressData()  }
+    },
+    mounted(){
+
+        // 获取用户地址列表
+        this.getAddressData();
+
+        // 获取页面数据来源 
+        if(this.$route.query.productCode.split(',').length == 1){
+
+            this.getProductDetailData(this.$route.query.productCode);
+
+        }else{
+
+            this.getProductCartData(this.$route.query.productCode);
+
+        }
+        
+
     }
+    
 }
 </script>
 
 <style>
 
+    /* 加减小按钮 */
+    .van-stepper__minus, .van-stepper__plus {
+        width: 0.42rem;
+        height: 0.42rem;
+        padding: 0.1rem;
+    }
+    .van-stepper__input {
+        width: 0.48rem;
+        height: 0.34rem;
+        font-size: 0.26rem;
+    }
+    .van-stepper__minus {
+        border-radius: 0.04rem 0 0 0.04rem;
+    }
 
 </style>
 <style lang="less" scoped>
