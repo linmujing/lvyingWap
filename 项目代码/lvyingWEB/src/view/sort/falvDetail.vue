@@ -4,10 +4,12 @@
     	<div class="bg_fff">
 	    	<div>
           <div v-if="typeId === 3">
-            <Video :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
+            <img v-if="videoData.videoSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
+            <Video v-else :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
           </div>
           <div v-else-if="typeId === 4">
-            <Audio :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
+            <img v-if="videoData.videoSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
+            <Audio v-else :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
           </div>
           <div v-else>
             <img :src="dataDetail.productProfileUrl" class="all_width" />
@@ -25,6 +27,27 @@
           </div>
 	    	</div>
     	</div>
+      <!--优惠券-->
+      <div v-show="cuponList.length > 0" class="bg_fff margin_top_20 padding_10">
+        <div class="juc_between" @click="couponShow = true">
+          <div class="font_16 color_666">优惠</div>
+          <div class="color_warning align_center">领券<van-icon name="arrow" /></div>
+        </div>
+      </div>
+      <van-popup v-model="couponShow" position="bottom">
+        <div class="padding_left_20 padding_right_20 padding_top_20" style="max-height: 8.0rem;overflow: scroll">
+          <div v-for="item in cuponList">
+            <div @click="selectCoupon(item.couponCode+','+item.couponForm)" class="juc_between padding_10 margin_bottom_20" style="background: #FFF3E5">
+              <div class="color_F5320D"style="width:70%;border-right: 2px dashed #EBDFD1">
+                <div class="font_16 font_weight_bold van-ellipsis">{{item.couponTitle}}</div>
+                <div class="margin_top_5 van-ellipsis">{{item.couponDesc}}</div>
+                <div class="margin_top_5 van-ellipsis">有效期{{dateFormat(item.couponStartTime)}} 至 {{dateFormat(item.couponEndTime)}}</div>
+              </div>
+              <div class="color_F5320D font_18 juc_center align_center" style="width:30%">立即领取</div>
+            </div>
+          </div>
+        </div>
+      </van-popup>
       <!--提供商-->
       <div v-if="showCourse" class="bg_fff margin_top_20 padding_10">
         <div class="title">提供商</div>
@@ -66,21 +89,31 @@
                       <!--视频-->
                       <div v-if="typeId == 3" class="align_center">
                         <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
-                        <div v-if="parseInt(item.videoStatus) === 0" class="width_70px">
-                          <button class="btn_warning" @click="audition(item)">试听</button>
+                        <div v-if="isBuy === 1">
+                          <button class="btn_warning" @click="toCourse">开始播放</button>
                         </div>
-                        <div v-else class="width_70px">
-                          <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                        <div v-else>
+                          <div v-if="parseInt(item.videoStatus) === 0" class="width_70px">
+                            <button class="btn_warning" @click="audition(item)">试听</button>
+                          </div>
+                          <div v-else class="width_70px">
+                            <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                          </div>
                         </div>
                       </div>
                       <!--音频-->
                       <div v-if="typeId == 4" class="align_center">
                         <span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>
-                        <div v-if="parseInt(item.voiceStatus) === 0" class="width_70px">
-                          <button class="btn_warning" @click="audition(item)">试听</button>
+                        <div v-if="isBuy === 1">
+                          <button class="btn_warning" @click="toCourse">开始播放</button>
                         </div>
-                        <div v-else class="width_70px">
-                          <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                        <div v-else>
+                          <div v-if="parseInt(item.voiceStatus) === 0" class="width_70px">
+                            <button class="btn_warning" @click="audition(item)">试听</button>
+                          </div>
+                          <div v-else class="width_70px">
+                            <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                          </div>
                         </div>
                       </div>
                     </div>
@@ -283,6 +316,10 @@ export default {
         sectionCont: 0,
         sectionIndex: 0,
         classCur: 0,
+        isBuy: 0,
+        // 优惠券
+        couponShow: false,
+        cuponList: [],
       }
 
   },
@@ -328,8 +365,8 @@ export default {
             this.getMerchantInfo(result.merchantCode)
             // 商品属性
             this.productProperty = result.productProperty
-            // //获取优惠券列表
-            // this.getProductCoupon(this.productCode, result.merchantCode)
+            //获取优惠券列表
+            this.getProductCoupon(this.productCode, result.merchantCode)
             //商品评分
             result.productScore == null ? this.valueCustomText = 0 : this.valueCustomText = result.productScore
             // 动态管控列表
@@ -343,21 +380,6 @@ export default {
             this.proSection = result.productSection
             this.productSection = productSection
             console.log(productSection)
-            var videoData = []
-            var audioData = []
-            for (var i=0;i<productSection.length;i++){
-              var section = productSection[i]
-              //获取试用视频音频数据tatuss = 0
-              if(parseInt(section.videoStatus) === 0){
-                videoData.push(section)
-              }
-              if(parseInt(section.voiceStatus) === 0){
-                audioData.push(section)
-              }
-            }
-            this.videoData.videoSrc = videoData[0].videoUrl
-            this.audioData.audioSrc = audioData[0].voiceUrl
-
           }else {
             this.$toast.fail(res.data.message);
           }
@@ -461,10 +483,60 @@ export default {
 
           }else if (res.data.code == 500){
 
-            this.$Message.warning(res.data.message);
+            this.$toast.fail(res.data.message);
 
           }
 
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
+    // 选择优惠券
+    selectCoupon(couponCode){
+      var arr = couponCode.split(",")
+      // var ciCode = this.$store.state.userData.cicode
+      // if(ciCode == null || ciCode == "null" || ciCode == undefined){
+      //   this.$toast('您还没有登录，请登录后再尝试！');
+      //   return ;
+      // }
+      let params = this.$Qs.stringify({'ciCode': ciCode, 'couponCode': arr[0], 'couponForm': arr[1]});
+      this.$api.addCoupont( params )
+
+        .then( (res) => {
+          console.log(res);
+          if(res.data.code == 200){
+            this.$toast('领取成功');
+            // 刷新优惠券列表
+            this.getProductCoupon(this.productCode,this.merchantCode)
+          }else{
+            this.$toast.fail(res.data.message);
+          }
+        })
+        .catch((error) => {
+          this.$toast.fail('领取失败');
+          console.log('发生错误！', error);
+        });
+    },
+    // 获取优惠券列表
+    getProductCoupon(productCode, merchantCode){
+      let params = this.$Qs.stringify({'pageNo': 1, 'pageSize': 100, 'productCode': productCode, 'merchantCode': merchantCode});
+      this.$api.getProductCoupon( params )
+
+        .then( (res) => {
+          console.log(res);
+          if(res.data.code == 200){
+            var arr = res.data.content.list
+            var list = []
+            for(var i=0;i<arr.length;i++){
+              if(arr[i].couponEffectiveType == 1){
+                list.push(arr[i])
+              }
+            }
+            this.cuponList = list
+          }else if (res.data.code == 500){
+            this.$toast.fail(res.data.message);
+          }
         })
         .catch((error) => {
           console.log('发生错误！', error);
@@ -481,6 +553,10 @@ export default {
     },
     // 跳转到课程
     toCourse(){
+      if(this.isBuy === 0){
+        this.$toast('对不起，您需要购买后才能观看！');
+        return false;
+      }
       switch (this.typeId) {
         case 1:
         case 2:
@@ -500,6 +576,17 @@ export default {
             }
           })
           break
+      }
+    },
+    // 文字预览
+    openTxt(item){
+      if(this.isBuy === 0){
+        this.$toast('对不起，您需要购买后才能观看！');
+        return false;
+      }
+      if(item.txtUrl === ''){
+        this.$toast('对不起，暂无数据！');
+        return false;
       }
     },
     courseStates(){
@@ -577,6 +664,18 @@ export default {
            break
        }
      }
+    },
+    //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
+    dateFormat:function(time) {
+      var date=new Date(time);
+      var year=date.getFullYear();
+      /* 在日期格式中，月份是从0开始的，因此要加0
+       * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+       * */
+      var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+      var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+      // 拼接
+      return year+"-"+month+"-"+day;
     },
     //加入购物车
     addCart(){
