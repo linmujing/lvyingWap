@@ -2,22 +2,22 @@
 
     <div class="body_bg font_28" >
         <!-- 查看物流 -->
-        <div class="order_list" v-if="orderData.length != 0">
+        <div class="order_list" >
 
             <!-- 订单商品 -->
             <div class="goods_list bg_fff"> 
-                <div v-for= "(item, index2) in orderData.items" :key="index2">
+                <div >
                     <div class="content flex space_between border_bottom_1px margin_left_20 padding_right_20" style="position:relative;">
                         <div class="item table_block" style="height:2.2rem;">
                             <span class="td_block">
                                 <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
-                                    <img  :src="item.imgSrc" alt="">
+                                    <img  :src="product.imgSrc" alt="">
                                 </i>
                             </span>
                             <span class="td_block padding_left_30">
                                 <p  class="" style="word-wrap:break-word;">
-                                    <span style="position:relative;top:-0.5rem;">{{item.title}}</span>   
-                                    <span class="font_20" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{item.price}}</span>
+                                    <span style="position:relative;top:-0.5rem;">{{product.name}}</span>   
+                                    <span class="font_20" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{product.price}}</span>
                                 </p>
                             </span>
                         </div>
@@ -32,19 +32,19 @@
                 </div>
                 <div class="logistics_item flex">
                     <span>物流单号:</span>
-                    <div> {{orderData.orderId}} </div>
+                    <div> {{logisticsData.orderId}} </div>
                 </div>
                 <div class="logistics_item flex">
                     <span>发货地址:</span>
-                    <div> {{orderData.deliveryAddress}} </div>
+                    <div> {{logisticsData.deliveryAddress}} </div>
                 </div>
                   <div class="logistics_item flex">
                     <span>收货人:</span>
-                    <div> {{orderData.person}} </div>
+                    <div> {{logisticsData.person}} </div>
                 </div>
                 <div class="logistics_item flex">
                     <span>收货地址:</span>
-                    <div> {{orderData.collectAddress}} </div>
+                    <div> {{logisticsData.collectAddress}} </div>
                 </div>
             </div>
         </div>
@@ -62,29 +62,108 @@ export default {
         return {
 
             //物流信息
-            orderData:
-                {
-                    orderId: '12456524455',
-                    deliveryAddress:'湖南省长沙市芙蓉区芙蓉大道建设八一路口32号湖南省长沙市芙蓉区芙蓉大道建设八一路口32号',
-                    person:'666先生',
-                    collectAddress:'湖南省长沙市芙蓉区芙蓉大道建设八一路口33号湖南省长沙市芙蓉区芙蓉大道建设八一路口33号',
-                    logisticCompany:'圆通',
-                    items:[
-                        {
-                            title: '这是商品的标题这是商品的标题这是商品的标题',
-                            price: '100.00',
-                            imgSrc: '../static/images/image/book_01.png',
-                        }
-                    ]
-                },
-
-
+            logisticsData: {},
+            
+            // 产品信息
+            product:{}
         }
         
     },
     methods: {
 
-   
+        // 查看物流
+        checkLogistics(){
+
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
+              
+            let param = this.$Qs.stringify({ 
+                'orderCode': this.$route.query.orderCode,
+                'trackNo': this.$route.query.trackNo,
+                }) ;
+
+            this.$api.getOrderTrack( param )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                this.$toast.clear();
+
+                if(res.data.code == 200){
+
+                    // orderId  单号
+                    // deliveryAddress 发货地址
+                    // person 收货人
+                    // collectAddress 收货地址   
+                    this.logisticsData = {
+                        id: res.data.content.trackNo ,
+                        deliveryAddress: res.data.content.sendAddressId ,
+                        person: res.data.content.signName ,
+                        collectAddress: res.data.content.signAddressId ,
+                    }
+                   
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear();
+                console.log('发生错误！', error);
+
+            });  
+        },
+        // 获取产品详情
+        getProduct(){
+            let param = {'productCode': this.$route.query.productCode}
+
+            this.$api.getProductInfo(  this.$Qs.stringify(param) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    let data = res.data.content , arr = [];
+
+                    this.product = {
+                        productCode: data.productCode,
+                        price: data.productPrice,
+                        num:  cartNun,
+                        name: data.productName,
+                        describe: data.productDesc,
+                        imgSrc: data.productProfileUrl
+                    }
+                    
+                    this.$toast.clear();
+
+                }else{
+
+                    this.$toast.clear()
+                    this.$toast(res.data.message);  
+                    
+                }
+                
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear();
+                console.log('发生错误！', error);
+
+            });
+        }
+
+    },
+    mounted(){
+
+        this.checkLogistics();
+
+        this. getProduct();
 
     }
 }

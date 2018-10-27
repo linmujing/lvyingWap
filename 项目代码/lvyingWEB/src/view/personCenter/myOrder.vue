@@ -119,7 +119,7 @@
                         <div class="color_cart_ccc2">待评价</div>
                         <div>
                             <van-button size="small" 
-                                @click="goComment(productOrderCode, child.productCode, child.productProfileUrl, child.name)">去评价</van-button>
+                                @click="goComment(productOrderCode, child.productCode)">去评价</van-button>
                         </div>
                     </div>
                     <div class="flex space_between padding_0_20 line_height_100 border_bottom_1px" v-if="showType == 1">
@@ -136,7 +136,7 @@
                         </div>
                         <div>
                             <van-button size="small" 
-                                @click="checkLogistics(child.itemCode, child.itemTrackNo, child.productProfileUrl, child.price, child.num)">查看物流</van-button>
+                                @click="checkLogistics(child.itemCode, child.itemTrackNo, child.productCode)">查看物流</van-button>
                         </div>
                     </div>
                 </div>
@@ -354,11 +354,9 @@ export default {
         // 查看物流
         // @param orderCode string 获取当前点击的订单子单号
         // @param trackNo string 获取当前点击的子订单运单单号
-        // @param productProfileUrl string 商品图片
-        // @param productPirce string 商品价格
-        // @param productNun string 商品个数
-        checkLogistics(orderCode, trackNo, productProfileUrl, productPirce, productNun){
-            this.$router.push({ path: '/personCenter/checkLogistics', query: {orderCode, trackNo, productProfileUrl, productCount, productNun} })
+        // @param productCode string 商品图片
+        checkLogistics(orderCode, trackNo, productCode){
+            this.$router.push({ path: '/personCenter/checkLogistics', query: {orderCode, trackNo, productCode} })
         },
         // 查看物流按钮显示 判断1：是否已付款  判断2：是否为实物
         // @param index string 获取当前点击的订单下标
@@ -381,10 +379,8 @@ export default {
         // 去评论
         // @param orderCode string 获取当前点击的订单子单号
         // @param productCode string 获取当前点击的商品编号
-        // @param productProfileUrl string 获取当前点击的商品图片
-        // @param productName string 获取当前点击的商品名字
-        goComment(orderCode, productCode, productProfileUrl, productName){
-            this.$router.push({ path: '/personCenter/goComment', query: {orderCode, productCode, productProfileUrl, productName} })
+        goComment(orderCode, productCode){
+            this.$router.push({ path: '/personCenter/goComment', query: {orderCode, productCode} })
         },
         // 评论按钮显示 
         // @param index string 获取当前点击的订单下标
@@ -428,7 +424,7 @@ export default {
                         }          
                     }else{
                         // 组合包评价
-                        this.goComment(orderCode, this.orderData.orderList[index].orderItem[0].childItem.productCode, this.orderData.orderList[index].orderItem[0].childItem.productProfileUrl, this.orderData.orderList[index].orderItem[0].childItem.name)
+                        this.goComment(orderCode, this.orderData.orderList[index].orderItem[0].childItem.productCode)
                     }
 
                     break;
