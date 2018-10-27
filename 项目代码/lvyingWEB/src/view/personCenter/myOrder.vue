@@ -60,15 +60,29 @@
                                 {{ orderData.orderType[parseFloat(items.orderStatus) + 1].text }} 
                             </div>
 
-                            <!-- 待支付状态 -->
+                            <!-- 去支付 待支付 -->
                             <div v-if="items.orderStatus == 0">
                                 <van-button size="small" @click="orderModel(items.orderCode)">取消订单</van-button>
                                 <van-button size="small" @click="jumpPage(items.orderCode, items.orderStatus)" type="primary" >去支付</van-button>
                             </div>
-                            <!-- 待支付状态 -->
+                            <!-- 重新购买 交易取消或交易关闭-->
                             <div v-if="items.orderStatus == '4' || items.orderStatus == '5'">
                                 <van-button size="small" @click="orderModel(items.orderCode)">删除订单</van-button>
                                 <van-button size="small" @click="jumpPage(items.orderCode, items.orderStatus)" type="primary" >重新购买</van-button>
+                            </div>
+
+                            <!-- 评价(0)/换货(1)/查看物流(2) -->
+                            <!-- 换货 只要是实质商品都有换货-->
+                            <div v-if="returnLogisticsShow(index)">
+                                <van-button size="small" @click="clickThis(1, items.orderCode, index)">换货</van-button>
+                            </div>
+                            <!-- 评价 普通商品交易成功，每个都有评价-->
+                            <div v-if=" returnCommentShow(index)">
+                                <van-button size="small" @click="clickThis(0, items.orderCode, index)">去评价</van-button>
+                            </div>
+                            <!-- 物流 只要是实质商品都有物流 (orderCode, trackNo, productProfileUrl, productPirce, productNun)-->
+                            <div v-if="returnLogisticsShow(index)">
+                                <van-button size="small" @click="clickThis(2, items.orderCode, index)">查看物流</van-button>
                             </div>
 
                         </div>
@@ -77,7 +91,61 @@
             </van-list>
         </div>
 
-
+        <!-- 评价，查看物流，换货 盒子 -->
+        <van-popup v-model="productShow" position="top" :lockScroll="false">
+            <div >
+                <div v-for="(child, index3) in productList" :key="index3">
+                    <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
+                        <div class="item table_block" style="height:2.2rem;">
+                            <span class="td_block">
+                                <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
+                                    <img style="width: 1.6rem; height: 1.6rem;" :src="child.productProfileUrl" :data-productCode="child.productCode" alt="">
+                                </i>
+                            </span>
+                            <span class="td_block padding_left_30">
+                                <p  class="" style="word-wrap:break-word;">
+                                    <span style="position:relative;top:-0.6rem;"> {{child.name}} </span>   
+                                    <span class="font_22" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{child.price}}</span>
+                                </p>
+                            </span>
+                        </div>
+                        <div class="item table_block" style="height:2.2rem;">
+                            <p class="color_cart_ccc1 font_26" style="position:absolute;top:1.52rem;right:0.3rem">
+                                X {{child.num}}
+                            </p>
+                        </div>
+                    </div>
+                    <div class="flex space_between padding_0_20 line_height_100 border_bottom_1px" v-if="showType == 0">
+                        <div class="color_cart_ccc2">待评价</div>
+                        <div>
+                            <van-button size="small" 
+                                @click="goComment(productOrderCode, child.productCode, child.productProfileUrl, child.name)">去评价</van-button>
+                        </div>
+                    </div>
+                    <div class="flex space_between padding_0_20 line_height_100 border_bottom_1px" v-if="showType == 1">
+                        <div class="color_cart_ccc2">
+                             {{ orderData.orderType[parseFloat(productOrderState) + 1].text }} 
+                        </div>
+                        <div>
+                            <van-button size="small" @click="productChange(productOrderCode, childs.productCode)" >换货</van-button>
+                        </div>
+                    </div>
+                    <div class="flex space_between padding_0_20 line_height_100 border_bottom_1px" v-if="showType == 2">
+                        <div class="color_cart_ccc2">
+                            {{ orderData.orderType[parseFloat(this.productOrderState) + 1].text }} 
+                        </div>
+                        <div>
+                            <van-button size="small" 
+                                @click="checkLogistics(child.itemCode, child.itemTrackNo, child.productProfileUrl, child.price, child.num)">查看物流</van-button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </van-popup>
+        <div class="popup_close" 
+            v-if="productShow" 
+            @click="productShow = false"
+        >×</div>
     </div>
 
 </template>
@@ -135,7 +203,14 @@ export default {
                     { title: '确定删除该订单吗？'}
                 ]
 
-            }
+            },
+
+            // 展示需要评价(0)/换货(1)/查看物流(2) 的商品列表
+            productShow: false,
+            productList: [],
+            showType: 0,
+            productOrderCode: '',
+            productOrderState: ''
 
             
         }
@@ -147,6 +222,7 @@ export default {
         // params index 订单类型下标
         changeType(index){
 
+            this.orderData.orderList = [];
             this.orderData.orderTypeIndex = index;
             this.orderData.pageData.current = 1
             // 获取订单列表
@@ -233,6 +309,48 @@ export default {
             return codeStr;
         },
 
+        // 换货
+        // @param orderCode string 获取当前点击的订单单号
+        // @param productCode string 获取当前点击的商品编号
+        productChange(orderCode, productCode){
+            
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
+              
+            let param = this.$Qs.stringify({ 
+                'ciCode': this.$store.state.userData.cicode , 
+                'productCode': productCode, 
+                'orderCode': orderCode
+                }) ;
+
+            this.$api.orderProductExchange( param )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    // 获取订单列表
+                    this.getOrderList();
+                   
+                }else{
+
+                    this.$Message.warning(res.data.message);
+
+                }
+
+                this.$toast.clear()
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear()
+                console.log('发生错误！', error);
+
+            });  
+        },  
+
+        /* 物流 */ 
         // 查看物流
         // @param orderCode string 获取当前点击的订单子单号
         // @param trackNo string 获取当前点击的子订单运单单号
@@ -242,7 +360,24 @@ export default {
         checkLogistics(orderCode, trackNo, productProfileUrl, productPirce, productNun){
             this.$router.push({ path: '/personCenter/checkLogistics', query: {orderCode, trackNo, productProfileUrl, productCount, productNun} })
         },
+        // 查看物流按钮显示 判断1：是否已付款  判断2：是否为实物
+        // @param index string 获取当前点击的订单下标
+        returnLogisticsShow(index){
 
+            let isShow = false;
+
+            if(this.orderData.orderList[index].orderStatus != '1' || this.orderData.orderList[index].orderStatus != '2'){ return isShow;}
+            
+            for(let item of this.orderData.orderList[index].orderItem){
+                for(let child of item.childItem){
+                    child.productProperty == '1' ? isShow = true : '';
+                }
+            }
+
+            return isShow;
+        },
+
+        /* 评论 */
         // 去评论
         // @param orderCode string 获取当前点击的订单子单号
         // @param productCode string 获取当前点击的商品编号
@@ -250,6 +385,74 @@ export default {
         // @param productName string 获取当前点击的商品名字
         goComment(orderCode, productCode, productProfileUrl, productName){
             this.$router.push({ path: '/personCenter/goComment', query: {orderCode, productCode, productProfileUrl, productName} })
+        },
+        // 评论按钮显示 
+        // @param index string 获取当前点击的订单下标
+        returnCommentShow(index){
+
+            let isShow = false;
+
+            if(this.orderData.orderList[index].orderStatus != '3' ){ return isShow;}
+            
+            for(let item of this.orderData.orderList[index].orderItem){
+                for(let child of item.childItem){
+                    child.commetStatus == '2' ? isShow = true : '';
+                }
+            }
+
+            return isShow;
+        },
+
+        /* 点击操作 评论(0)， 换货(1)， 查看物流(2) */
+        // @param showType sting 点击类型
+        // @param orderCode string 获取当前点击的订单单号
+        // @param index string 获取当前点击的订单下标
+        clickThis(showType, orderCode, index){
+
+            this.productOrderCode = orderCode;
+            this.productOrderState = this.orderData.orderList[index].orderStatus;
+            this.showType = showType;
+            this.productList = [];
+
+            switch(showType){
+                case 0:
+                    // 组合包评论只能针对某一个组合包评论  
+                    // isCombination (string, optional): 是否是组合包 0- 不是 1-是 
+                    if(this.orderData.orderList[index].isCombination == 0 ){
+                        for(let item of this.orderData.orderList[index].orderItem){
+                            for(let child of item.childItem){
+                                if( child.commetStatus == '2' ){
+                                    this.productList.push(child);
+                                }
+                            }
+                        }          
+                    }else{
+                        // 组合包评价
+                        this.goComment(orderCode, this.orderData.orderList[index].orderItem[0].childItem.productCode, this.orderData.orderList[index].orderItem[0].childItem.productProfileUrl, this.orderData.orderList[index].orderItem[0].childItem.name)
+                    }
+
+                    break;
+                case 1:
+                    for(let item of this.orderData.orderList[index].orderItem){
+                        for(let child of item.childItem){
+                            if( child.productProperty == '1' ) {
+                                this.productList.push(child);
+                            }
+                        }
+                    }
+                    break;
+                case 2:
+                    for(let item of this.orderData.orderList[index].orderItem){
+                        for(let child of item.childItem){
+                            if( child.productProperty == '1' ) {
+                                this.productList.push(child);
+                            }
+                        }
+                    }
+                    break;
+            }
+
+            this.productList.length > 0 ? this.productShow = true : '';
         },
 
         /** 数据获取 **/
@@ -269,6 +472,8 @@ export default {
             this.$api.getOrderList( param )
 
             .then( (res) => {
+
+                this.$toast.clear();
 
                 console.log(res)
 
@@ -330,6 +535,8 @@ export default {
                                     productProperty: child.productProperty,
                                     commetStatus: child.commetStatus ,
                                     isExchange: child.isExchange,
+                                    itemTrackNo: items.trackNo,
+                                    itemCode: items.orderMerchantCode,
                                     productProfileUrl: child.productInfo.productProfileUrl,
                                     total: (parseFloat(child.productPrice * 10000) * child.productCount)/10000
                                 })
@@ -342,8 +549,13 @@ export default {
 
                         arr[i].orderItem = orderItem;
                    }
+                    
+                    let orderList = [] ;
+                    for(let item of this.orderData.orderList){orderList.push(item)}
 
-                   this.orderData.orderList = arr;
+                    orderList = orderList.concat(arr);
+
+                    this.orderData.orderList = orderList;
 
                 }else{
 
@@ -353,16 +565,15 @@ export default {
 
                 // 加载状态结束
                 this.orderData.pageData.loading = false;
-
+                console.log(this.orderData.orderList.length )
+                console.log(this.orderData.pageData.total)
                 // 数据全部加载完成
                 if ( this.orderData.orderList.length >= this.orderData.pageData.total ) {
-
+                    console.log(1)
                     this.orderData.pageData.finished = true;
                     this.$toast('没有更多了！');
 
                 }
-
-                this.$toast.clear();
 
             })
             .catch((error) => {
@@ -511,6 +722,19 @@ export default {
 <style lang="less" scoped>
 
     @import '../../style/common.less';
-
+    .popup_close {
+        position:fixed;
+        bottom:0.7rem;
+        left:45%;
+        width:0.75rem;
+        height:0.75rem;
+        line-height:0.7rem;
+        text-align:center;
+        border-radius:50%;
+        background:#00AA88;
+        color:#fff;
+        font-size:0.7rem;
+        z-index:2020;
+    }
     
 </style>
