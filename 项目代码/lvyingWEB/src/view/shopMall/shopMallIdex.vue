@@ -15,8 +15,8 @@
 			  		<van-row>
 					  <van-col span="20">
 					  	<div class="search_box">
-			  				<input type="text" placeholder="视频/音频/合同"/>
-			  				<button>
+			  				<input v-model="searchval" type="text" placeholder="视频/音频/合同"/>
+			  				<button @click="onSearch">
 			  					<van-icon name="search" color="#fff" size="16px"/>
 			  				</button>
 			  			</div>
@@ -298,7 +298,8 @@ export default {
           lvyingArr:[],
           banner: [],
           bgUrl: '',
-          value: 0
+          value: 0,
+          searchval: ''
         }
 
     },
@@ -307,8 +308,15 @@ export default {
       this.getCaseProduct()
     },
     methods: {
+      // 搜索
     	onSearch(){
-    		console.log('搜索')
+    	  console.log(this.searchval)
+        this.$router.push({
+          path:'/searchList',
+          query: {
+            searchVal: this.searchval
+          }
+        })
     	},
       //获取橱窗对象
       getCaseProduct(){

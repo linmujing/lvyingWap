@@ -5,7 +5,7 @@ import Router from 'vue-router'
 Vue.use(Router)
 
 const router = new Router({
-  
+
   routes: [
     {path: '/', redirect: 'shopMallIdex'},
     {
@@ -67,7 +67,7 @@ const router = new Router({
         }
       ]
     },
-     /**分类**/ 
+     /**分类**/
     {
       path: '/sort',
       name: 'sort',
@@ -106,6 +106,14 @@ const router = new Router({
           component:resolve => require(['@/view/sort/lvyingMallList'],resolve),
           meta:{
             title:'律瀛商城',
+          }
+        },
+        {
+          path: '/searchList',
+          name: 'searchList',
+          component:resolve => require(['@/view/sort/searchList'],resolve),
+          meta:{
+            title:'搜索',
           }
         },
         {
@@ -159,7 +167,7 @@ const router = new Router({
     	]
     },
 
-    /**购物车部分**/ 
+    /**购物车部分**/
     {
       path: '/shoppingCart',
       name: 'shoppingCart',
@@ -185,7 +193,7 @@ const router = new Router({
       component: resolve => require(['@/view/shopCart/confirmOrder'],resolve)
     },
 
-    /**个人中心部分**/ 
+    /**个人中心部分**/
     {
       path: '/personCenter',
       name: 'personCenter',
@@ -283,16 +291,16 @@ const router = new Router({
       },
       component: resolve => require(['@/view/404'],resolve)
     }
-  	
+
   ],
   mode: 'history'
 })
 
-router.beforeEach((to,form,next) =>{ 
-  /*路由变化修改title*/ 
+router.beforeEach((to,form,next) =>{
+  /*路由变化修改title*/
   if(to.meta.title){
     document.title=to.meta.title;
-  } 
-  next(); 
+  }
+  next();
 })
 export default router

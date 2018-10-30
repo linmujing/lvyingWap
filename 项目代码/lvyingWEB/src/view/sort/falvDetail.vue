@@ -629,8 +629,9 @@ export default {
      if(this.$route.query.typeId == null){
        // 如果没有参数typeId
        var attr = this.productProperty
-       var arr = this.productProperty.split(',')
-       if(arr.length > 1){
+       var arr = attr;
+       if(attr.indexOf(',') != -1){ attr = attr.split(',') }
+       if(arr.length > 1 || arr == '4'){
          this.typeId = 1
          this.showCourse = false
        }else {
