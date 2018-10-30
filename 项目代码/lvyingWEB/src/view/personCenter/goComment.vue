@@ -251,7 +251,6 @@ export default {
                     this.$toast(res.data.message);  
                     
                 }
-                
 
             })
             .catch((error) => {
