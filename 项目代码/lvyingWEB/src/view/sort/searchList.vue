@@ -1,7 +1,7 @@
 <template>
     <div >
 
-      <div>
+      <div class="search">
         <div class="search_box">
           <input v-model="searchval" type="text" placeholder="视频/音频/合同"/>
           <button @click="onSearch">
@@ -10,13 +10,13 @@
         </div>
       </div>
 
-    	<div class="margin_top_20">
+    	<div class="list_box">
 
         <div v-for="(val,i) in lists" :key="i" class="margin_10">
           <van-row>
             <van-col span="10">
               <div @click="toDetail" class="img_box">
-                <img :src="val.productProfileUrl" class="all_width all_height"/>
+                <img :src="val.productProfileUrl" class="all_width height_110px"/>
               </div>
             </van-col>
             <van-col span="14">
@@ -46,6 +46,9 @@
           </van-row>
         </div>
 
+        <div v-if="lists.length>=total" class="text_center padding_10">没有更多了~</div>
+        <div v-else class="text_center padding_10" @click="seeMore">点击查看更多</div>
+
     	</div>
 
     </div>
@@ -54,37 +57,11 @@
 export default {
   data() {
       return {
-        lists: [
-          {
-            img: '../static/images/img/class.png',
-            title: '审核同业禁止协议',
-            info: '知识产权许可使用合同起草知识产权许可使用合同起草',
-            people: 12345,
-            price: '500.00'
-          },
-          {
-            img: '../static/images/img/class.png',
-            title: '审核同业禁止协议',
-            info: '知识产权许可使用合同起草知识产权许可使用合同起草',
-            people: 12345,
-            price: '500.00'
-          },
-          {
-            img: '../static/images/img/class.png',
-            title: '审核同业禁止协议',
-            info: '知识产权许可使用合同起草知识产权许可使用合同起草',
-            people: 12345,
-            price: '500.00'
-          },
-          {
-            img: '../static/images/img/class.png',
-            title: '审核同业禁止协议',
-            info: '知识产权许可使用合同起草知识产权许可使用合同起草',
-            people: 12345,
-            price: '500.00'
-          }
-        ],
-        searchval: ''
+        lists: [],
+        searchval: '',
+        total: 0,
+        pageSize: 2,
+        page: 1
       }
 
   },
@@ -101,14 +78,24 @@ export default {
     },
     // 获取商品列表
     getProductList(page){
-      this.$api.getProductList( this.$Qs.stringify({'pageNo': page, 'pageSize': 10, 'searchKey': this.searchval}) )
+      this.$api.getProductList( this.$Qs.stringify({'pageNo': page, 'pageSize': this.pageSize, 'searchKey': this.searchval}) )
 
         .then( (res) => {
-          console.log(res);
+          console.log(page)
           if(res.data.code == 200){
-            this.lists = res.data.content.list
-            // this.total = res.data.content.count
-
+            var result = res.data.content
+            var list = []
+            if(page == 1){
+              list = result.list
+            }else {
+              list = this.lists
+              for (var i=0;i<result.list.length;i++) {
+                list.push(result.list[i])
+              }
+            }
+            this.total = result.count
+            this.lists = list
+            console.log(this.lists)
           }else {
             this.$toast.fail(res.data.message);
           }
@@ -124,6 +111,12 @@ export default {
         //   id: i
         // }
       })
+    },
+    // 点击查看更多
+    seeMore(){
+      console.log(1111)
+      this.page += 1
+      this.getProductList(this.page)
     }
   }
 }
@@ -134,6 +127,12 @@ export default {
 
   .width_48{width: 48%}
   /*搜索框*/
+  .search{
+    width: 100%;
+    position: fixed;
+    top: 0;
+    background: #fff;
+  }
   .search_box{
     margin: 0.2rem;
     padding: 0.05rem;
@@ -156,5 +155,8 @@ export default {
       height: 100%;
       background: #00AA88;
     }
+  }
+  .list_box{
+    margin-top: 60px;
   }
 </style>
