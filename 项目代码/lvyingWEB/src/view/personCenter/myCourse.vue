@@ -1,6 +1,6 @@
 <template>
 
-    <div>
+    <div class="mycourse">
 
         <van-list v-model="pageData.loading" :finished="pageData.finished" @load="onLoad" >
             <div>
@@ -9,7 +9,7 @@
 
                     <div class="items" v-for="(items, index ) in courseData" :key="index">
                         <div class="img_box"> 
-                            <img :src="items.imgSrc"  v-lazy="items.imgSrc" alt="">
+                            <img :src="items.imgSrc"  v-lazy="items.imgSrc" @click="$router.push({ path: '/falvDetail', query: { productCode: items.productCode }})">
                             <!-- <i v-if="items.type != 1" :style="{ backgroundImage: 'url('+ items.typeImg + ')'}"></i> -->
                         </div>
                         <div class="line_height_60 text_ellipsis">{{items.title}} </div>
@@ -45,7 +45,7 @@ export default {
             courseData: [],
             // 分页
             pageData:{
-                total: 8,
+                total: 0,
                 pageSize: 10,
                 current: 1,
                 loading: false,
@@ -59,6 +59,8 @@ export default {
 
         // 获取我的课程
         getMyCourse(){
+
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let pageNo = this.pageData.current;
             let pageSize = this.pageData.pageSize;
@@ -102,8 +104,11 @@ export default {
 
                 }
 
+                this.$toast.clear();
+
             })
             .catch((error) => {
+                this.$toast.clear();
                 this.$toast('加载失败,请刷新重试!');
                 console.log('发生错误！', error);
             });
@@ -133,13 +138,13 @@ export default {
 
 <style>
     /* 按钮样式 */
-    .van-button{
+    .mycourse .van-button{
         border-radius: 0.4rem;
         height: 0.5rem;
         line-height: 1;
         margin-left:0.2rem;
     }
-    .van-button--default {
+    .mycourse .van-button--default {
         color: #00AA88;
         background-color: #fff;
         border: 1px solid #00AA88;

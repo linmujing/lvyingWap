@@ -4,13 +4,6 @@
 
         <div style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}" v-show="!addressData.addressPageShow">
 
-            <!-- 购买信息 -->
-            <!-- <div class="color_000 bg_fff line_height_60" v-if="pageState == 'a'">
-                <div class="padding_0_20">购买账号： 微信登录账号</div>
-                <div class="padding_0_20">手机号： 1341234569874</div>
-                <div class="border_top_1px padding_0_20 line_height_94" >购买后不支持退款、转让，请确认后再提交订单。</div>
-            </div> -->
-
             <!-- 地址 -->
             <div class="color_000 bg_fff line_height_60" >
                 <div v-if="addressData.addressList.length != 0">
@@ -53,7 +46,7 @@
                                         <div class="item table_block">
                                             <span class="td_block padding_left_30">
                                                 <i class="img_middle_center img_box border_1">
-                                                    <img  :src="item.imgSrc" alt="">
+                                                    <img  :src="item.imgSrc" alt=""  >
                                                 </i>
                                             </span>
                                             <span class="td_block padding_left_30 ">
@@ -92,7 +85,7 @@
                                         <div class="item table_block">
                                             <span class="td_block padding_left_30">
                                                 <i class="img_middle_center img_box border_1">
-                                                    <img  :src="item.imgSrc" :data-productCode="item.productCode">
+                                                    <img  :src="item.imgSrc" :data-productCode="item.productCode"  >
                                                 </i>
                                             </span>
                                             <span class="td_block padding_left_30 ">

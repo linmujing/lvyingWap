@@ -14,7 +14,7 @@
                                 <div class="item table_block">
                                     <span class="td_block padding_left_30">
                                         <i class="img_middle_center img_box border_1">
-                                            <img  :src="item.imgSrc" alt="">
+                                            <img  :src="item.imgSrc" alt=""  @click="$router.push({ path: '/falvDetail', query: { productCode: item.productCode }})">
                                         </i>
                                     </span>
                                     <span class="td_block padding_left_30 ">
@@ -40,11 +40,11 @@
 
             <div class="items_total flex space_between padding_0_20  line_height_94 border_top_1px color_cart_ccc2 bg_fff">
                 <div >减免</div>
-                <div >0.00</div>
+                <div >{{ (parseFloat(cartDate.allTotal) - parseFloat(cartDate.listTotal) ).toFixed(2) }}</div>
             </div>
             <div class="items_total flex space_between padding_0_20  line_height_94 border_top_1px color_cart_ccc2 bg_fff">
                 <div >优惠券</div>
-                <div class="color_00aa88" @click="showList = true">去选择</div>
+                <div class="color_00aa88" @click=" coupons.length > 0 ? showList = true : ''">{{couponName}}</div>
             </div>
             <!-- 配送方式 -->
             <div class="items_total flex space_between padding_0_20 bg_fff line_height_94 color_cart_ccc2 bg_fff" style="margin:0.3rem 0;" >
@@ -68,11 +68,10 @@
         </div>
 
         <!-- 优惠券列表 -->
-        <van-popup v-model="showList" position="bottom">
+        <van-popup v-model="showList" position="bottom" v-if="coupons.length > 0">
             <van-coupon-list
                 :coupons="coupons"
                 :chosen-coupon="chosenCoupon"
-                :disabled-coupons="disabledCoupons"
                 @change="onChange"
                 @exchange="onExchange"
                 :show-exchange-bar="false"
@@ -85,18 +84,6 @@
 <script>
 // 地址组件
 import Address from '../../components/Address.vue'
-
-    const coupon = {
-    available: 1,
-    discount: 0,
-    denominations: 150,
-    originCondition: 0,
-    reason: '',
-    value: 150,
-    name: '优惠券名称',
-    startAt: 1489104000,
-    endAt: 1514592000
-    };
 
 export default {
     components : {
@@ -116,6 +103,7 @@ export default {
                 listDeleteState: false,
                 // 总价格
                 listTotal: 0.00,
+                allTotal: 0.00,
                 // 大列表
                 cartList:[],
             },  
@@ -130,8 +118,10 @@ export default {
             /*优惠券弹框*/
             showList: false,
             chosenCoupon: -1,
-            coupons: [coupon],
-            disabledCoupons: [coupon]
+            coupons: [],
+            couponName: '去选择',
+            couponCode: 0,
+ 
         }
         
     },
@@ -140,11 +130,17 @@ export default {
         /*优惠券功能*/
         // 选择
         onChange(index) {
+
             this.showList = false;
             this.chosenCoupon = index;
+            this.couponCode = this.coupons[index].id;
+
+            this.getOrderCouponTotal();
+
         },
         onExchange(code) {
-            this.coupons.push(coupon);
+            console.log(code)
+            // this.coupons.push(coupon);
         },
 
         /*订单数据计算*/    
@@ -219,7 +215,7 @@ export default {
 
                 }else{
 
-                    this.$Message.warning(res.data.message);
+                    this.$toast(res.data.message);
 
                 }
 
@@ -243,7 +239,7 @@ export default {
 
                 }else{
 
-                    this.$Message.warning(res.data.message);
+                    this.$toast(res.data.message);
 
                 }
 
@@ -253,7 +249,7 @@ export default {
         /**数据**/
         // 获取订单详情商品数据
         // param orderCode string 订单编号
-        getOrderProduct(orderCode){
+        getOrderProduct(orderCode){  
 
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
@@ -362,6 +358,7 @@ export default {
                 if(res.data.code == 200){
 
                     this.cartDate.listTotal = (res.data.content.orderPayAmount).toFixed(2);
+                    this.cartDate.allTotal = (res.data.content.orderPayAmount).toFixed(2);
 
                 }else{
 
@@ -388,10 +385,23 @@ export default {
 
                     for(let item of data){
 
-                        arr.push({ value: item.couponCode, label: item.couponInfo.couponTitle })
+                        arr.push({
+                            id: item.couponCode,
+                            available: 1,
+                            discount: 0,
+                            denominations: item.couponInfo.couponValuePrice * 100,
+                            originCondition: item.couponInfo.couponDoorPrice * 100,
+                            reason: '',
+                            value: item.couponInfo.couponValuePrice * 100,
+                            name: item.couponInfo.couponTitle,
+                            startAt: new Date(item.couponInfo.couponStartTime).getTime()/1000,
+                            endAt: new Date(item.couponInfo.couponEndTime).getTime()/1000
+                        })
                     }
 
-                    this.coupon = arr;
+                    this.coupons = arr;
+
+                    arr.length == 0 ? this.couponName = '没有可用优惠券' : '';
 
                 }else{
 
@@ -405,7 +415,7 @@ export default {
         // 获取选择优惠券后的价格
         getOrderCouponTotal(){
 
-            let param = this.$Qs.stringify({ 'couponCode': this.Coupon.value, 'orderCode': this.$route.query.orderCode ,'orderAmount': this.cartDate.listTotal }) ;
+            let param = this.$Qs.stringify({ 'couponCode': this.couponCode, 'orderCode': this.$route.query.orderCode ,'orderAmount': this.cartDate.listTotal }) ;
             console.log(param)
             this.$api.getOrderCouponAmount( param )
 
@@ -419,13 +429,11 @@ export default {
 
                     this.cartDate.listTotal = (res.data.content.orderPayAmount).toFixed(2);
 
-                }else{
-
-                    this.$toast(res.data.message);
+                    this.couponName = this.coupons[this.chosenCoupon].name;
 
                 }
 
-                this.$toast.clear();
+                this.$toast(res.data.message);
 
             })
 

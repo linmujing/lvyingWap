@@ -75,6 +75,8 @@ export default {
         // 获取评论列表
         getProductCommentList(){
 
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
+
             let param = this.$Qs.stringify({
                 'pageNo': this.pageData.current, 
                 'pageSize': this.pageData.pageSize, 
@@ -111,7 +113,7 @@ export default {
                     if ( this.commentData.length >= this.pageData.total ) {
 
                         this.pageData.finished = true;
-                        this.$toast('没有更多了！');
+                        // this.$toast('没有更多了！');
 
                     }
 
@@ -120,9 +122,11 @@ export default {
                     this.$toast(res.data.message);
 
                 }
+                this.$toast.clear();
             })
             .catch((error) => {
 
+                this.$toast.clear();
                 console.log('发生错误！', error);
 
             });
@@ -140,7 +144,7 @@ export default {
     },
     mounted(){
 
-                // 头像
+        // 头像
         let headImg = this.$store.state.userData.ciProfileUrl;
         this.userHeadUrl =  headImg != null && headImg != undefined && headImg != 'null'? headImg : './static/images/image/my_head.png';
 

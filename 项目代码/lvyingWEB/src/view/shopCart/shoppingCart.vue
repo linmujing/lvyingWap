@@ -34,7 +34,7 @@
                                                 <span class="td_block"><van-checkbox v-model="item.state" @change="checkboxChange(index1, index2)"></van-checkbox></span>
                                                 <span class="td_block padding_left_30">
                                                     <i class="img_middle_center img_box border_1">
-                                                        <img  :src="item.imgSrc" alt="">
+                                                        <img  :src="item.imgSrc" alt=""  @click="$router.push({ path: '/falvDetail', query: { productCode: item.productCode }})">
                                                     </i>
                                                 </span>
                                                 <span class="td_block padding_left_30 ">
@@ -77,7 +77,7 @@
                                                     <span class="td_block" style="width:20px;">&nbsp;</span>
                                                     <span class="td_block padding_left_30">
                                                         <i class="img_middle_center img_box border_1">
-                                                            <img  :src="child.imgSrc" alt="">
+                                                            <img  :src="child.imgSrc" alt=""  @click="$router.push({ path: '/falvDetail', query: { productCode: items.productCode }})">
                                                         </i>
                                                     </span>
                                                     <span class="td_block padding_left_30 ">

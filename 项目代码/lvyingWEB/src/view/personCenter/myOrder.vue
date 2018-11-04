@@ -1,6 +1,6 @@
 <template>
 
-    <div class="body_bg">
+    <div class="body_bg orderPage">
 
         <!-- 订单选项卡 -->
         <div class="order_type">
@@ -33,7 +33,8 @@
                                     <div class="item table_block" style="height:2.2rem;">
                                         <span class="td_block">
                                             <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
-                                                <img style="width: 1.6rem; height: 1.6rem;" :src="child.productProfileUrl" :data-productCode="child.productCode" alt="">
+                                                <img style="width: 1.6rem; height: 1.6rem;"  @click="$router.push({ path: '/falvDetail', query: { productCode: child.productCode }})"
+                                                :src="child.productProfileUrl" :data-productCode="child.productCode" alt="">                               
                                             </i>
                                         </span>
                                         <span class="td_block padding_left_30">
@@ -164,7 +165,7 @@ export default {
             /* 订单数据对象 */
             orderData:{
                 // 订单类型下标
-                orderTypeIndex: 0,
+                orderTypeIndex:  this.$store.state.personCenter.orderType,
                 // 订单类型
                 orderType:[
                     { text: '全部', value: ''},
@@ -174,15 +175,13 @@ export default {
                     { text: '交易成功', value: 3},
                     { text: '交易取消', value: 4},
                     { text: '交易关闭', value: 5},
-                    { text: '订单异常', value: 6},
-                    { text: '其他', value: 7},
                 ],
                 // 订单数据
                 orderList:[],
  
                 // 分页
                 pageData:{
-                    total: 8,
+                    total: 0,
                     pageSize: 10,
                     current: 1,
                     loading: false,
@@ -222,9 +221,13 @@ export default {
         // params index 订单类型下标
         changeType(index){
 
+            // 订单类型状态更改
+            this.$store.commit('personCenter/setOrderType', index);
+
             this.orderData.orderList = [];
             this.orderData.orderTypeIndex = index;
             this.orderData.pageData.current = 1
+
             // 获取订单列表
             this.getOrderList();
 
@@ -457,15 +460,18 @@ export default {
 
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
               
-            let param = this.$Qs.stringify({ 
+            let param = { 
                 'pageNo': this.orderData.pageData.current, 
                 'pageSize': this.orderData.pageData.pageSize,
                 'ciCode': this.$store.state.userData.cicode ,
-                'orderStatus': this.orderData.orderType[this.orderData.orderTypeIndex].value,
                 'searchKey': this.orderData.orderSearchValue,
-                }) ;
+                } ;
 
-            this.$api.getOrderList( param )
+            if(this.orderData.orderType[this.orderData.orderTypeIndex].value != ''){
+                param.orderStatus = this.orderData.orderType[this.orderData.orderTypeIndex].value;
+            }
+
+            this.$api.getOrderList(  this.$Qs.stringify(param)  )
 
             .then( (res) => {
 
@@ -563,9 +569,10 @@ export default {
                 this.orderData.pageData.loading = false;
                 console.log(this.orderData.orderList.length )
                 console.log(this.orderData.pageData.total)
+
                 // 数据全部加载完成
                 if ( this.orderData.orderList.length >= this.orderData.pageData.total ) {
-                    console.log(1)
+
                     this.orderData.pageData.finished = true;
                     this.$toast('没有更多了！');
 
@@ -696,20 +703,20 @@ export default {
 
 <style>
     /* 头部切换栏颜色 */
-    .van-tabs__line{
+    .orderPage .van-tabs__line{
         background-color: #00AA88;
     }
-    .van-tab--active {
+    .orderPage .van-tab--active {
         color: #00AA88;
     }
     /* 按钮样式 */
-    .van-button{
+    .orderPage .van-button{
         border-radius: 0.4rem;
         height: 0.5rem;
         line-height: 0.2rem;
         margin-left:0.2rem;
     }
-    .van-button--default {
+    .orderPage .van-button--default {
         color: #00AA88;
         background-color: #fff;
         border: 1px solid #00AA88;

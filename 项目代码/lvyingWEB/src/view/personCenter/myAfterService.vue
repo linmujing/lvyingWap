@@ -24,20 +24,20 @@
                                 <div class="item table_block" style="height:2.2rem;">
                                     <span class="td_block">
                                         <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
-                                            <img  :src="items.productWxProfileUrl" :data-productCode="items.productCode" alt="">
+                                            <img style="display:inline-block;width: 1.6rem;height: 1.6rem;" 
+                                            @click="$router.push({ path: '/falvDetail', query: { productCode: items.productCode }})"
+                                            :src="items.productWxProfileUrl" :data-productCode="items.productCode" alt="">
                                         </i>
                                     </span>
                                     <span class="td_block padding_left_30">
                                         <p  class="" style="word-wrap:break-word;">
                                             <span style="position:relative;top:-0.5rem;"> {{items.productTitle}} </span>   
-                                            <span class="font_20" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{items.productOrgPrice}}</span>
+                                            <!-- <span class="font_20" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{items.productOrgPrice}}</span> -->
                                         </p>
                                     </span>
                                 </div>
                                 <div class="item table_block" style="height:2.2rem;">
-                                    <p class="color_cart_ccc1 font_20" style="position:absolute;top:1.27rem;right:0.2rem">
-                                    x 1
-                                    </p>
+                                    <!-- <p class="color_cart_ccc1 font_20" style="position:absolute;top:1.27rem;right:0.2rem">X 1</p> -->
                                 </div>
                             </div>
 
@@ -80,8 +80,8 @@ export default {
                 orderTypeIndex: 0,
                 // 换货类型
                 orderType:[
-                    { text: '申请换货', value: ''},
-                    { text: '换货成功', value: ''},
+                    { text: '申请换货', value: '0'},
+                    { text: '换货成功', value: '1'},
                 ],
                 // 换货数据
                 orderList:[
@@ -149,7 +149,7 @@ export default {
             // 分页
             pageData:{
                 total: 0,
-                pageSize: 5,
+                pageSize: 10,
                 current: 1,
                 loading: false,
                 finished: false
@@ -164,12 +164,16 @@ export default {
         // params index 换货类型下标
         changeType(index){
 
-            console.log(this.orderData.orderTypeIndex)
+            this.pageData.current = 1;
+            this.orderList = [];
+
             this.getOrderProductList();
 
         },
         // 获取换货列表
         getOrderProductList(){
+
+            this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({
                 'pageNo': this.pageData.current, 
@@ -194,10 +198,10 @@ export default {
                             orderId: item.orderCode ,
                             createDate: item.createDate,
                             isExchange : item.isExchange ,
-                            productWxProfileUrl: item.ProductInfo.productWxProfileUrl,
-                            productCode: item.ProductInfo.productCode,
-                            productTitle: item.ProductInfo.productTitle,
-                            productOrgPrice: item.ProductInfo.productOrgPrice,
+                            productWxProfileUrl: item.productInfo.productProfileUrl, //item.productInfo.productWxProfileUrl,
+                            productCode: item.productInfo.productCode,
+                            productTitle: item.productInfo.productTitle,
+                            productOrgPrice: item.productInfo.productOrgPrice,
                         })
                     }
 
@@ -218,10 +222,12 @@ export default {
 
                 }
 
+                this.$toast.clear();
+
             })
             .catch((error) => {
 
-                this.$toast('加载失败,请刷新重试!');
+                this.$toast.clear();
                 console.log('发生错误！', error);
 
             });
@@ -241,6 +247,9 @@ export default {
         },
    
 
+    },
+    mounted(){
+        this.getOrderProductList();
     }
 }
 </script>
