@@ -86,7 +86,7 @@ export const deleteAddress = params => { return instance.post(`customer/address/
 
 /** 优惠券 **/
 //会员领取优惠券
-export const addCoupont = params => { return instance.post(`customer/coupon/addCoupont`, params ); };
+export const addCoupont = params => { return instance.post(`customer/coupon/addCoupon`, params ); };
 //获取我的优惠券列表
 export const getCouponList = params => { return instance.post(`customer/coupon/getCouponList`, params ); };
 //获取产品优惠券列表
