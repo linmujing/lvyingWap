@@ -137,7 +137,7 @@
                         </div>
                         <div>
                             <van-button size="small" 
-                                @click="checkLogistics(child.itemCode, child.itemTrackNo, child.productCode)">查看物流</van-button>
+                                @click="checkLogistics(child.orderCode, child.itemCode, child.itemTrackNo, child.productCode)">查看物流</van-button>
                         </div>
                     </div>
                 </div>
@@ -355,10 +355,11 @@ export default {
 
         /* 物流 */ 
         // 查看物流
-        // @param orderCode string 获取当前点击的订单子单号
+        // @param orderCode string 获取当前点击的订单单号
         // @param trackNo string 获取当前点击的子订单运单单号
-        // @param productCode string 商品图片
-        checkLogistics(orderCode, trackNo, productCode){
+        // @param productCode string 商品编号
+        // @param orderMerchantCode string 订单子订单号
+        checkLogistics(orderCode, orderMerchantCode, trackNo, productCode ){
             this.$router.push({ path: '/personCenter/checkLogistics', query: {orderCode, trackNo, productCode} })
         },
         // 查看物流按钮显示 判断1：是否已付款  判断2：是否为实物
@@ -538,6 +539,7 @@ export default {
                                     commetStatus: child.commetStatus ,
                                     isExchange: child.isExchange,
                                     itemTrackNo: items.trackNo,
+                                    orderCode: lists.orderCode,
                                     itemCode: items.orderMerchantCode,
                                     productProfileUrl: child.productInfo.productProfileUrl,
                                     total: (parseFloat(child.productPrice * 10000) * child.productCount)/10000
