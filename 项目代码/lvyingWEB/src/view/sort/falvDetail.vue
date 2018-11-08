@@ -93,11 +93,11 @@
                           <button class="btn_warning" @click="toCourse">开始播放</button>
                         </div>
                         <div v-else>
-                          <div v-if="parseInt(item.videoStatus) === 0" class="width_70px">
+                          <div v-if="parseInt(item.videoStatus) === 1" class="width_70px">
                             <button class="btn_warning" @click="audition(item)">试听</button>
                           </div>
                           <div v-else class="width_70px">
-                            <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                            <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
                           </div>
                         </div>
                       </div>
@@ -108,11 +108,11 @@
                           <button class="btn_warning" @click="toCourse">开始播放</button>
                         </div>
                         <div v-else>
-                          <div v-if="parseInt(item.voiceStatus) === 0" class="width_70px">
+                          <div v-if="parseInt(item.voiceStatus) === 1" class="width_70px">
                             <button class="btn_warning" @click="audition(item)">试听</button>
                           </div>
                           <div v-else class="width_70px">
-                            <button class="btn_title van-ellipsis line_height_20">立即购买</button>
+                            <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
                           </div>
                         </div>
                       </div>
@@ -134,7 +134,7 @@
                         <div class="van-ellipsis color_999">{{item.sectionName}}</div>
                         <div v-show="courseBtn == 1">
                           <Button @click="courseStates" class="btn_gary van-ellipsis margin_right_10">查看详情</Button>
-                          <button class="btn_title van-ellipsis">立即购买</button>
+                          <button class="btn_title van-ellipsis" @click="goBuy(item.productCode)">立即购买</button>
                         </div>
                       </div>
                       <div v-show="courseBtn == 2" class="margin_top_10">
@@ -196,7 +196,7 @@
                 <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
                 <div class="juc_between align_center margin_top_10">
                   <span class="color_title font_16 van-ellipsis">￥{{item.productPrice}}</span>
-                  <button class="btn_title van-ellipsis">立即购买</button>
+                  <button class="btn_title van-ellipsis" @click="goBuy(item.productCode)">立即购买</button>
                 </div>
               </div>
             </div>
@@ -236,12 +236,12 @@
                         <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
                         <span class="font_12 color_666 padding_left_5">试听</span>
                       </div>
-                      <button v-else class="btn_warning width_40px align_center juc_center">
+                      <button v-else class="btn_warning width_40px align_center juc_center" @click="addProductCart(item.productCode)">
                         <van-icon name="cart" size="16px" color="#fff" />
                       </button>
                     </div>
                     <div>
-                      <button class="btn_title van-ellipsis">立即购买</button>
+                      <button class="btn_title van-ellipsis" @click="goBuy(item.productCode)">立即购买</button>
                     </div>
                   </div>
                 </div>
@@ -257,8 +257,8 @@
 			<van-goods-action>
 			  <van-goods-action-mini-btn icon="shop" text="店铺" @click="goStore"/>
 			  <van-goods-action-mini-btn icon="cart" text="购物车" to="/shoppingCart" />
-			  <van-goods-action-big-btn text="加入购物车" @click="addCart" style="background: #F09105;color: #fff;"/>
-			  <van-goods-action-big-btn text="立即购买" @click="buyNow" style="background: #00AA88;color: #fff;"/>
+			  <van-goods-action-big-btn text="加入购物车" @click="addProductCart(productCode)" style="background: #F09105;color: #fff;"/>
+			  <van-goods-action-big-btn text="立即购买" @click="goBuy(productCode)" style="background: #00AA88;color: #fff;"/>
 			</van-goods-action>
 		</div>
 
@@ -495,11 +495,11 @@ export default {
     // 选择优惠券
     selectCoupon(couponCode){
       var arr = couponCode.split(",")
-      // var ciCode = this.$store.state.userData.cicode
-      // if(ciCode == null || ciCode == "null" || ciCode == undefined){
-      //   this.$toast('您还没有登录，请登录后再尝试！');
-      //   return ;
-      // }
+      var ciCode = this.$store.state.userData.cicode
+      if(ciCode == null || ciCode == "null" || ciCode == undefined){
+        this.$toast('您还没有登录，请登录后再尝试！');
+        return ;
+      }
       let params = this.$Qs.stringify({'ciCode': ciCode, 'couponCode': arr[0], 'couponForm': arr[1]});
       this.$api.addCoupont( params )
 
@@ -526,15 +526,8 @@ export default {
         .then( (res) => {
           console.log(res);
           if(res.data.code == 200){
-            var arr = res.data.content.list
-            var list = []
-            for(var i=0;i<arr.length;i++){
-              if(arr[i].couponEffectiveType == 1){
-                list.push(arr[i])
-              }
-            }
-            this.cuponList = list
-          }else if (res.data.code == 500){
+            this.cuponList = res.data.content.list
+          }else {
             this.$toast.fail(res.data.message);
           }
         })
@@ -678,13 +671,36 @@ export default {
       // 拼接
       return year+"-"+month+"-"+day;
     },
-    //加入购物车
-    addCart(){
-      this.$toast('加入购物车');
+
+    /** 数据 **/
+    // 添加商品到购物车 MT
+    addProductCart(code){
+      if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
+        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        return ;
+      }
+      let param = {
+        ciCode:this.$store.state.userData.cicode,
+        productCode: code,
+        productCount:1
+      }
+      // 存储商品信息
+      this.$store.commit('cart/addToCart', param);
+      this.$store.dispatch('cart/addCartTo', param);
     },
-    //立即购买
-    buyNow(){
-      this.$toast('立即购买');
+    // 立即购买
+    goBuy(code){
+      if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
+        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        return ;
+      }
+      // 页面跳转
+      this.$router.push({
+        path:'/submitOrder',
+        query: {
+          productCode: code
+        }
+      })
     }
 
   }

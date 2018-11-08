@@ -25,7 +25,7 @@
 	  		<div v-for="item in hotArr" class="margin_10">
 	  			<van-row>
 				  <van-col span="10">
-            <div @click="toDetail">
+            <div @click="toDetail(item.productCode)">
               <img :src="item.productProfileUrl" class="all_width height_110px"/>
             </div>
 				  </van-col>
@@ -46,17 +46,17 @@
 				  			<div class="margin_top_10">
 					        	<van-row>
 						          <van-col span="6">
-						            <div class="flex_warp van-ellipsis" @click="toDetail">
+						            <div class="flex_warp van-ellipsis" @click="toDetail(item.productCode)">
 						              <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
 						              <span class="font_12 color_666">试听</span>
 						            </div>
 						          </van-col>
 						          <van-col span="16" offset="2">
 						            <div class="juc_around">
-						              <button class="btn_warning width_40px align_center juc_center">
+						              <button class="btn_warning width_40px align_center juc_center" @click="addProductCart(item.productCode)">
 						                <van-icon name="cart" size="16px" color="#fff" />
 						              </button>
-						              <button class="btn_title van-ellipsis">立即购买</button>
+						              <button class="btn_title van-ellipsis" @click="goBuy(item.productCode)">立即购买</button>
 						            </div>
 						          </van-col>
 						        </van-row>
@@ -84,7 +84,7 @@
 	  		<div v-for="item in laborArr" class="margin_10">
 	  			<van-row>
 				  <van-col span="10">
-            <div @click="toDetail">
+            <div @click="toDetail(item.productCode)">
               <img :src="item.productProfileUrl" class="all_width height_110px"/>
             </div>
 				  </van-col>
@@ -105,17 +105,17 @@
 				  			<div class="margin_top_10">
 					        	<van-row>
 						          <van-col span="6">
-						            <div class="flex_warp van-ellipsis" @click="toDetail">
+						            <div class="flex_warp van-ellipsis" @click="toDetail(item.productCode)">
 						              <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
 						              <span class="font_12 color_666">试听</span>
 						            </div>
 						          </van-col>
 						          <van-col span="16" offset="2">
 						            <div class="juc_around">
-						              <button class="btn_warning width_40px align_center juc_center">
+						              <button class="btn_warning width_40px align_center juc_center" @click="addProductCart(item.productCode)">
 						                <van-icon name="cart" size="16px" color="#fff" />
 						              </button>
-						              <button class="btn_title van-ellipsis">立即购买</button>
+						              <button class="btn_title van-ellipsis" @click="goBuy(item.productCode)">立即购买</button>
 						            </div>
 						          </van-col>
 						        </van-row>
@@ -230,11 +230,43 @@ export default {
       })
     },
     // 跳转到详情
-    toDetail(){
+    toDetail(code){
       this.$router.push({
-        path:'/videoDetail',
+        path:'/falvDetail',
         query: {
-          typeId: 1
+          typeId: 3,
+          productCode: code
+        }
+      })
+    },
+
+    /** 数据 **/
+    // 添加商品到购物车 MT
+    addProductCart(code){
+      if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
+        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        return ;
+      }
+      let param = {
+        ciCode:this.$store.state.userData.cicode,
+        productCode: code,
+        productCount:1
+      }
+      // 存储商品信息
+      this.$store.commit('cart/addToCart', param);
+      this.$store.dispatch('cart/addCartTo', param);
+    },
+    // 立即购买
+    goBuy(code){
+      if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
+        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        return ;
+      }
+      // 页面跳转
+      this.$router.push({
+        path:'/submitOrder',
+        query: {
+          productCode: code
         }
       })
     }

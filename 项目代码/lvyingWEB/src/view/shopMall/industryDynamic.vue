@@ -25,7 +25,7 @@
             <div v-for="item in hotArr" class="margin_10">
               <van-row>
                 <van-col span="10">
-                  <div @click="toDetail">
+                  <div @click="toDetail(item.productCode)">
                     <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
@@ -75,7 +75,7 @@
             <div v-for="item in laborArr" class="margin_10">
               <van-row>
                 <van-col span="10">
-                  <div @click="toDetail">
+                  <div @click="toDetail(item.productCode)">
                     <img :src="item.productProfileUrl" class="all_width height_110px"/>
                   </div>
                 </van-col>
@@ -211,11 +211,12 @@ export default {
         })
       },
       // 跳转到详情
-      toDetail(){
+      toDetail(code){
         this.$router.push({
-          path:'/videoDetail',
+          path:'/falvDetail',
           query: {
-            typeId: 1
+            typeId: 1,
+            productCode: code
           }
         })
       },
@@ -250,7 +251,7 @@ export default {
           }
         })
       }
-    
+
   }
 }
 </script>
