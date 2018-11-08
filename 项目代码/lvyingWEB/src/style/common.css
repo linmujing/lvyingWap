@@ -226,6 +226,7 @@ i {
 }
 .img_middle_center {
   position: relative;
+  overflow: hidden;
 }
 .img_middle_center img {
   height: 80%;

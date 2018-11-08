@@ -166,9 +166,9 @@ export default {
                 message: '评价成功',
                 cancelButtonText: '返回'
             }).then(() => {
-
+                this.$router.go(-1);
             }).catch(() => {
-            
+                this.$router.go(-1)
             });
 
         },
@@ -237,7 +237,6 @@ export default {
                     this.product = {
                         productCode: data.productCode,
                         price: data.productPrice,
-                        num:  cartNun,
                         name: data.productName,
                         describe: data.productDesc,
                         imgSrc: data.productProfileUrl

@@ -31,6 +31,14 @@
                     物流信息
                 </div>
                 <div class="logistics_item flex">
+                    <span>订单单号:</span>
+                    <div> {{logisticsData.orderCode}} </div>
+                </div>
+                <div class="logistics_item flex">
+                    <span>发货日期:</span>
+                    <div> {{logisticsData.date}} </div>
+                </div>
+                <div class="logistics_item flex">
                     <span>物流单号:</span>
                     <div> {{logisticsData.orderId}} </div>
                 </div>
@@ -78,6 +86,7 @@ export default {
               
             let param = this.$Qs.stringify({ 
                 'orderCode': this.$route.query.orderCode,
+                'orderMerchantCode': this.$route.query.orderMerchantCode,
                 'trackNo': this.$route.query.trackNo,
                 }) ;
 
@@ -96,10 +105,12 @@ export default {
                     // person 收货人
                     // collectAddress 收货地址   
                     this.logisticsData = {
-                        id: res.data.content.trackNo ,
+                        orderCode: this.$route.query.orderCode,
+                        orderId: res.data.content.trackNo ,
                         deliveryAddress: res.data.content.sendAddressId ,
                         person: res.data.content.signName ,
                         collectAddress: res.data.content.signAddressId ,
+                        date: res.data.content.createDate 
                     }
                    
                 }else{
@@ -133,8 +144,7 @@ export default {
                     this.product = {
                         productCode: data.productCode,
                         price: data.productPrice,
-                        num:  cartNun,
-                        name: data.productName,
+                        name: data.productTitle,
                         describe: data.productDesc,
                         imgSrc: data.productProfileUrl
                     }
@@ -163,7 +173,7 @@ export default {
 
         this.checkLogistics();
 
-        this. getProduct();
+        this.getProduct();
 
     }
 }
@@ -175,7 +185,6 @@ export default {
 <style lang="less" scoped>
 
     @import '../../style/common.less';
-
 
     .logistics_item{
         line-height: 0.66rem;

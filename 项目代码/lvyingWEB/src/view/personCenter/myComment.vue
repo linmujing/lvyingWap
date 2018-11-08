@@ -14,7 +14,7 @@
                             <span class="color_cart_ccc1 font_20">{{ items.createDate }}</span>
                         </div>
                     </div>
-                    <div class="padding_0_20 line_height_50 padding_bottom_20">
+                    <div class="padding_0_20 line_height_40 padding_bottom_20" style="padding-left: 1.2rem;white-space: normal;">
                         {{items.commentDesc}}
                     </div>
                     <div v-for= "(item, index2) in items.items" :key="index2">
