@@ -32,7 +32,7 @@
 				  <van-col span="14">
 					  	<div class="class_box">
 					  		<div class="title van-ellipsis">{{item.productTitle}}</div>
-					  		<div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
+					  		<div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
 					  		<div class="margin_top_10">
 					  			<van-row>
 						  			<van-col span="12">
@@ -91,7 +91,7 @@
 				  <van-col span="14">
 					  	<div class="class_box">
 					  		<div class="title van-ellipsis">{{item.productTitle}}</div>
-					  		<div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
+					  		<div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
 					  		<div class="margin_top_10">
 					  			<van-row>
 						  			<van-col span="12">

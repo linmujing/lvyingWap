@@ -1,11 +1,11 @@
 <template>
     <div >
-    	
-    	<div>
-	    	<van-tabs color="#00AA88"  v-model="active" sticky>
-			  	<van-tab v-for="(item,index) in tabTitle" :key="index" :title="item.name">
 
-            <div v-for="(val,i) in item.lists" :key="i" class="margin_10">
+    	<div>
+	    	<van-tabs color="#00AA88" @click="clickTab" v-model="active" sticky>
+			  	<van-tab v-for="(item,index) in tabTitle" :key="index" :title="item.catName">
+
+            <div v-for="(val,i) in lists" :key="i" class="margin_10">
               <van-row>
                 <van-col span="10">
                   <div @click="toDetail" class="img_box">
@@ -38,11 +38,11 @@
                 </van-col>
               </van-row>
             </div>
-			  	
+
 				</van-tab>
 			</van-tabs>
     	</div>
-		
+
     </div>
 </template>
 <script>
@@ -122,17 +122,77 @@ export default {
 	    				}
 	    			]
 	    		}
-	    	]
+	    	],
+          lists: [],
+          id: this.$route.query.id
         }
-        
+
     },
     mounted(){
     	//设置页面的title
 		document.title = this.$route.query.name;
 		console.log(this.$route.query.id)
 //		console.log(this.$route.params.name)
+      this.getTabTitle(this.id)
+
 	},
 	methods: {
+    // 获取tab
+    getTabTitle(id){
+      // 获取产品分类列表
+      this.$api.getProductCatList( this.$Qs.stringify({'parentId': id}) )
+
+        .then( (res) => {
+
+          if(res.data.code == 200){
+
+            this.tabTitle = res.data.content
+            this.getProductList(1, id)
+
+          }else{
+
+            this.$toast.fail(res.data.message);
+
+          }
+
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
+    // 获取商品列表
+    getProductList(page,id){
+      console.log(1111111)
+      this.$api.getProductList( this.$Qs.stringify({'pageNo': page, 'pageSize': 10, 'productCat': id, 'orderByStr': 10}) )
+
+        .then( (res) => {
+          console.log(res);
+          if(res.data.code == 200){
+            this.lists = res.data.content.list
+            // this.total = res.data.content.count
+
+          }else {
+            this.$toast.fail(res.data.message);
+          }
+        })
+        .catch((error) => {
+          console.log('发生错误！', error);
+        });
+    },
+    // 切换tab
+    clickTab(index, title){
+      console.log(title)
+      // this.active = index;
+      // // 跳转
+      // let Url = this.tabTitle[index].path;
+      // console.log(index)
+      // this.$router.push({
+      //   name:Url,
+      //   params: {
+      //     id: index
+      //   }
+      // })
+    },
     	toDetail(){
     		this.$router.push({
 		       path:'/falvDetail',

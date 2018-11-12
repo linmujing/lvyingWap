@@ -17,7 +17,7 @@
 	    	</div>
 	    	<div class="padding_10">
 	    		<div class="van-ellipsis title">{{dataDetail.productTitle}}</div>
-	    		<div class="color_999 margin_top_5 van-ellipsis" v-html="dataDetail.productDesc"></div>
+	    		<div class="color_999 margin_top_5 van-ellipsis">{{dataDetail.productKeyWord}}</div>
 	    		<div class="margin_top_10 juc_center_between">
             <div>
               <span class="color_title font_16">￥{{dataDetail.productOrgPrice}}</span>
@@ -350,7 +350,7 @@ export default {
     // 查看产品详情
     getProductInfo(){
       // 查看产品详情
-      this.$api.getProductInfo( this.$Qs.stringify({'productCode': this.productCode}) )
+      this.$api.getProductInfo( this.$Qs.stringify({'productCode': this.productCode, 'ciCode': this.$store.state.userData.cicode}) )
 
         .then( (res) => {
           console.log(res);
