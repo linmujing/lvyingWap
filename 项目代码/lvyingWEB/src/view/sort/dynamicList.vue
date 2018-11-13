@@ -105,7 +105,6 @@ export default {
     mounted(){
       //设置页面的title
       document.title = this.$route.query.name;
-      console.log(this.$route.query.id)
       this.getTabTitle(this.id)
 
 	},

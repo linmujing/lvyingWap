@@ -90,8 +90,8 @@
                         <!--视频-->
                         <div v-if="typeId == 3" class="align_center">
                           <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
-                          <div v-if="parseInt(item.voiceStatus) === 1">
-                            <button class="btn_warning" @click="toCourse">开始播放</button>
+                          <div v-if="parseInt(item.voiceStatus) === 0">
+                            <button class="btn_warning" @click="audition(item)">开始播放</button>
                           </div>
                           <div v-else>
                             <div v-if="parseInt(item.videoStatus) === 1" class="width_70px">
@@ -144,8 +144,8 @@
                       <div v-show="courseBtn == 2" class="margin_top_10">
                         <button @click="toCourse" class="btn_plain van-ellipsis margin_right_10">视频</button>
                         <button @click="toCourse" class="btn_plain van-ellipsis margin_right_10">音频</button>
-                        <button class="btn_plain van-ellipsis margin_right_10">文字预览</button>
-                        <button v-show="parseInt(item.docStatus) === 0" class="btn_plain van-ellipsis">下载</button>
+                        <button @click="openTxt(item)" class="btn_plain van-ellipsis margin_right_10">文字预览</button>
+                        <button v-show="parseInt(item.docStatus) === 0" @click="downloadDoc(item.docUrl)" class="btn_plain van-ellipsis">下载</button>
                       </div>
                     </div>
                   </div>
@@ -166,7 +166,8 @@
 			    			<div class="padding_10 van-hairline--bottom">
 			    				<div class="juc_between">
 			    					<div class="align_center">
-			    						<img :src="item.customerInfo.ciProfileUrl" class="photo"/>
+                      <div v-if="item.customerInfo.ciProfileUrl == null || item.customerInfo.ciProfileUrl == ''" class="photo text_center"><van-icon name="contact" size="20px" color="#999" class="margin_top_10"/></div>
+			    						<img v-else :src="item.customerInfo.ciProfileUrl" class="photo"/>
 			    						<div>
 			    							<div>{{item.customerInfo.ciName}}</div>
 			    							<van-rate v-model="item.productScore == null ? 0 : item.productScore" :count="item.productScore" :size="16" color="#F09105" readonly class="align_center margin_top_5"/>
@@ -583,12 +584,12 @@ export default {
           break
       }
     },
+    // 下载文件
+    downloadDoc(doc){
+      window.open(doc)
+    },
     // 文字预览
     openTxt(item){
-      if(this.isBuy === 0){
-        this.$toast('对不起，您需要购买后才能观看！');
-        return false;
-      }
       if(item.txtUrl === ''){
         this.$toast('对不起，暂无数据！');
         return false;
@@ -599,15 +600,16 @@ export default {
     },
     // 试听
     audition(item){
+      console.log(item)
       if (this.typeId == 3) {
         if(item.videoUrl == ''){
-          this.$toast('对不起，当前没有播放源！');
+          this.$toast('对不起，暂无数据！');
           return false;
         }
         this.videoData.videoSrc = item.videoSrc
       }else if (this.typeId == 4) {
         if(item.voiceUrl == ''){
-          this.$toast('对不起，当前没有播放源！');
+          this.$toast('对不起，暂无数据！');
           return false;
         }
         this.audioData.audioSrc = item.voiceUrl
@@ -631,7 +633,7 @@ export default {
     // 判断商品属性
     judgeProperty(){
       //@attr 商品属性1-实物，2-音频 3-视频 4-文档 包含多个使用逗号链接
-     if(this.$route.query.typeId == null){
+     if(this.$route.query.typeId == null || this.$route.query.typeId == undefined){
        // 如果没有参数typeId
        var attr = this.productProperty
        var arr = attr;
@@ -718,6 +720,9 @@ export default {
   }
 }
 </script>
+<style>
+  .info img{width: 100%}
+</style>
 <style scoped lang='less'>
  	/*引入共用less文件*/
     @import '../shopMall/shopMall.less';
@@ -730,5 +735,4 @@ export default {
 	.photo{width: 0.8rem;height: 0.8rem;border-radius: 50%;display: block;margin-right: 0.2rem;}
   .jt{width: 0.4rem;}
   .width_48{width: 48%}
-  .info img{width: 100%}
 </style>

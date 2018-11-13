@@ -321,14 +321,18 @@ export default {
       //获取橱窗对象
       getCaseProduct(){
         this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
-        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: 1})).then((res)=>{
+        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: 1})).then((res)=>{
           if(res.data.code == 200){
             this.$toast.clear();
             let {content}=res.data;
             // 保存轮播数据
-            this.banner = eval(res.data.content[6].caseUrl)
-            var bgUrl = eval(res.data.content[3].caseUrl)
-            this.bgUrl = bgUrl[0].src
+            if(!res.data.content[6].caseUrl == '' || !res.data.content[6].caseUrl == null || !res.data.content[6].caseUrl == undefined){
+              this.banner = eval(res.data.content[6].caseUrl)
+            }
+            if(!res.data.content[3].caseUrl == '' || !res.data.content[3].caseUrl == null || !res.data.content[3].caseUrl == undefined){
+              var bgUrl = eval(res.data.content[3].caseUrl)
+              this.bgUrl = bgUrl[0].src
+            }
             sessionStorage.setItem("Banner", JSON.stringify(eval(res.data.content[6].caseUrl)));
             for(let item of content){
               if(item.caseName=="视频推荐"){

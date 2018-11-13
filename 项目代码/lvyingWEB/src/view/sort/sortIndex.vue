@@ -49,137 +49,7 @@ export default {
 		    fullHeight: '',
 		    //内容显示的index
 		    tabIndex: 0,
-		    tabData: [
-		    	{
-					name: "行业动态管控",
-					lists:[
-						{
-							title: "行业（企业）",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职1'
-								},
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职2'
-								},
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职3'
-								},
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职4'
-								},
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职4'
-								}
-							]
-						},
-						{
-							title: "行业（企业）2",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								}
-							]
-						},
-						{
-							title: "行业（企业）3",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职1'
-								},
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职2'
-								}
-							]
-						},
-						{
-							title: "行业（企业）2",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								}
-							]
-						}
-					]
-				},
-				{
-					name: "法律动态管控",
-					lists:[
-						{
-							title: "法律（企业）",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								}
-							]
-						}
-					]
-				},
-				{
-					name: "视频课程",
-					lists:[
-						{
-							title: "视频课程1",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								},
-				                {
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								}
-							]
-						}
-					]
-				},
-				{
-					name: "音频课程",
-					lists:[
-						{
-							title: "音频课程1",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								},
-				                {
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								}
-							]
-						}
-					]
-				},
-				{
-					name: "律瀛商城",
-					lists:[
-						{
-							title: "律瀛商城1",
-							items:[
-								{
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								},
-				                {
-									img: "../static/images/img/class.png",
-									arr:'入职'
-								}
-							]
-						}
-					]
-				}
-			],
+		    tabData: [],
         navTitle: [
           {name: '行业动态管控', id: 1},
           {name: '法律动态管控', id: 2},
@@ -217,12 +87,12 @@ export default {
           });
       },
     	onClick(key) {
-    		console.log(key)
+    		// console.log(key)
 	      this.activeKey = key;
 	      this.tabIndex = key;
 	    },
 	    toList(id, name){
-	    	console.log(id)
+	    	// console.log(id)
         var tabIndex = this.tabIndex;
         this.$router.push({
           path:'/dynamicList',

@@ -178,7 +178,9 @@ export default {
           this.$toast.clear();
           let {content}=res.data;
           // 保存轮播数据
-          this.banner = eval(res.data.content[2].caseUrl)
+          if(!res.data.content[2].caseUrl == '' || !res.data.content[2].caseUrl == null || !res.data.content[2].caseUrl  == undefined){
+            this.banner =  eval(res.data.content[2].caseUrl)
+          }
           for(let item of content){
             if(item.caseName=="音频推荐" || item.caseName=="视频推荐"){
               this.getProductShowCase(item.productCode, item.productSortBy, 1)
