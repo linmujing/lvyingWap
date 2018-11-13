@@ -37,7 +37,7 @@
 						  	<span class="title">视频课程</span>
 						  </van-col>
 						  <van-col span="6">
-						  	<div class="more" @click="moreList(3)">
+						  	<div class="more" @click="moreList(3,'视频课程')">
                   <span>查看更多》</span>
 						  	</div>
 						  </van-col>
@@ -60,7 +60,7 @@
 							  				<span class="color_title font_16">￥{{item.productPrice}}</span>
 							  			</van-col>
 							  			<van-col span="12">
-							  				<div class="more"><span>{{item.saleCount}}人看过</span></div>
+							  				<div class="more"><span>{{item.lookCount}}人看过</span></div>
 							  			</van-col>
 							  		</van-row>
 						  		</div>
@@ -96,7 +96,7 @@
                   <span class="title">音频课程</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList(4)">
+                  <div class="more" @click="moreList(4,'音频课程')">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -119,7 +119,7 @@
                           <span class="color_title font_16">￥{{item.productPrice}}</span>
                         </van-col>
                         <van-col span="12">
-                          <div class="more"><span>{{item.saleCount}}人看过</span></div>
+                          <div class="more"><span>{{item.lookCount}}人看过</span></div>
                         </van-col>
                       </van-row>
                     </div>
@@ -158,7 +158,7 @@
                   <span class="title">行业动态管控</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList(1)">
+                  <div class="more" @click="moreList(1, '行业动态管控')">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -181,7 +181,7 @@
                           <span class="color_title font_16">￥{{item.productPrice}}</span>
                         </van-col>
                         <van-col span="12">
-                          <div class="more"><span>{{item.saleCount}}人看过</span></div>
+                          <div class="more"><span>{{item.lookCount}}人看过</span></div>
                         </van-col>
                       </van-row>
                     </div>
@@ -207,7 +207,7 @@
                   <span class="title">法律动态管控</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList(2)">
+                  <div class="more" @click="moreList(2, '法律动态管控')">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -230,7 +230,7 @@
                           <span class="color_title font_16">￥{{item.productPrice}}</span>
                         </van-col>
                         <van-col span="12">
-                          <div class="more"><span>{{item.saleCount}}人看过</span></div>
+                          <div class="more"><span>{{item.lookCount}}人看过</span></div>
                         </van-col>
                       </van-row>
                     </div>
@@ -259,7 +259,7 @@
                   <span class="title">律瀛商城</span>
                 </van-col>
                 <van-col span="6">
-                  <div class="more" @click="moreList(5)">
+                  <div class="more" @click="moreList(5, '律瀛商城')">
                     <span>查看更多》</span>
                   </div>
                 </van-col>
@@ -320,8 +320,10 @@ export default {
     	},
       //获取橱窗对象
       getCaseProduct(){
+        this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
         this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: 1})).then((res)=>{
           if(res.data.code == 200){
+            this.$toast.clear();
             let {content}=res.data;
             // 保存轮播数据
             this.banner = eval(res.data.content[6].caseUrl)
@@ -342,10 +344,12 @@ export default {
               }
             }
           }else{
+            this.$toast.clear();
             this.$toast.fail(res.data.message);
           }
         })
           .catch((error) => {
+            this.$toast.clear();
             console.log('发生错误！', error);
           });
       },
@@ -408,36 +412,15 @@ export default {
           });
       },
       // 查看更多
-      moreList(id){
-    	  console.log(id)
-        switch (id) {
-          case 1:
-          case 2:
-            this.$router.push({
-              path:'/dynamicList',
-              query: {
-                typeId: id
-              }
-            })
-            break
-          case 3:
-          case 4:
-            this.$router.push({
-              path:'/videoList',
-              query: {
-                typeId: id
-              }
-            })
-            break
-          case 5:
-            this.$router.push({
-              path:'/lvyingMallList',
-              query: {
-                typeId: id
-              }
-            })
-            break
-        }
+      moreList(id,name){
+        this.$router.push({
+          path:'/dynamicList',
+          query: {
+            id: id,
+            typeId: id,
+            name: name
+          }
+        })
       },
       // 跳转到详情
       toDetail(code,id){
@@ -454,7 +437,7 @@ export default {
       // 添加商品到购物车 MT
       addProductCart(code){
         if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-          this.$Message.warning('您还没有登录，请登录后再尝试！');
+          this.$toast('您还没有登录，请登录后再尝试！');
           return ;
         }
         let param = {
@@ -469,7 +452,7 @@ export default {
       // 立即购买
       goBuy(code){
         if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-          this.$Message.warning('您还没有登录，请登录后再尝试！');
+          this.$toast('您还没有登录，请登录后再尝试！');
           return ;
         }
         // 页面跳转

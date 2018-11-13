@@ -12,19 +12,19 @@
 			  	<!--内容-->
 			  	<van-col span="17">
 				  	<div  v-bind:style="{height: fullHeight - 50 + 'px'}" class="scroll">
-					  	<div v-for="(item,index) in tabData[tabIndex].lists" :key="index">
-							<div @click="toList(1)" class="font_16 padding_10 van-ellipsis">{{item.title}}</div>
-							<div class="flex_warp">
-								<div v-for="(val, index2) in item.items" :key="index2" @click="toList(2)" class="sort">
+					  	<div v-for="(item,index) in tabData[tabIndex].productCatVoList" :key="index">
+                <div class="font_16 padding_10 van-ellipsis" @click="toList(tabData[tabIndex].id,tabData[tabIndex].catName)">{{item.catName}}</div>
+                <div class="flex_warp">
+                  <div v-for="(val, index2) in item.productCatVoList" :key="index2" class="sort">
 
-									<div class="all_width">
-										<img :src="val.img" class="all_width all_height"/>
-									</div>
-									<div class="juc_center margin_top_5 van-ellipsis color_999">{{val.arr}}</div>
-								</div>
-							</div>
-						</div>
-					</div>
+                    <!--<div class="all_width">-->
+                      <!--<img :src="val.img" class="all_width all_height"/>-->
+                    <!--</div>-->
+                    <div @click="toList(item.id, item.catName)" class="juc_center margin_top_5 van-ellipsis color_999">{{val.catName}}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
 			  	</van-col>
 
 			</van-row>
@@ -193,41 +193,45 @@ export default {
     mounted(){
     	//获取屏幕高度
     	this.fullHeight = document.documentElement.clientHeight || document.body.clientHeight;
+    	this.getSortList()
 	  },
 	  methods: {
+      // 获取分类列表
+      getSortList(){
+        this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
+        this.$api.getProductCatWxInitList( this.$Qs.stringify() )
+
+          .then( (res) => {
+            // console.log(res);
+            if(res.data.code == 200){
+              this.$toast.clear();
+              this.tabData = res.data.content
+            }else {
+              this.$toast.clear();
+              this.$toast.fail(res.data.message);
+            }
+          })
+          .catch((error) => {
+            this.$toast.clear();
+            console.log('发生错误！', error);
+          });
+      },
     	onClick(key) {
     		console.log(key)
 	      this.activeKey = key;
 	      this.tabIndex = key;
 	    },
-	    toList(id){
+	    toList(id, name){
 	    	console.log(id)
         var tabIndex = this.tabIndex;
-        if(tabIndex == 0 || tabIndex == 1){
-          this.$router.push({
-            path:'/dynamicList',
-            query: {
-              id: id,
-              name: '劳动企业' + id
-            }
-          })
-        }else if(tabIndex == 2 || tabIndex == 3){
-          this.$router.push({
-            path:'/videoList',
-            query: {
-              id: id,
-              name: '视频' + id
-            }
-          })
-        }else if(tabIndex == 4){
-          this.$router.push({
-            path:'/lvyingMallList',
-            query: {
-              id: id,
-              name: '律瀛商城' + id
-            }
-          })
-        }
+        this.$router.push({
+          path:'/dynamicList',
+          query: {
+            id: id,
+            typeId: tabIndex + 1,
+            name: name
+          }
+        })
 
 	    }
     }
@@ -243,9 +247,9 @@ export default {
     @import '../shopMall/shopMall.less';
 
     .sort{
-    	width: 21%;
+    	/*width: 21%;*/
     	margin-bottom: 0.2rem;
-    	margin-left: 0.16rem;
+    	margin-left: 0.2rem;
     }
     .scroll{overflow: scroll;}
 </style>

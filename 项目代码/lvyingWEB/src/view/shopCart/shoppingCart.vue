@@ -39,7 +39,7 @@
                                                 </span>
                                                 <span class="td_block padding_left_30 ">
                                                     <p  class="" style="word-wrap:break-word;">
-                                                        <span style="position:relative;top:-0.6rem;" v-html="item.describe"></span>   
+                                                        <span style="position:relative;top:-0.6rem;">{{item.productKeyWord}}</span>
                                                         <span class="font_26" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{item.price}}</span>
                                                     </p>
                                                 </span>
@@ -82,7 +82,7 @@
                                                     </span>
                                                     <span class="td_block padding_left_30 ">
                                                         <p  class="" style="word-wrap:break-word;">
-                                                            <span style="position:relative;top:-0.6rem;" v-html="child.describe"></span>   
+                                                            <span style="position:relative;top:-0.6rem;">{{item.productKeyWord}}</span>
                                                             <span class="font_26" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{child.price}}</span>
                                                         </p>
                                                     </span>
@@ -96,7 +96,7 @@
                                         </li>
                                     </ul>
                                 </div>
-                                
+
                                 <div class="items_total flex flex_end padding_0_20">
                                     <div >小计：￥{{items.itemTotal}}</div>
                                 </div>
@@ -151,8 +151,8 @@ export default {
                 listDeleteState: false,
                 // 总价格
                 listTotal: '0.00',
-            }, 
-                        
+            },
+
             //购物车数据列表大列表
             cartList:[] ,
             // 购物车删除多个商品存值
@@ -163,8 +163,8 @@ export default {
                 pageNo: 1,
                 pageSize: 30,
                 dataSize: 0 ,
-                ciCode: this.$store.state.userData.cicode 
-            }, 
+                ciCode: this.$store.state.userData.cicode
+            },
 
             /*删除提示弹框对象*/
             modelDate:{
@@ -174,7 +174,7 @@ export default {
                 index1:0,
             }
         }
-        
+
     },
     methods: {
 
@@ -241,7 +241,7 @@ export default {
                 }
 
             }else{
-                
+
                 // 只有商户下有一个没有被选中，商户的就不选中
                 let states = true;
 
@@ -257,13 +257,13 @@ export default {
 
             }
 
-            // 所有选项是否全部选中 
+            // 所有选项是否全部选中
             let AllStates = true ;
 
             let All = this.cartList ;
 
             for(let i = 0 ; i < All.length; i++ ){
-  
+
                 if(this.cartList[i].itemType == '1'){
 
                     for(let x = 0 ; x < All[i].items.length; x++){
@@ -294,7 +294,7 @@ export default {
             this.calculatePrice();
 
         },
-        
+
         // 设置checkbox 全选或取消全选
         setAllCheckboxChange(){
 
@@ -326,7 +326,7 @@ export default {
 
         },
 
-        /*购物车数据计算*/    
+        /*购物车数据计算*/
         // 计算小计与合计
         calculatePrice(){
 
@@ -414,7 +414,7 @@ export default {
                 this.deleteCartItemData(cartId)
 
             }).catch(() => {
-            
+
             });
 
         },
@@ -474,7 +474,7 @@ export default {
                 this.deleteCartItemData(cartId)
 
             }).catch(() => {
-            
+
             });
 
         },
@@ -495,7 +495,7 @@ export default {
                 console.log(res)
 
                 if(res.data.code == 200){
-                  
+
                     let data = res.data.content.list ;
 
                     // 购物车商品商户分类
@@ -727,7 +727,7 @@ export default {
             })
             .catch((error) => {
 
-                
+
                 console.log('发生错误！', error);
 
             });
@@ -799,7 +799,7 @@ export default {
                 li,.content,.item{
                     height:2.2rem;
                 }
-                
+
             }
             .img_box{
                 display: inline-block;

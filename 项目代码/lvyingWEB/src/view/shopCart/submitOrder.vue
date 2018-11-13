@@ -13,10 +13,10 @@
                     </div>
                     <div class="padding_0_20 flex space_between">
                         <div class="color_cart_ccc1" style="width:1.6rem;">收货地址：</div>
-                        <div v-for="(lists,index) in addressData.addressList" :key="index" v-if="index == 0"> 
-                            <input type="text" readonly="readonly" style="border:0;width:5.5rem;" 
+                        <div v-for="(lists,index) in addressData.addressList" :key="index" v-if="index == 0">
+                            <input type="text" readonly="readonly" style="border:0;width:5.5rem;"
                             v-model="lists.province.label + lists.city.label + lists.county.label  + lists.addressDetail" />
-                            
+
                         </div>
                     </div>
                     <div class="padding_0_20 flex space_between line_height_94 border_top_1px" @click="addressData.addressPageShow = true">
@@ -24,12 +24,12 @@
                         <div> <img style="width:0.3rem;position:relative;top:0.06rem;" src="../../../static/images/icon/address_add.png" alt=""></div>
                     </div>
                 </div>
-                
+
                 <div v-else class="padding_0_20 flex space_between line_height_94 border_top_1px" @click="addressData.addressPageShow = true">
                     <div style="width:2rem;">添加收货地址</div>
                     <div> <img style="width:0.3rem;position:relative;top:0.06rem;" src="../../../static/images/icon/address_add.png" alt=""></div>
                 </div>
-            </div> 
+            </div>
 
             <!-- 商品列表 -->
             <div  class="margin_top_30" >
@@ -51,7 +51,7 @@
                                             </span>
                                             <span class="td_block padding_left_30 ">
                                                 <p  class="" style="word-wrap:break-word;">
-                                                    <span style="position:relative;top:-0.6rem;" v-html="item.describe"> </span>   
+                                                    <span style="position:relative;top:-0.6rem;">{{item.productKeyWord}}</span>
                                                     <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
                                                 </p>
                                             </span>
@@ -68,7 +68,7 @@
                                 <div >小计：￥{{items.itemTotal}}</div>
                             </div>
                         </li>
-                    </ul> 
+                    </ul>
                 </div>
 
                 <!-- 组合包商品 -->
@@ -90,7 +90,7 @@
                                             </span>
                                             <span class="td_block padding_left_30 ">
                                                 <p  class="" style="word-wrap:break-word;">
-                                                    <span style="position:relative;top:-0.6rem;" v-html="item.describe"> </span>   
+                                                    <span style="position:relative;top:-0.6rem;">{{item.productKeyWord}}</span>
                                                     <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
                                                 </p>
                                             </span>
@@ -107,11 +107,11 @@
                                 <div >小计：￥{{items.itemTotal}}</div>
                             </div>
                         </li>
-                    </ul> 
+                    </ul>
                 </div>
 
-            </div>    
-        </div>  
+            </div>
+        </div>
 
 
 
@@ -162,7 +162,7 @@ export default {
                 listTotal: 0.00,
                 // 大列表
                 cartList:[],
-            },  
+            },
 
             // 是否为组合包
             isGroup: false,
@@ -196,7 +196,7 @@ export default {
             },
 
         }
-        
+
     },
     methods: {
 
@@ -210,7 +210,7 @@ export default {
 
         },
 
-        /*订单数据计算*/    
+        /*订单数据计算*/
         // 计算小计与合计
         calculatePrice(){
 
@@ -221,14 +221,14 @@ export default {
 
                 // 计算小计
                 for(let x = 0 ; x < m ; x++){
-    
+
                     let n = this.cartDate.cartList[x].items.length;
 
                     // 重置小计
                     this.cartDate.cartList[x].itemTotal = 0;
 
                     for(let i = 0 ; i < n ; i++){
-                        
+
                         let item = this.cartDate.cartList[x].items[i];
 
                         this.cartDate.cartList[x].itemTotal += item.num * (item.price * 10000);
@@ -241,15 +241,15 @@ export default {
 
                 // 重置合计
                 this.cartDate.listTotal = 0;
-                
+
                 // 计算合计
                 for(let i = 0 ; i < m ; i++){
-                    
+
                     let item = this.cartDate.cartList[i];
 
                     this.cartDate.listTotal += item.itemTotal *10000;
 
-                }  
+                }
 
             }else{
 
@@ -259,7 +259,7 @@ export default {
                     for(let items of lists.items){
 
                         for(let item of items.items){
-                            
+
                             items.itemTotal += item.num * (item.price * 10000);
                         }
 
@@ -288,11 +288,11 @@ export default {
 
         },
 
-        /*订单提交 生成订单*/   
-        submitOrderClick(){   
-            
+        /*订单提交 生成订单*/
+        submitOrderClick(){
+
             if(this.addressData.addressList.length == 0){
-                
+
                 this.$toast("请先填写好订单地址！");
                 return;
 
@@ -317,8 +317,8 @@ export default {
 
                 }else{
 
-                    this.$toast(res.data.message);  
-                    
+                    this.$toast(res.data.message);
+
                 }
 
                 this.$toast.clear()
@@ -329,8 +329,8 @@ export default {
                 this.$toast.clear();
                 console.log('发生错误！', error);
 
-            }); 
- 
+            });
+
         },
         // 获取创建订单参数
         getOrderParam(){
@@ -342,7 +342,7 @@ export default {
                 for(let lists of this.cartDate.cartList){
 
                     for(let items of lists.items){
-    
+
                             productCodeAndCount +=  productCodeAndCount=='' ? items.productCode + '-'+ items.num : ','+  items.productCode + '-'+ items.num;
 
                     }
@@ -364,7 +364,7 @@ export default {
             }
 
             return param;
-            
+
         },
 
         /**获取产品提交订单的数据**/
@@ -375,7 +375,7 @@ export default {
 
             // 如果是从购物车来的数据
             if(isCart != -1){
-                
+
                 cartCode = productCode.split('-')[0];
                 cartNun = productCode.split('-')[1];
 
@@ -448,17 +448,17 @@ export default {
                     this.cartDate.cartList = arr;
 
                     // 判断是否为组合包
-                    this.isGroup ? this.getGroupCartItem() : this.calculatePrice();   
-                    
+                    this.isGroup ? this.getGroupCartItem() : this.calculatePrice();
+
                     this.$toast.clear();
 
                 }else{
 
                     this.$toast.clear()
-                    this.$toast(res.data.message);  
-                    
+                    this.$toast(res.data.message);
+
                 }
-                
+
 
             })
             .catch((error) => {
@@ -481,7 +481,7 @@ export default {
             }
 
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0})
-              
+
             this.$api.getProductShowCase( this.$Qs.stringify({ 'productCode': codeStr }) )
 
             .then( (res) => {
@@ -539,11 +539,11 @@ export default {
 
                         }
 
-                    } 
+                    }
                     // 压入到商品列表
-                    this.cartDate.cartList = arr2;    
-                    this.calculatePrice();        
-                   
+                    this.cartDate.cartList = arr2;
+                    this.calculatePrice();
+
                 }else{
 
                     this.$toast(res.data.message);
@@ -627,13 +627,13 @@ export default {
 
                                 }
 
-                            } 
-    
+                            }
+
                             CartList[i].items = arr2;
                             console.log(CartList)
 
                             this.calculatePrice();
-                        
+
                         }else{
 
                             this.$toast.clear()
@@ -645,12 +645,12 @@ export default {
                     })
 
                 }
-      
-            }    
+
+            }
 
            this.cartDate.cartList = CartList;
 
-        },      
+        },
 
         /**数据**/
         // 获取地址列表
@@ -738,7 +738,7 @@ export default {
         // 获取用户地址列表
         this.getAddressData();
 
-        // 获取页面数据来源 
+        // 获取页面数据来源
         if(this.$route.query.productCode.split(',').length == 1){
 
             this.getProductDetailData(this.$route.query.productCode);
@@ -748,10 +748,10 @@ export default {
             this.getProductCartData(this.$route.query.productCode);
 
         }
-        
+
 
     }
-    
+
 }
 </script>
 
@@ -790,7 +790,7 @@ export default {
             li,.content,.item{
                 height:2.2rem;
             }
-            
+
         }
         .img_box{
             display: inline-block;

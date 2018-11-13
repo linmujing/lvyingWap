@@ -5,8 +5,8 @@ import axios from 'axios';
 var instance = axios.create({
   // baseURL: 'http://localhost:8080/',          // 本地测试
   // baseURL: 'http://www.luyingjiaoyu.com/law-web-api/', // 正式环境
-  // baseURL: 'http://114.115.133.96:8899/law-web-api/', // 测试环境
-  baseURL: "/api/",                                      // 本地环境
+  baseURL: 'http://114.115.133.96:8899/law-web-api/', // 测试环境
+  // baseURL: "/api/",                                      // 本地环境
   timeout: 20000,                                // 请求超时设置
   headers: { "Accept": "application/json" },
 });
@@ -55,6 +55,8 @@ export const getProductShowCase = params => { return instance.post(`product/info
 export const getSectionIndex = params => { return instance.post(`product/info/getProductSectionIndexContent`, params ); };
 // // 获取橱窗列表
 export const getProductShowCaseList = params => { return instance.post(`system/showCase/getShowCaseList`, params ); };
+// 获取产品分类列表初始化微信版
+export const getProductCatWxInitList = params => { return instance.post(`product/cat/getProductCatWxInitList`, params ); };
 
 /** 系统接口 **/
 //短信发送

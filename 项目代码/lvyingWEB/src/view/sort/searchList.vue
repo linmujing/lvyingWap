@@ -29,7 +29,7 @@
                       <span class="color_title font_16">¥{{val.productPrice}}</span>
                     </van-col>
                     <van-col span="12">
-                      <div class="more"><span>{{val.saleCount}}人看过</span></div>
+                      <div class="more"><span>{{val.lookCount}}人看过</span></div>
                     </van-col>
                   </van-row>
                 </div>
@@ -123,7 +123,7 @@ export default {
     // 添加商品到购物车 MT
     addProductCart(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       let param = {
@@ -138,7 +138,7 @@ export default {
     // 立即购买
     goBuy(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       // 页面跳转

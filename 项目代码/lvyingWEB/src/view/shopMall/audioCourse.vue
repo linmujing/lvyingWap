@@ -16,7 +16,7 @@
 				  	<span class="title">热门推荐</span>
 				  </van-col>
 				  <van-col span="6">
-            <div class="more" @click="moreList()">
+            <div class="more" @click="moreList">
               <span>查看更多》</span>
             </div>
 				  </van-col>
@@ -39,7 +39,7 @@
 						  				<span class="color_title font_16">￥{{item.productPrice}}</span>
 						  			</van-col>
 						  			<van-col span="12">
-						  				<div class="more"><span>{{item.saleCount}}人看过</span></div>
+						  				<div class="more"><span>{{item.lookCount}}人看过</span></div>
 						  			</van-col>
 						  		</van-row>
 					  		</div>
@@ -75,7 +75,7 @@
 				  	<span class="title">入职推荐</span>
 				  </van-col>
 				  <van-col span="6">
-            <div class="more" @click="moreList()">
+            <div class="more" @click="moreList">
               <span>查看更多》</span>
             </div>
 				  </van-col>
@@ -98,7 +98,7 @@
 						  				<span class="color_title font_16">￥{{item.productPrice}}</span>
 						  			</van-col>
 						  			<van-col span="12">
-						  				<div class="more"><span>{{item.saleCount}}人看过</span></div>
+						  				<div class="more"><span>{{item.lookCount}}人看过</span></div>
 						  			</van-col>
 						  		</van-row>
 					  		</div>
@@ -171,9 +171,11 @@ export default {
     },
     //获取橱窗对象
     getCaseProduct(pageLocat){
+      this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
       this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: pageLocat})).then((res)=>{
 
         if(res.data.code == 200){
+          this.$toast.clear();
           let {content}=res.data;
           // 保存轮播数据
           this.banner = eval(res.data.content[2].caseUrl)
@@ -185,10 +187,12 @@ export default {
             }
           }
         }else{
+          this.$toast.clear();
           this.$toast.fail(res.data.message);
         }
       })
         .catch((error) => {
+          this.$toast.clear();
           console.log('发生错误！', error);
         });
     },
@@ -223,9 +227,11 @@ export default {
     // 查看更多
     moreList(){
       this.$router.push({
-        path:'/lvyingMallList',
+        path:'/dynamicList',
         query: {
-          typeId: 4
+          id: 4,
+          typeId: 4,
+          name: '音频课程'
         }
       })
     },
@@ -244,7 +250,7 @@ export default {
     // 添加商品到购物车 MT
     addProductCart(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       let param = {
@@ -259,7 +265,7 @@ export default {
     // 立即购买
     goBuy(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       // 页面跳转

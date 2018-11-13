@@ -23,7 +23,7 @@
               <span class="color_title font_16">￥{{dataDetail.productOrgPrice}}</span>
               <del v-show="typeBook" class="color_999">￥80.00</del>
             </div>
-            <div class="color_999 font_12">{{dataDetail.saleCount}}人看过</div>
+            <div class="color_999 font_12">{{dataDetail.lookCount}}人看过</div>
           </div>
 	    	</div>
     	</div>
@@ -54,7 +54,7 @@
         <div @click="goStore" class="margin_top_10">
           <van-row>
             <van-col span="5">
-              <img src="../../../static/images/img/falv.png" class="img_box" />
+              <img :src="merchantInfo.merchantProfileUrl  == '' || merchantInfo.merchantProfileUrl  == null ? '../../../static/images/img/falv.png' : merchantInfo.merchantProfileUrl"  class="img_box"/>
             </van-col>
             <van-col span="19">
               <div class="font_16">{{merchantInfo.orgName}}</div>
@@ -70,7 +70,7 @@
 				  <van-tab v-for="(item,index) in subTab" :key="index" :title="item">
 					  <!--简介-->
 			    	<div v-if="index === 0" class="margin_top_10">
-              <div class="padding_10" v-html="dataDetail.productDesc"></div>
+              <div class="padding_10 info" v-html="dataDetail.productDesc"></div>
 			    	</div>
 			    	<!--全程动态管控系统-->
 			    	<div v-show="!typeBook">
@@ -80,44 +80,47 @@
                 <!--课程目录-->
                 <div v-if="showCourse" class="padding_10">
                   <!--<p class="color_666">第一张  <span class="font_12">&nbsp;&nbsp;&nbsp;&nbsp;入职管理</span></p>-->
-                  <div v-for="(item,index) in productSection" :key="index">
-                    <div class="margin_top_10 padding_10 body_bg juc_center_between">
-                      <div class="color_666 flex">
-                        <!--<div class="width_20px">{{index + 1}}</div>-->
-                        <div class="font_12 van-ellipsis">{{item.sectionName}}</div>
-                      </div>
-                      <!--视频-->
-                      <div v-if="typeId == 3" class="align_center">
-                        <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
-                        <div v-if="isBuy === 1">
-                          <button class="btn_warning" @click="toCourse">开始播放</button>
+                  <div v-if="productSection.length > 0">
+                    <div v-for="(item,index) in productSection" :key="index">
+                      <div class="margin_top_10 padding_10 body_bg juc_center_between">
+                        <div class="color_666 flex">
+                          <!--<div class="width_20px">{{index + 1}}</div>-->
+                          <div class="font_12 van-ellipsis">{{item.sectionName}}</div>
                         </div>
-                        <div v-else>
-                          <div v-if="parseInt(item.videoStatus) === 1" class="width_70px">
-                            <button class="btn_warning" @click="audition(item)">试听</button>
+                        <!--视频-->
+                        <div v-if="typeId == 3" class="align_center">
+                          <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
+                          <div v-if="parseInt(item.voiceStatus) === 1">
+                            <button class="btn_warning" @click="toCourse">开始播放</button>
                           </div>
-                          <div v-else class="width_70px">
-                            <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
+                          <div v-else>
+                            <div v-if="parseInt(item.videoStatus) === 1" class="width_70px">
+                              <button class="btn_warning" @click="audition(item)">试听</button>
+                            </div>
+                            <div v-else class="width_70px">
+                              <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <!--音频-->
-                      <div v-if="typeId == 4" class="align_center">
-                        <span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>
-                        <div v-if="isBuy === 1">
-                          <button class="btn_warning" @click="toCourse">开始播放</button>
-                        </div>
-                        <div v-else>
-                          <div v-if="parseInt(item.voiceStatus) === 1" class="width_70px">
-                            <button class="btn_warning" @click="audition(item)">试听</button>
+                        <!--音频-->
+                        <div v-if="typeId == 4" class="align_center">
+                          <span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>
+                          <div v-if="parseInt(item.voiceStatus) === 0">
+                            <button class="btn_warning" @click="toCourse">开始播放</button>
                           </div>
-                          <div v-else class="width_70px">
-                            <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
+                          <div v-else>
+                            <div v-if="parseInt(item.voiceStatus) === 1" class="width_70px">
+                              <button class="btn_warning" @click="audition(item)">试听</button>
+                            </div>
+                            <div v-else class="width_70px">
+                              <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
+                            </div>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
+                  <div v-else class="color_666 text_center padding_10">暂无数据~</div>
                 </div>
                 <!--动态管控-->
                 <div v-else class="padding_10">
@@ -127,7 +130,8 @@
                       <img v-show="index != (sectionNav.length-1) " src="../../../static/images/icon/jt.png" class="jt">
                     </div>
                   </div>
-                  <div v-for="(item,index) in sectionList" :key="index">
+                  <div v-if="sectionList.length > 0">
+                    <div v-for="(item,index) in sectionList" :key="index">
                     <div class="margin_top_10 padding_10 van-hairline--bottom">
                       <!--<p>1.1.1专项服务合同</p>-->
                       <div class="juc_center_between padding_left_20">
@@ -145,6 +149,8 @@
                       </div>
                     </div>
                   </div>
+                  </div>
+                  <div v-else class="color_666 text_center padding_10">暂无数据~</div>
                 </div>
               </div>
             </div>
@@ -168,7 +174,7 @@
 			    					</div>
 			    					<div class="color_999">{{item.createDate}}</div>
 			    				</div>
-			    				<div class="margin_top_5 color_666" v-html="item.commentDesc"></div>
+			    				<div class="margin_top_5 color_666 van-ellipsis">{{item.productKeyWord}}</div>
 			    			</div>
 			    		</div>
 			    		<div class="color_666 padding_10 text_center" @click="seeMore">查看更多》</div>
@@ -193,7 +199,7 @@
                   <img :src="item.productProfileUrl" class="all_width height_110px"/>
                 </div>
                 <div class="van-ellipsis margin_top_5 title">{{item.productTitle}}</div>
-                <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
+                <div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
                 <div class="juc_between align_center margin_top_10">
                   <span class="color_title font_16 van-ellipsis">￥{{item.productPrice}}</span>
                   <button class="btn_title van-ellipsis" @click="goBuy(item.productCode)">立即购买</button>
@@ -219,14 +225,14 @@
               <van-col span="14">
                 <div class="class_box">
                   <div class="title van-ellipsis">{{item.productTitle}}</div>
-                  <div class="van-ellipsis margin_top_5 color_666" v-html="item.productDesc"></div>
+                  <div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
                   <div class="margin_top_10">
                     <van-row>
                       <van-col span="12">
                         <span class="color_title font_16">￥{{item.productPrice}}</span>
                       </van-col>
                       <van-col span="12">
-                        <div class="more"><span>{{item.saleCount}}人看过</span></div>
+                        <div class="more"><span>{{item.lookCount}}人看过</span></div>
                       </van-col>
                     </van-row>
                   </div>
@@ -278,8 +284,8 @@ export default {
         subTab: ['简介','全程动态管控系统','商品评价'],
         star: 4,
         typeId: 0,
-        productCode: 'P154036432807121',
-        // productCode: this.$route.query.productCode,
+        // productCode: 'P154036432807121',
+        productCode: this.$route.query.productCode,
         // 产品详情数据
         dataDetail: {},
         // 评价列表
@@ -329,6 +335,7 @@ export default {
       this.productCode = this.$route.query.productCode
     },
     productCode() {
+      console.log(this.$route.query.productCode)
       this.getProductInfo()
       this.getEvaluateList(this.pageSize)
       this.judgeProperty()
@@ -349,12 +356,13 @@ export default {
 	methods: {
     // 查看产品详情
     getProductInfo(){
-      // 查看产品详情
+      this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
       this.$api.getProductInfo( this.$Qs.stringify({'productCode': this.productCode, 'ciCode': this.$store.state.userData.cicode}) )
 
         .then( (res) => {
-          console.log(res);
+          // console.log(res);
           if(res.data.code == 200){
+            this.$toast.clear();
             var result = res.data.content
             this.dataDetail = result
             //获取推荐产品
@@ -371,7 +379,9 @@ export default {
             result.productScore == null ? this.valueCustomText = 0 : this.valueCustomText = result.productScore
             // 动态管控列表
             this.sectionNav = result.productSectionIndexList
-            this.sectionIndex = result.productSectionIndexList[0].sectionIndex
+            if(result.productSectionIndexList.length > 0){
+              this.sectionIndex = result.productSectionIndexList[0].sectionIndex
+            }
             // 动态管控课程目录
             this.sectionList = result.productSectionList
 
@@ -381,10 +391,12 @@ export default {
             this.productSection = productSection
             console.log(productSection)
           }else {
+            this.$toast.clear();
             this.$toast.fail(res.data.message);
           }
         })
         .catch((error) => {
+          this.$toast.clear();
           console.log('发生错误！', error);
         });
     },
@@ -676,7 +688,7 @@ export default {
     // 添加商品到购物车 MT
     addProductCart(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       let param = {
@@ -691,7 +703,7 @@ export default {
     // 立即购买
     goBuy(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       // 页面跳转
@@ -718,4 +730,5 @@ export default {
 	.photo{width: 0.8rem;height: 0.8rem;border-radius: 50%;display: block;margin-right: 0.2rem;}
   .jt{width: 0.4rem;}
   .width_48{width: 48%}
+  .info img{width: 100%}
 </style>

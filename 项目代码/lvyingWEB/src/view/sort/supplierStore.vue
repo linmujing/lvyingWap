@@ -15,7 +15,7 @@
         <div class="margin_top_10">
           <van-row>
             <van-col span="5">
-              <img src="../../../static/images/img/falv.png" class="img_box" />
+              <img :src="merchantInfo.merchantProfileUrl  == '' || merchantInfo.merchantProfileUrl  == null ? '../../../static/images/img/falv.png' : merchantInfo.merchantProfileUrl"  class="img_box"/>
             </van-col>
             <van-col span="19">
               <div class="juc_center_between">
@@ -49,7 +49,7 @@
                       <span class="color_title font_16">￥{{item.productPrice}}</span>
                     </van-col>
                     <van-col span="12">
-                      <div class="more"><span>{{item.saleCount}}人看过</span></div>
+                      <div class="more"><span>{{item.lookCount}}人看过</span></div>
                     </van-col>
                   </van-row>
                 </div>
@@ -104,21 +104,25 @@ export default {
 	methods: {
     // 获取商品列表
     getProductList(pageSize){
+      this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
       this.$api.getProductList( this.$Qs.stringify({'pageNo': 1, 'pageSize': pageSize, 'merchantCode': this.merchantCode, 'orderByStr': 10}) )
 
         .then( (res) => {
           // console.log(res);
           if(res.data.code == 200){
+            this.$toast.clear();
             var result = res.data.content
             this.productList = result.list
             this.total = result.count
 
           }else {
+            this.$toast.clear();
             this.$toast.fail(res.data.message);
 
           }
         })
         .catch((error) => {
+          this.$toast.clear();
           console.log('发生错误！', error);
         });
     },
@@ -164,7 +168,7 @@ export default {
     // 添加商品到购物车 MT
     addProductCart(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       let param = {
@@ -179,7 +183,7 @@ export default {
     // 立即购买
     goBuy(code){
       if(this.$store.state.userData.cicode == null || this.$store.state.userData.cicode == "null"){
-        this.$Message.warning('您还没有登录，请登录后再尝试！');
+        this.$toast('您还没有登录，请登录后再尝试！');
         return ;
       }
       // 页面跳转
