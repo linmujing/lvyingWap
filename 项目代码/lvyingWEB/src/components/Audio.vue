@@ -47,7 +47,7 @@ export default {
   .audio_box{
     position: absolute;
     bottom: 0;
-    left: 0
+    left: 0;
   }
   .audio{
     width: 7.5rem;
