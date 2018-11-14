@@ -5,11 +5,11 @@
 	    	<div>
           <div v-if="typeId === 3">
             <img v-if="videoData.videoSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
-            <Video v-else :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
+            <Video v-else ref="myVideo" :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
           </div>
           <div v-else-if="typeId === 4">
             <img v-if="audioData.audioSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
-            <Audio v-else :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
+            <Audio v-else ref="myAudio" :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
           </div>
           <div v-else>
             <img :src="dataDetail.productProfileUrl" class="all_width" />
@@ -89,7 +89,7 @@
                         </div>
                         <!--视频-->
                         <div v-if="typeId == 3" class="align_center">
-                          <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
+                          <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
                           <div v-if="parseInt(item.videoStatus) === 0">
                             <button class="btn_warning" @click="audition(item)">开始播放</button>
                           </div>
@@ -104,7 +104,7 @@
                         </div>
                         <!--音频-->
                         <div v-if="typeId == 4" class="align_center">
-                          <span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>
+                          <!--<span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>-->
                           <div v-if="parseInt(item.voiceStatus) === 0">
                             <button class="btn_warning" @click="audition(item)">开始播放</button>
                           </div>
@@ -600,12 +600,14 @@ export default {
           return false;
         }
         this.videoData.videoSrc = item.videoUrl
+
       }else if (this.typeId == 4) {
         if(item.voiceUrl == ''){
           this.$toast('对不起，暂无数据！');
           return false;
         }
         this.audioData.audioSrc = item.voiceUrl
+        this.$refs.myAudio.onPlayer();
       }
     },
     //课程

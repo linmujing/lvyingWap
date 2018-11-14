@@ -3,7 +3,7 @@
     <div style="position: relative">
       <img :src="imgSrc" class="all_width" height="260"/>
       <div class="audio_box">
-        <audio :src="audioSrc" controls="controls" class="audio">
+        <audio id="audio" :src="audioSrc" controls="controls" class="audio">
           您的浏览器不支持 audio 标签。
         </audio>
       </div>
@@ -25,7 +25,20 @@ export default {
 
   },
   methods: {
+	  // 播放
+    onPlayer: function(){
 
+      var audio = document.querySelector('#audio');
+      audio.play()
+
+    },
+    // 暂停
+    onPlayer: function(){
+
+      var audio = document.querySelector('#audio');
+      audio.pause()
+
+    },
 
   }
 }
