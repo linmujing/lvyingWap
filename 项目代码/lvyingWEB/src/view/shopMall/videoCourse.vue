@@ -106,8 +106,8 @@
 					        	<van-row>
 						          <van-col span="6">
 						            <div class="flex_warp van-ellipsis" @click="toDetail(item.productCode)">
-						              <img src="../../../static/images/icon/headset.png" width="18" height="16"/>
-						              <span class="font_12 color_666">试听</span>
+                          <van-icon name="password-view" style="font-size: 0.3rem;margin-right: 0.05rem"/>
+                          <span class="font_12 color_666">试看</span>
 						            </div>
 						          </van-col>
 						          <van-col span="16" offset="2">

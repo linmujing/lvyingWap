@@ -8,7 +8,7 @@
             <Video v-else :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
           </div>
           <div v-else-if="typeId === 4">
-            <img v-if="videoData.videoSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
+            <img v-if="audioData.audioSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
             <Audio v-else :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
           </div>
           <div v-else>
@@ -90,7 +90,7 @@
                         <!--视频-->
                         <div v-if="typeId == 3" class="align_center">
                           <span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>
-                          <div v-if="parseInt(item.voiceStatus) === 0">
+                          <div v-if="parseInt(item.videoStatus) === 0">
                             <button class="btn_warning" @click="audition(item)">开始播放</button>
                           </div>
                           <div v-else>
@@ -106,7 +106,7 @@
                         <div v-if="typeId == 4" class="align_center">
                           <span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>
                           <div v-if="parseInt(item.voiceStatus) === 0">
-                            <button class="btn_warning" @click="toCourse">开始播放</button>
+                            <button class="btn_warning" @click="audition(item)">开始播放</button>
                           </div>
                           <div v-else>
                             <div v-if="parseInt(item.voiceStatus) === 1" class="width_70px">
@@ -142,8 +142,8 @@
                         </div>
                       </div>
                       <div v-show="courseBtn == 2" class="margin_top_10">
-                        <button @click="toCourse" class="btn_plain van-ellipsis margin_right_10">视频</button>
-                        <button @click="toCourse" class="btn_plain van-ellipsis margin_right_10">音频</button>
+                        <button @click="audition(item)" class="btn_plain van-ellipsis margin_right_10">视频</button>
+                        <button @click="audition(item)" class="btn_plain van-ellipsis margin_right_10">音频</button>
                         <button @click="openTxt(item)" class="btn_plain van-ellipsis margin_right_10">文字预览</button>
                         <button v-show="parseInt(item.docStatus) === 0" @click="downloadDoc(item.docUrl)" class="btn_plain van-ellipsis">下载</button>
                       </div>
@@ -343,13 +343,6 @@ export default {
     }
   },
   mounted(){
-    // if(this.$route.query.typeId == null){
-    //   // this.showCourse = false
-    //   this.judgeProperty()
-    // }else {
-    //   this.typeId = parseInt(this.$route.query.typeId)
-    //   this.typeId === 3 || this.typeId === 4 ? this.showCourse = true : this.showCourse = false
-    // }
     this.judgeProperty()
     this.getProductInfo()
     this.getEvaluateList(this.pageSize)
@@ -558,32 +551,32 @@ export default {
       })
     },
     // 跳转到课程
-    toCourse(){
-      if(this.isBuy === 0){
-        this.$toast('对不起，您需要购买后才能观看！');
-        return false;
-      }
-      switch (this.typeId) {
-        case 1:
-        case 2:
-          this.$router.push({
-            path:'/seeFalv',
-            query: {
-
-            }
-          })
-          break
-        case 3:
-        case 4:
-          this.$router.push({
-            path:'/seeVideo',
-            query: {
-
-            }
-          })
-          break
-      }
-    },
+    // toCourse(){
+    //   // if(this.isBuy === 0){
+    //   //   this.$toast('对不起，您需要购买后才能观看！');
+    //   //   return false;
+    //   // }
+    //   switch (this.typeId) {
+    //     case 1:
+    //     case 2:
+    //       this.$router.push({
+    //         path:'/seeFalv',
+    //         query: {
+    //
+    //         }
+    //       })
+    //       break
+    //     case 3:
+    //     case 4:
+    //       this.$router.push({
+    //         path:'/seeVideo',
+    //         query: {
+    //
+    //         }
+    //       })
+    //       break
+    //   }
+    // },
     // 下载文件
     downloadDoc(doc){
       window.open(doc)
@@ -606,7 +599,7 @@ export default {
           this.$toast('对不起，暂无数据！');
           return false;
         }
-        this.videoData.videoSrc = item.videoSrc
+        this.videoData.videoSrc = item.videoUrl
       }else if (this.typeId == 4) {
         if(item.voiceUrl == ''){
           this.$toast('对不起，暂无数据！');

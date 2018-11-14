@@ -49,7 +49,7 @@ export default {
 		    fullHeight: '',
 		    //内容显示的index
 		    tabIndex: 0,
-		    tabData: [],
+		    tabData: [{productCatVoList: []}],
         navTitle: [
           {name: '行业动态管控', id: 1},
           {name: '法律动态管控', id: 2},
