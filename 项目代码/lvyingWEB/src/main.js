@@ -10,11 +10,19 @@ import axios from 'axios'
 import Qs from 'qs'
 
 
+// 视频播放器插件
+import VideoPlayer from 'vue-video-player'
+Vue.use(VideoPlayer);
+import "video.js/dist/video-js.css";
+import "vue-video-player/src/custom-theme.css";
+
+
 // 引入接口配置文件
 import * as api from './api/api'
 Vue.prototype.$api = api
 Vue.prototype.$axios = axios
 Vue.prototype.$Qs = Qs
+
 
 // 引入rem
 import './common/js/rem'

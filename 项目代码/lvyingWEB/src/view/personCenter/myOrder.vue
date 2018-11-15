@@ -582,6 +582,10 @@ export default {
                     this.orderData.pageData.finished = true;
                     this.$toast('没有更多了！');
 
+                }else{
+
+                    this.orderData.pageData.finished = false;
+
                 }
 
             })

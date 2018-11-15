@@ -290,8 +290,15 @@ const router = new Router({
         title:'404',
       },
       component: resolve => require(['@/view/404'],resolve)
+    },
+    {
+      path: '/case',
+      name: 'case',
+      meta:{
+        title:'case',
+      },
+      component: resolve => require(['@/view/case/case'],resolve)
     }
-
   ],
   mode: 'history'
 })

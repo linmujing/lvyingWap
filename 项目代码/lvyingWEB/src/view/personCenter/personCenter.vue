@@ -27,14 +27,16 @@
         <!-- 底部导航栏 -->
         <FooterBar :curIndex = '3'></FooterBar>
 
+
     </div>
 
 </template>
 <script>
 import FooterBar from '../../components/FooterBar.vue'
+
 export default {
     components : {
-    	FooterBar
+        FooterBar,
     },
     data() {
         return {
@@ -70,6 +72,8 @@ export default {
             imgHeadUrl:'',
             wxName: '',
 
+
+
         }
         
     },
@@ -86,7 +90,7 @@ export default {
             //this.$router.push({ path: Url, query: {id: '11'}})
             this.$router.push({ name: Url, params: {id: '11'}})
 
-        }
+        },
    
 
     },
@@ -143,6 +147,16 @@ export default {
                 }
             }
         }
+    }
+
+    .video_position,.audio_position{
+        position: fixed;
+        top:0;
+        left:0;
+        width:100%;
+    }
+    .audio_position{
+        top:50%; 
     }
 
 </style>

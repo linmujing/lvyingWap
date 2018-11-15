@@ -322,7 +322,9 @@ export default {
       getCaseProduct(){
         this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
         this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: 1})).then((res)=>{
+          console.log(res)
           if(res.data.code == 200){
+
             this.$toast.clear();
             let {content}=res.data;
             // 保存轮播数据
