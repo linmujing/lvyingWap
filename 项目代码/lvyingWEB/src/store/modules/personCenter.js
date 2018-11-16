@@ -2,6 +2,8 @@
 /* 个人中心页面状态管理 */
 
   const state = {
+    // 第一次进入  初始值：0  只要初始值为0，进入页面就弹出手机号码绑定
+    firstInto: 0,
     // 个人中心导航
     navIndex: 0 ,
     // 记录地址为空和不为空
@@ -27,6 +29,8 @@
   
   // mutations
   const mutations = {
+    // 第一次进入
+    FirstInto(state, n) {state.firstInto = n;},
     // 个人中心导航
     NavIndex(state, n) {state.navIndex = n;},
     // 当地址为空时

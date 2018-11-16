@@ -1,28 +1,39 @@
 <template>
 
-    <div class="font_28" style="padding:2rem 0" >
-      
-        <van-cell-group>
-        <van-field
-            v-model="username"
-            required
-            clearable
-            label="用户名"
-            icon="question"
-            placeholder="请输入用户名"
-            @click-icon="$toast('question')"
-        />
+    <div class="loginBox font_28" style="padding:2rem 0" >
+        <div class="login">
+            <div class="title">绑定手机号</div>
+            <span class="close" @click="closeBind">×</span>
+            <van-cell-group>
+                <van-field
+                    v-model="username"
+                    required
+                    clearable
+                    label="手机号"
+                    placeholder="请输入用户名"
+                />
 
-        <van-field
-            v-model="password"
-            type="password"
-            label="密码"
-            placeholder="请输入密码"
-            required
-        />
-        </van-cell-group>
-        <div style="padding-top:2rem;text-align:center;">
-            <van-button type="primary" style="width:2rem;" @click="loginFn">登录</van-button>
+                <van-field
+                    v-model="password"
+                    type="password"
+                    clearable
+                    label="密码"
+                    placeholder="请输入密码"
+                    required
+                />
+                <van-field
+                    v-model="password"
+                    type="password"
+                    clearable
+                    label="密码"
+                    placeholder="请再次输入密码"
+                    required
+                />
+            </van-cell-group>
+            <div style="padding-top:1rem;text-align:center;">
+                <van-button type="primary" style="width:2rem;height:0.8rem;" @click="loginFn">确定</van-button>
+            </div>
+        
         </div>
     </div>
 
@@ -41,6 +52,41 @@ export default {
         
     },
     methods: {
+
+        login(){
+            // 判断手机号是否已被注册
+            this.$api.verifyCiPhone( this.$Qs.stringify({ 'ciPhone': username }) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 500){
+
+                    this.$Message.error('该帐号还没有注册!');
+                    return;
+
+                }else if (res.data.code == 200){
+
+                    if(isPassWord){
+
+                        this.loginFn(this.formRight.name, this.formRight.pwd, '');
+
+                    }else{
+
+                        this.loginFn(this.formRightCode.phone, '', this.formRightCode.code);
+
+                    }
+                }
+
+            })
+            .catch((error) => {
+
+                console.log('发生错误！', error);
+
+            });
+
+        },
 
        // 登录
         //@param ciPhone 电话号码
@@ -102,6 +148,11 @@ export default {
             });
         },
 
+        // 关闭绑定框
+        closeBind(){
+            this.$store.commit('personCenter/FirstInto', 1)
+        }
+
     }
 }
 </script>
@@ -113,7 +164,43 @@ export default {
 
     @import '../../style/common.less';
 
+    .loginBox{
+        position: fixed;
+        top:0;
+        left:0;
+        width:100%;
+        height:100%;
+        background: rgba(0,0,0,0.5);
 
+        .login{
+            position: fixed;
+            height: 6rem;
+            width:80%;
+            background:#fff;
+            padding: 0.1rem;
+            top:0;
+            bottom:0;
+            left:0;
+            right:0;
+            margin: auto;
+            border-radius: 4px;
+
+            .title{
+                height: 1rem;
+                line-height: 1rem;
+                text-align: center;
+            }
+            .close{
+                position: fixed;
+                font-size: 1rem;
+                bottom:10%;
+                left: 0;
+                width:100%;
+                text-align: center;
+                color:#fff;
+            }
+        }
+    }
 
 
 </style>
