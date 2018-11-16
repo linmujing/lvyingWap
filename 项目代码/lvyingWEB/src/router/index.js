@@ -7,7 +7,7 @@ Vue.use(Router)
 const router = new Router({
 
   routes: [
-    {path: '/', redirect: 'shopMallIdex'},
+    {path: '/', redirect: 'Login'},
     {
       path: '/Login',
       name: 'Login',

@@ -21,14 +21,7 @@
                     placeholder="请输入密码"
                     required
                 />
-                <van-field
-                    v-model="password"
-                    type="password"
-                    clearable
-                    label="密码"
-                    placeholder="请再次输入密码"
-                    required
-                />
+
             </van-cell-group>
             <div style="padding-top:1rem;text-align:center;">
                 <van-button type="primary" style="width:2rem;height:0.8rem;" @click="loginFn">确定</van-button>
@@ -47,7 +40,7 @@ export default {
     data() {
         return {
             username:'15874025525',
-            password:'123456'
+            password:'12345678'
         }
         
     },
