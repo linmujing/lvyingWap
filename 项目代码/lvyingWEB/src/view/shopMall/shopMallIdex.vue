@@ -67,7 +67,7 @@
 						  		<div class="margin_top_10">
                     <van-row>
                       <van-col span="6">
-                        <div class="flex_warp van-ellipsis" @click="toDetail(item.productCode,3)">
+                        <div class="flex_warp align_center van-ellipsis" @click="toDetail(item.productCode,3)">
                           <van-icon name="password-view" style="font-size: 0.3rem;margin-right: 0.05rem"/>
                           <span class="font_12 color_666">试看</span>
                         </div>
