@@ -13,7 +13,7 @@
         <!--搜索-->
 			  	<div class="bg_fff">
 			  		<van-row>
-					  <van-col span="20">
+					  <van-col span="24">
 					  	<div class="search_box">
 			  				<input v-model="searchval" type="text" placeholder="视频/音频/合同"/>
 			  				<button @click="onSearch">
@@ -21,11 +21,11 @@
 			  				</button>
 			  			</div>
 					  </van-col>
-					  <van-col span="4">
-					  	<div class="scan">
-					  		<img src="../../../static/images/icon/sao.png" width="30"/>
-					  	</div>
-					  </van-col>
+					  <!--<van-col span="4">-->
+					  	<!--<div class="scan">-->
+					  		<!--<img src="../../../static/images/icon/sao.png" width="30"/>-->
+					  	<!--</div>-->
+					  <!--</van-col>-->
 					</van-row>
 			  	</div>
 			  	<!--视频课程-->
@@ -321,7 +321,7 @@ export default {
       //获取橱窗对象
       getCaseProduct(){
         this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
-        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: 1})).then((res)=>{
+        this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: 1})).then((res)=>{
           console.log(res)
           if(res.data.code == 200){
 

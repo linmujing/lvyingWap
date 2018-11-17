@@ -60,7 +60,7 @@ export default {
         lists: [],
         searchval: '',
         total: 0,
-        pageSize: 2,
+        pageSize: 6,
         page: 1
       }
 

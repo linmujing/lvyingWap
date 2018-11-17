@@ -6,7 +6,7 @@
 				<!--侧边栏-->
 			  	<van-col span="7">
 				  	<van-badge-group :active-key="activeKey" v-bind:style="{height: fullHeight - 50 + 'px'}" class="all_width scroll">
-					  <van-badge v-for="(item,index) in navTitle" :key="index" :title="item.name" @click="onClick" class="van-ellipsis"/>
+					  <van-badge v-for="(item,index) in tabData" :key="index" :title="item.catName" @click="onClick" class="van-ellipsis"/>
 					</van-badge-group>
 			  	</van-col>
 			  	<!--内容-->
@@ -50,13 +50,6 @@ export default {
 		    //内容显示的index
 		    tabIndex: 0,
 		    tabData: [{productCatVoList: []}],
-        navTitle: [
-          {name: '行业动态管控', id: 1},
-          {name: '法律动态管控', id: 2},
-          {name: '视频课程', id: 3},
-          {name: '音频课程', id: 4},
-          {name: '律瀛商城', id: 5}
-        ],
       }
 
     },
