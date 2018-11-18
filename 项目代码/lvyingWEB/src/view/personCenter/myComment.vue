@@ -9,26 +9,26 @@
                         <div class="head_img  padding_right_20">
                             <span :style="{ backgroundImage: 'url('+ userHeadUrl +')' } "></span>
                         </div>
-                        <div class="padding_top_30">
+                        <div class="padding_top_20">
                             <div class="color_cart_ccc2">{{ userName }}</div>
                             <span class="color_cart_ccc1 font_20">{{ items.createDate }}</span>
                         </div>
                     </div>
-                    <div class="padding_0_20 line_height_40 padding_bottom_20" style="padding-left: 1.2rem;white-space: normal;">
+                    <div class="padding_0_20 line_height_40 padding_20" >
                         {{items.commentDesc}}
                     </div>
-                    <div v-for= "(item, index2) in items.items" :key="index2">
+                    <div >
                         <div class="content flex space_between border_bottom_1px padding_left_20" style="position:relative;background:rgb(250,250,250)">
                             <div class="item table_block" style="height:2.2rem;">
                                 <span class="td_block">
                                     <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;" >
-                                        <img  :src="item.productWxProfileUrl" :data-productcode="item.productCode" alt="">
+                                        <img  :src="items.productWxProfileUrl" :data-productcode="items.productCode" alt="">
                                     </i>
                                 </span>
                                 <span class="td_block padding_left_30">
                                     <p  class="" style="word-wrap:break-word;">
-                                        <span style="position:relative;top:-0.5rem;">{{item.productTitle }}</span>   
-                                        <span class="font_20" style="position:absolute;top:1.5rem;left:2.1rem;color:red;">￥  {{item.productOrgPrice }}</span>
+                                        <span style="position:relative;top:-0.5rem;">{{items.productTitle }}</span>   
+                                        <span class="font_20" style="position:absolute;top:1.5rem;left:2.1rem;color:red;">￥  {{items.productOrgPrice }}</span>
                                     </p>
                                 </span>
                             </div>
@@ -82,7 +82,7 @@ export default {
                 'pageSize': this.pageData.pageSize, 
                 'ciCode': this.$store.state.userData.cicode , 
                 'productScore': '', 
-                'searchKey': this.commentValue
+                'searchKey': ''
             })
 
             // 获取产品分类列表

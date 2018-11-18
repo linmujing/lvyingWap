@@ -112,9 +112,9 @@ export const hideOrder = params => { return instance.post(`order/info/hideOrder`
 
 /** 订单商品 **/
 //获取订单商品
-export const getOrderProductList = params => { return instance.post(`/order/product/getOrderProductList`, params ); };
+export const getOrderProductList = params => { return instance.post(`order/product/getOrderProductList`, params ); };
 //订单商品换货
-export const orderProductExchange = params => { return instance.post(`/order/product/orderProductExchange`, params ); };
+export const orderProductExchange = params => { return instance.post(`order/product/orderProductExchange`, params ); };
 
 /** 订单评价 **/
 //订单商品评价
@@ -127,7 +127,7 @@ export const getOrderTrack = params => { return instance.post(`order/track/getOr
 
 /** 订单交易 **/
 // 阿里支付请求
-export const aliPayRequest = params => { return instance.post(`/trade/aliPay/aliPay`, params ); };
+export const aliPayRequest = params => { return instance.post(`trade/aliPay/aliPay`, params ); };
 
 // 微信支付回调
 export const payBack = params => { return instance.post(`/trade/weixinPay/payBack`, params ); };
