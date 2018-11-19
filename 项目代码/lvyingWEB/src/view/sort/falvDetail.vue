@@ -35,6 +35,9 @@
         </div>
       </div>
       <van-popup v-model="couponShow" position="bottom">
+        <div class="text_right padding_5">
+          <van-icon name="close" size="20px" @click="couponShow = false"/>
+        </div>
         <div class="padding_left_20 padding_right_20 padding_top_20" style="max-height: 8.0rem;overflow: scroll">
           <div v-for="item in cuponList">
             <div @click="selectCoupon(item.couponCode+','+item.couponForm)" class="juc_between padding_10 margin_bottom_20" style="background: #FFF3E5">
