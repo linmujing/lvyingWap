@@ -19,7 +19,7 @@
                             <span>订单号：{{items.orderCode}}</span>
                             <span class="color_cart_ccc2 font_20" > {{items.orderTime}} </span>
                         </div>
-                        <div class="line_height_80 padding_0_20 border_bottom_1px" v-if="items.isCombination != 0">
+                        <div class="line_height_60 padding_0_20 border_bottom_1px" v-if="items.isCombination != 0">
                             <span>组合包</span>
                         </div>
                         <div class="lists" v-for="(item, index2) in items.orderItem" :key="index2">
@@ -40,7 +40,7 @@
                                         <span class="td_block padding_left_30">
                                             <p  class="" style="word-wrap:break-word;">
                                                 <span style="position:relative;top:-0.6rem;"> {{child.name}} </span>   
-                                                <span class="font_22" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{child.price}}</span>
+                                                <span class="font_22" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{(child.price).toFixed(2)}}</span>
                                             </p>
                                         </span>
                                     </div>
@@ -54,7 +54,7 @@
 
                         </div>   
                         <div class="items_total flex flex_end margin_left_20 padding_right_20 line_height_100 border_bottom_1px">
-                            <div >实付：￥ {{items.orderPayAmount}}</div>
+                            <div >实付：￥ {{(items.orderPayAmount).toFixed(2)}}</div>
                         </div>
                         <div class="items_total flex space_between padding_0_20 line_height_100">
                             <div class="color_cart_ccc2">

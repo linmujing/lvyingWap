@@ -23,7 +23,7 @@
                         </div>
 
                      </div>
-                     <div class="items_bottom flex space_between border_top_1px padding_right_20 font_20" style="height: 1rem;" >
+                     <div class="items_bottom flex space_between border_top_1px padding_right_20 font_20" style="height: 0.8rem;" >
                          <div style="padding-top:0.28rem;position:relative;">
                              <!-- 单选遮罩 -->
                              <div style="position:absolute;top:0;left:0;width:100%;height:100%;z-index:98;" 
@@ -31,7 +31,7 @@
                              <!-- <van-checkbox  v-model="items.default" @change="listenCheckbox(index)" 
                                 :style="{color: items.default ? '#00aa88' : '#ccc'}">设置默认地址</van-checkbox> -->
                          </div>
-                         <div class="img_middle" style="padding-top:0.25rem;">
+                         <div class="img_middle" style="padding-top:0.2rem;">
                             <span @click="deleteAddress(index)"  class="margin_right_30" >
                                 <van-icon name="delete" color="#ccc" size="0.3rem" /> <i style="color:#ccc;">删除</i>
                             </span>
