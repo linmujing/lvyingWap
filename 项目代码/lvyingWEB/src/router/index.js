@@ -318,28 +318,23 @@ router.beforeEach((to,form,next) =>{
     document.title=to.meta.title;
   }
 
-  // //  第一次进入项目
-  // let token = window.localStorage.getItem("user_token");
-   
-  // if (!token && to.path != "/author") {
+  //  第一次进入项目
+  let token = window.localStorage.getItem("userToken");
 
-  //   window.localStorage.setItem("beforeLoginUrl", to.fullPath); // 保存用户进入的url
-  //   next("/author");
-  //   return false;
+  if (!token && to.path != '/author') {
 
-  // } else if (token && !store.getters.userInfo) {
+    next({
+      path: '/author',
+    });
+    return false;
 
-  // //获取用户信息接口
-  //  store
-  //   .dispatch("GetUserInfo", {
-  //    user_token: token
-  //   })
-  //   .catch(err => {
-  //    window.localStorage.removeItem("user_token");
-  //    router.go(0);
-  //    return false;
-  //   });
-  // }
+  } else if (token ) {
+
+    next();
+    return false;
+    
+  }
   next();
+  
 })
 export default router

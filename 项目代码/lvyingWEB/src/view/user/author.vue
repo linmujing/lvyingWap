@@ -1,7 +1,7 @@
 <template>
     <!-- 微信授权页面 -->
   <div>
-    授权中。。。
+    授权中...
   </div>
 </template>
  
@@ -15,42 +15,49 @@
 
         };
     },
+    mounted(){
+
+    },
     created() {
+
 
         this.$toast.loading({ mask: true, message: '获取微信授权中...' , duration: 0});
 
-        this.token = window.localStorage.getItem("user_token");
+        this.token = window.localStorage.getItem("userToken");
+   console.log(this.GetQueryString('code'))
         //判断当前的url有没有token参数,如果不存在那就跳转到微信授权的url
-        //就是前面说的ReturnGetCodeUrl方法
+        if(this.token){
 
-        if (!this.GetQueryString("token")) {
+            // 直接进入
+            this.$router.push({ name: 'shopMallIdex'})
 
-            // this.ReturnGetCodeUrl();
+        }else{
+            
+            // 判断是否为已经获取授权
+         
+            if(this.GetQueryString('code')){
 
-        } else {
-
-            //如果有token，如http://www.xxxx.com/h5/author?token=xxxxxxxxx&msg=200，这里的参数就是后台重定向到前台http://www.xxxx.com/h5/author，并携带的参数。这样就可以拿到我们想要的token了
-            //判断一下后台返回的状态码msg，因为可能出现微信拿不到token的情况
-            let msg = GetQueryString("msg")
-
-            if (msg = 200) {
-
-                this.token = GetQueryString("token");
-                //存储token到本地
-                window.localStorage.setItem("user_token", this.token);
-                //获取beforeLoginUrl，我们的前端页面
-                let url = window.localStorage.getItem("beforeLoginUrl");
-                //跳转
-                this.$router.push(url);
-                //删除本地beforeLoginUrl
-                removeLocalStorage("beforeLoginUrl");
+                this.wxLogin();
 
             }else{
 
-            //msg不是200的情况，可能跳到404的错误页面
+                var pageUrl = window.location.href
+                .replace(/[/]/g, "%2f")
+                .replace(/[:]/g, "%3a")
+                .replace(/[#]/g, "%23")
+                .replace(/[&]/g, "%26")
+                .replace(/[=]/g, "%3d");
 
+                var url =
+                "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd07de149859354b8&redirect_uri=" +
+                pageUrl + //这里放当前页面的地址
+                "&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect";
+
+                window.location.href = url;
             }
+
         }
+
     },
     methods: {
         // 获取地址栏参数
@@ -60,6 +67,44 @@
             if(r!=null)
             return unescape(r[2]);
             return null;
+        },
+
+        // 微信登录
+        wxLogin(){
+
+            let param = {code: this.GetQueryString(code)}
+
+            this.$api.oaUserInfo( this.$Qs.stringify(param) )
+
+            .then( (res) => {
+
+                console.log(res)
+                this.$toast.clear();
+
+                if(res.data.code == 200){
+
+                    this.$toast(res.data.message);
+
+                    // 存储用户信息
+                    this.$store.commit('userData/saveUserData', res.data.content);
+
+                    //跳转函数*************************************************
+                    this.$router.push({ name: 'shopMallIdex'})
+
+                }else{
+
+                    this.$toast(res.data.message);
+
+                }  
+
+            })
+            .catch((error) => {
+
+                this.$toast.clear();
+                console.log('发生错误！', error);
+
+            });
+
         }
 
     },

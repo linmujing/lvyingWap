@@ -41,6 +41,7 @@
         localStorage.setItem("ciProfileUrl", n.ciProfileUrl)
         localStorage.setItem("ciSex", n.ciSex)
         localStorage.setItem("ciIntroduce", n.ciIntroduce)
+        localStorage.setItem("userToken", n.passWord)
   
     },
   }
