@@ -49,8 +49,8 @@ export default {
                 aspectRatio: "16:9", // 将播放器置于流畅模式，并在计算播放器的动态大小时使用该值。值应该代表一个比例 - 用冒号分隔的两个数字（例如"16:9"或"4:3"）
                 fluid: true, // 当true时，Video.js player将拥有流体大小。换句话说，它将按比例缩放以适应其容器。
                 // 视频资源 {type: '' , src: 'http://www.w3cschool.cc/try/demo_source/mov_bbb.mp4'}
-                sources: [{type: 'video/mp4' , src: 'http://www.w3cschool.cc/try/demo_source/mov_bbb.mp4'}],
-                poster: '', //你的封面地址
+                sources: [{type: 'video/mp4' , src: ''}],
+                poster: this.imgUrl, //你的封面地址
                 width: document.documentElement.clientWidth,
                 notSupportedMessage: "此视频暂无法播放，请稍后再试" ,//允许覆盖Video.js无法播放媒体源时显示的默认信息。
 
@@ -102,11 +102,11 @@ export default {
         // 同步获取视频时间参数 *
         onPlayerTimeupdate(player) {
 
-         
+
         },
         // 初始设置 *
         playerReadied(player) {
-           
+
         },
 
         // 播放错误
@@ -146,8 +146,8 @@ export default {
 
             let Obj = this.$store.state.personCenter.videoIndex ;
             console.log(Obj)
-            
-            let obj = {                   
+
+            let obj = {
                 'type': "video/mp4",
                 'src': Obj.videoUrl
             };
@@ -156,7 +156,7 @@ export default {
             this.playerOptions.sources.push(obj);
 
             this.onPlayerPause();
-            
+
             // 防止初次加载播放
             if(this.$store.state.personCenter.videoState == 0 ){ return }
             setTimeout( ()=>{ this.onPlayerPlay(); }, 1000) ;

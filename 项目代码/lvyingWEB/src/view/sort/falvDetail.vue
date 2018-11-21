@@ -94,30 +94,28 @@
                         <div v-if="typeId == 3" class="align_center">
                           <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
                           <div v-if="parseInt(item.videoStatus) === 0">
-                            <button class="btn_warning" @click="audition(item)">开始播放</button>
+                            <button class="btn_warning" @click="toCourse">开始播放</button>
                           </div>
-                          <div v-else>
-                            <div v-if="parseInt(item.videoStatus) === 1" class="width_70px">
-                              <button class="btn_warning" @click="audition(item)">试听</button>
-                            </div>
-                            <div v-else class="width_70px">
-                              <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
-                            </div>
+                          <div v-else-if="parseInt(item.videoStatus) === 1" class="width_70px">
+                            <button class="btn_warning" @click="audition(item)">试看</button>
+                          </div>
+                          <div v-else-if="item.videoStatus == ''"></div>
+                          <div v-else class="width_70px">
+                            <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
                           </div>
                         </div>
                         <!--音频-->
                         <div v-if="typeId == 4" class="align_center">
                           <!--<span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>-->
                           <div v-if="parseInt(item.voiceStatus) === 0">
-                            <button class="btn_warning" @click="audition(item)">开始播放</button>
+                            <button class="btn_warning" @click="toCourse">开始播放</button>
                           </div>
-                          <div v-else>
-                            <div v-if="parseInt(item.voiceStatus) === 1" class="width_70px">
-                              <button class="btn_warning" @click="audition(item)">试听</button>
-                            </div>
-                            <div v-else class="width_70px">
-                              <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
-                            </div>
+                          <div v-else-if="parseInt(item.voiceStatus) === 1" class="width_70px">
+                            <button class="btn_warning" @click="audition(item)">试听</button>
+                          </div>
+                          <div v-else-if="item.voiceStatus == ''"></div>
+                          <div v-else class="width_70px">
+                            <button class="btn_title van-ellipsis line_height_20" @click="goBuy(item.productCode)">立即购买</button>
                           </div>
                         </div>
                       </div>
@@ -570,32 +568,33 @@ export default {
       })
     },
     // 跳转到课程
-    // toCourse(){
-    //   // if(this.isBuy === 0){
-    //   //   this.$toast('对不起，您需要购买后才能观看！');
-    //   //   return false;
-    //   // }
-    //   switch (this.typeId) {
-    //     case 1:
-    //     case 2:
-    //       this.$router.push({
-    //         path:'/seeFalv',
-    //         query: {
-    //
-    //         }
-    //       })
-    //       break
-    //     case 3:
-    //     case 4:
-    //       this.$router.push({
-    //         path:'/seeVideo',
-    //         query: {
-    //
-    //         }
-    //       })
-    //       break
-    //   }
-    // },
+    toCourse(){
+      // if(this.isBuy === 0){
+      //   this.$toast('对不起，您需要购买后才能观看！');
+      //   return false;
+      // }
+      switch (this.typeId) {
+        case 1:
+        case 2:
+          // this.$router.push({
+          //   path:'/seeFalv',
+          //   query: {
+          //
+          //   }
+          // })
+          // break
+        case 3:
+        case 4:
+          this.$router.push({
+            path:'/seeVideo',
+            query: {
+              productCode: this.productCode,
+              typeId: this.typeId
+            }
+          })
+          break
+      }
+    },
     // 下载文件
     downloadDoc(doc){
       window.open(doc)
