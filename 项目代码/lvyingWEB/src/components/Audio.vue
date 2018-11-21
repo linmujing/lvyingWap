@@ -3,8 +3,7 @@
     <div class="container">
         <div class="audio_box">
             <div class="audio_img">
-              我就是图片
-              <img src="" alt="">
+              <img :src="imgUrl">
             </div>
             <div style="padding-right:0.3rem;">
               <van-slider v-model="audioControl.timeProgress" @change="getTimeChange" />
@@ -36,7 +35,7 @@
                 <div class="slider_box">
                     <van-slider v-model="audioControl.volume" @change="getVolumeChange" />
                 </div>
-                  
+
               </div>
             </div>
 
@@ -190,7 +189,7 @@ export default {
 
         // 暂停
         pausePlay() {
-            
+
             if(!this.url){
               this.$toast("当前没有播放源！")
             }
@@ -283,7 +282,7 @@ export default {
         listenVideo:function (val){ this.getAudioParam()  }
     },
     mounted(){
- 
+
 
     },
 };
@@ -309,14 +308,14 @@ export default {
     @import '../style/common.less';
 
     .audio_box{
-      
+
       .audio_img{
         background: #ccc;
         width: 100%;
         height: 3rem;
         border:1px solid #ccc;
         img{
-          width: 100%;
+          width: 90%;
           height:100%;
         }
       }
