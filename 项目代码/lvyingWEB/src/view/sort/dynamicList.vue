@@ -16,7 +16,7 @@
                     </van-col>
                     <van-col span="14">
                       <div class="class_box">
-                        <div class="title van-ellipsis">{{val.productTitle}}</div>
+                        <div class="title van-ellipsis" @click="toDetail(val.productCode)">{{val.productTitle}}</div>
                         <div class="van-ellipsis margin_top_5 color_666">{{val.productKeyWord}}</div>
                         <div class="margin_top_10">
                           <van-row>
@@ -47,7 +47,7 @@
                     <div @click="toDetail(val.productCode)" class="text_center">
                       <img :src="val.productProfileUrl" class="img_box">
                     </div>
-                    <div class="margin_top_5 font_16 van-ellipsis">{{val.productTitle}}</div>
+                    <div class="margin_top_5 font_16 van-ellipsis" @click="toDetail(val.productCode)">{{val.productTitle}}</div>
                     <div class="margin_top_5 juc_center_between">
                       <div class="width_50 color_666 van-ellipsis">{{val.productKeyWord}}</div>
                       <div class="width_50 color_999 van-ellipsis font_12">{{val.lookCount}}人看过</div>
@@ -65,7 +65,7 @@
                     <div @click="toDetail(val.productCode)">
                       <img :src="val.productProfileUrl" class="all_width height_180px">
                     </div>
-                    <div class="van-ellipsis margin_top_5 title">{{val.productTitle}}</div>
+                    <div class="van-ellipsis margin_top_5 title" @click="toDetail(val.productCode)">{{val.productTitle}}</div>
                     <div class="van-ellipsis margin_top_5 color_666">{{val.productKeyWord}}</div>
                     <div class="juc_between align_center margin_top_10">
                       <span class="color_title font_16 van-ellipsis">¥{{val.productPrice}}</span>

@@ -21,7 +21,7 @@
             </van-col>
             <van-col span="14">
               <div class="class_box">
-                <div class="title van-ellipsis">{{val.productTitle}}</div>
+                <div class="title van-ellipsis" @click="toDetail(val.productCode)">{{val.productTitle}}</div>
                 <div class="van-ellipsis margin_top_5 color_666">{{val.productKeyWord}}</div>
                 <div class="margin_top_10">
                   <van-row>

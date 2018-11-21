@@ -52,7 +52,7 @@
 						  </van-col>
 						  <van-col span="14">
 						  	<div class="class_box">
-						  		<div class="title van-ellipsis">{{item.productTitle}}</div>
+						  		<div class="title van-ellipsis" @click="toDetail(item.productCode,3)">{{item.productTitle}}</div>
 						  		<div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
 						  		<div class="margin_top_10">
 						  			<van-row>
@@ -111,7 +111,7 @@
                 </van-col>
                 <van-col span="14">
                   <div class="class_box">
-                    <div class="title van-ellipsis">{{item.productTitle}}</div>
+                    <div class="title van-ellipsis" @click="toDetail(item.productCode,4)">{{item.productTitle}}</div>
                     <div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
                     <div class="margin_top_10">
                       <van-row>
@@ -173,7 +173,7 @@
                 </van-col>
                 <van-col span="14">
                   <div class="class_box">
-                    <div class="title van-ellipsis">{{item.productTitle}}</div>
+                    <div class="title van-ellipsis" @click="toDetail(item.productCode,1)">{{item.productTitle}}</div>
                     <div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
                     <div class="margin_top_10">
                       <van-row>
@@ -222,7 +222,7 @@
                 </van-col>
                 <van-col span="14">
                   <div class="class_box">
-                    <div class="title van-ellipsis">{{item.productTitle}}</div>
+                    <div class="title van-ellipsis" @click="toDetail(item.productCode,2)">{{item.productTitle}}</div>
                     <div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
                     <div class="margin_top_10">
                       <van-row>
@@ -270,7 +270,7 @@
                 <div @click="toDetail(item.productCode,5)">
                   <img :src="item.productProfileUrl" class="all_width height_110px"/>
                 </div>
-                <div class="van-ellipsis margin_top_5 title">{{item.productTitle}}</div>
+                <div class="van-ellipsis margin_top_5 title" @click="toDetail(item.productCode,5)">{{item.productTitle}}</div>
                 <div class="van-ellipsis margin_top_5 color_666">{{item.productKeyWord}}</div>
                 <div class="juc_between align_center margin_top_10">
                   <span class="color_title font_16 van-ellipsis">￥{{item.productPrice}}</span>

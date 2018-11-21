@@ -178,7 +178,12 @@
 			    					</div>
 			    					<div class="color_999">{{item.createDate}}</div>
 			    				</div>
-			    				<div class="margin_top_5 color_666 van-ellipsis">{{item.productKeyWord}}</div>
+			    				<div class="margin_top_5 color_666" v-html="item.commentDesc"></div>
+                  <div v-if="!item.commentPicUrl == ''" class="margin_top_5 flex_warp">
+                    <div v-for="(val, i) in item.commentPicUrl.split(',')" :key="i" class="margin_right_10">
+                      <img :src="val" width="40" height="40" @click="clickPic(item.commentPicUrl, i)" />
+                    </div>
+                  </div>
 			    			</div>
 			    		</div>
 			    		<div class="color_666 padding_10 text_center" @click="seeMore">查看更多》</div>
@@ -277,6 +282,7 @@
 <script>
 import Video from '../../components/Video.vue'
 import Audio from '../../components/Audio.vue'
+import { ImagePreview } from 'vant'
 export default {
   components : {
     Video,
@@ -351,6 +357,16 @@ export default {
     this.getEvaluateList(this.pageSize)
 	},
 	methods: {
+    // 查看图片
+    clickPic(url, i){
+      ImagePreview({
+        images: url.split(','),
+        startPosition: i,
+        onClose() {
+          // do something
+        }
+      });
+    },
     // 查看产品详情
     getProductInfo(){
       this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
