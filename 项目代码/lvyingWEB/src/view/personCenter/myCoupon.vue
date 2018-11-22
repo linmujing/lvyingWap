@@ -59,6 +59,8 @@ export default {
             couponData:{
                 // 优惠券类型下标
                 couponTypeIndex: 0,
+                // 防止多次重复点击
+                couponTypeIndex2: 0,
                 // 优惠券类型
                 couponType:[
                     { text:'全部', value:'' },
@@ -90,6 +92,9 @@ export default {
         // params index 优惠券类型下标
         changeType(index){
 
+            if(index == this.couponData.couponTypeIndex2){return}
+
+            this.couponData.couponTypeIndex2 = index;
             this.pageData.current = 1;
             this.couponData.couponList = [];
 
