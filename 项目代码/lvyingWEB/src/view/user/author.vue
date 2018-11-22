@@ -72,7 +72,7 @@
         // 微信登录
         wxLogin(){
 
-            let param = {code: this.GetQueryString(code)}
+            let param = {code: this.GetQueryString('code')}
 
             this.$api.oaUserInfo( this.$Qs.stringify(param) )
 
