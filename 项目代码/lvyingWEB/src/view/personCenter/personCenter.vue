@@ -96,7 +96,7 @@ export default {
     },
     mounted(){
     
-        this.wxName = this.$store.state.userData.ciphone;
+        this.wxName = this.$store.state.userData.ciname;
 
         // 头像
         let headImg = this.$store.state.userData.ciProfileUrl;
