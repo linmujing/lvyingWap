@@ -19,10 +19,10 @@
             </van-col>
             <van-col span="19">
               <div class="juc_center_between">
-                <div class="font_16">{{merchantInfo.orgName}}</div>
+                <div class="font_16 van-ellipsis width_100px">{{merchantInfo.orgName}}</div>
                 <div class="color_999 font_12">
-                  <span>客户数：{{merchantInfo.ciCount}}</span>
-                  <span class="padding_left_10">用户数：{{merchantInfo.productCount}}</span>
+                  <span class="van-ellipsis inline-block width_80px">客户数：{{merchantInfo.ciCount}}</span>
+                  <span class="padding_left_10 inline-block width_80px van-ellipsis">用户数：{{merchantInfo.productCount}}</span>
                 </div>
               </div>
               <div class="color_999 margin_top_5">{{merchantInfo.personIntroduce}}</div>
@@ -207,4 +207,11 @@ export default {
 
   .img_box{width:1.2rem;height: 1.2rem;border: 1px solid #efefef;}
   .padding_left_10{padding-left: 0.2rem}
+  .inline-block{display: inline-block}
+  .width_100px {
+    width: 2.0rem;
+  }
+  .width_80px {
+    width: 1.6rem;
+  }
 </style>

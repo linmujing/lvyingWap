@@ -20,8 +20,8 @@
 	    		<div class="color_999 margin_top_5 van-ellipsis">{{dataDetail.productKeyWord}}</div>
 	    		<div class="margin_top_10 juc_center_between">
             <div>
-              <span class="color_title font_16">￥{{dataDetail.productOrgPrice}}</span>
-              <del v-show="typeBook" class="color_999">￥80.00</del>
+              <span class="color_title font_16">￥{{dataDetail.productPrice}}</span>
+              <del v-show="typeBook" class="color_999">￥{{dataDetail.productOrgPrice}}</del>
             </div>
             <div class="color_999 font_12">{{dataDetail.lookCount}}人看过</div>
           </div>
