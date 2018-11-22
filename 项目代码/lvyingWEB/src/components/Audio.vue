@@ -1,6 +1,6 @@
 <template>
     <!-- 音频播放器 -->
-    <div class="container">
+    <div id="container_id" ref="container_id" class="container">
         <div class="audio_box">
             <div class="audio_img">
               <img :src="imgUrl">
@@ -56,6 +56,10 @@
 
             </div>
         </div>
+      <!--试看结束-->
+      <div v-show="freeTip" class="video_free_tip">
+        <p class="font_16" :style="{marginTop: Height/2 + 'px'}">试听结束，请您购买后再继续收听！</p>
+      </div>
     </div>
 
 </template>
@@ -107,6 +111,8 @@ export default {
           // 标题
           audioTitle: '',
           showList: false,
+          Height:  '',
+          freeTip: false,
 
         };
     },
@@ -138,26 +144,28 @@ export default {
         // 当timeupdate事件大概每秒一次，用来更新音频流的当前播放时间
         onTimeupdate(res) {
 
-            // console.log(this.audioParams.voiceUrl)
-            // console.log(res.target.currentSrc)
+          // 获取时间进度
+          this.audioControl.timeProgress = (res.target.currentTime / res.target.duration).toFixed(2) * 100  ;
 
-            // 获取时间进度
-            this.audioControl.timeProgress = (res.target.currentTime / res.target.duration).toFixed(2) * 100  ;
+          // 获取当前时间
+          this.audioControl.timeDivider = this.changeTimeBox(res.target.currentTime);
 
-            // 获取当前时间
-            this.audioControl.timeDivider = this.changeTimeBox(res.target.currentTime);
+          let sources = this.$store.state.personCenter.audioIndex ;
 
-            // 监听试听时间
-            // var timer = this.audioParams.voiceTime
-            // if(timer !== '' && this.audioParams.voiceStatus == 1){
-            //     timer = parseFloat(this.audioParams.voiceTime) * 60  // 试看时间，以秒为单位
-            //     if(this.changeTimeBox(res.target.currentTime) > this.changeTimeBox(timer)){
-            //     this.$refs.audio.currentTime = 0   // 设置当前时间 清零
-            //     this.pausePlay()    // 暂停播放
-            //     this.$toast('请您购买后再继续收听！');
-            //     return false;
-            //     }
-            // }
+          // console.log(sources)
+
+          if(sources.voiceStatus == '1'){
+            // 监听试看时间
+            var timer =  parseFloat(sources.voiceTime) * 60 ; // 试看时间，以秒为单位
+            var currentTime = this.changeTimeBox(res.target.currentTime)
+            console.log(currentTime)
+            if(currentTime > this.changeTimeBox(timer)){
+              this.$refs.audio.currentTime = 0   // 设置当前时间 清零
+              this.pausePlay()    // 暂停播放
+              this.freeTip = true     // 显示提示
+              return false;
+            }
+          }
 
         },
         // 当加载语音流元数据完成后，会触发该事件的回调函数
@@ -184,6 +192,7 @@ export default {
 
           this.player.play()
           this.audioControl.audioOff = false
+          this.freeTip = false
 
         },
 
@@ -282,7 +291,7 @@ export default {
         listenVideo:function (val){ this.getAudioParam()  }
     },
     mounted(){
-
+      this.Height = this.$refs.container_id.offsetHeight
 
     },
 };
@@ -315,7 +324,7 @@ export default {
         height: 3rem;
         border:1px solid #ccc;
         img{
-          width: 90%;
+          width: 100%;
           height:100%;
         }
       }
@@ -351,5 +360,19 @@ export default {
       position: relative;
       top:0.4rem;
     }
-
+    .container{
+      position: relative;
+    }
+    // 试看提示
+    .video_free_tip{
+      text-align: center;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      z-index:8;
+      color: #ffffff;
+      background: rgba(0,0,0,.7);
+    }
 </style>

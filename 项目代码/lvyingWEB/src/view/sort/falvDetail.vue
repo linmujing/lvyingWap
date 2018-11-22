@@ -4,12 +4,12 @@
     	<div class="bg_fff">
 	    	<div>
           <div v-if="typeId === 3">
-            <img v-if="videoData.videoSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
-            <Video v-else ref="myVideo" :videoSrc="videoData.videoSrc" :imgSrc="dataDetail.productProfileUrl"></Video>
+            <img v-if="videoData.playStatus" :src="dataDetail.productProfileUrl" class="all_width" />
+            <Video v-else ref="myVideo" :imgSrc="dataDetail.productProfileUrl"></Video>
           </div>
           <div v-else-if="typeId === 4">
-            <img v-if="audioData.audioSrc == ''" :src="dataDetail.productProfileUrl" class="all_width" />
-            <Audio v-else ref="myAudio" :audioSrc="audioData.audioSrc" :imgSrc="dataDetail.productProfileUrl"></Audio>
+            <img v-if="audioData.playStatus" :src="dataDetail.productProfileUrl" class="all_width" />
+            <Audio v-else ref="myAudio" :imgSrc="dataDetail.productProfileUrl"></Audio>
           </div>
           <div v-else>
             <img :src="dataDetail.productProfileUrl" class="all_width" />
@@ -315,10 +315,11 @@ export default {
         productSection: [],
         proSection: '',
         videoData: {
-          playStatus: false,
+          playStatus: true,
           videoSrc: ''
         },
         audioData: {
+          playStatus: true,
           audioSrc: ''
         },
         // 课程状态
@@ -401,6 +402,7 @@ export default {
             this.proSection = result.productSection
             this.productSection = productSection
             console.log(productSection)
+            this.startPlay(productSection)
           }else {
             this.$toast.clear();
             this.$toast.fail(res.data.message);
@@ -576,13 +578,6 @@ export default {
       switch (this.typeId) {
         case 1:
         case 2:
-          // this.$router.push({
-          //   path:'/seeFalv',
-          //   query: {
-          //
-          //   }
-          // })
-          // break
         case 3:
         case 4:
           this.$router.push({
@@ -614,18 +609,43 @@ export default {
       console.log(item)
       if (this.typeId == 3) {
         if(item.videoUrl == ''){
-          this.$toast('对不起，暂无数据！');
+          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
           return false;
         }
-        this.videoData.videoSrc = item.videoUrl
+        // 视频播放源修改
+        this.$store.commit('personCenter/setVideoIndex', item);
+        this.$store.commit('personCenter/setVideoState', 1)
 
       }else if (this.typeId == 4) {
         if(item.voiceUrl == ''){
-          this.$toast('对不起，暂无数据！');
+          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
           return false;
         }
-        this.audioData.audioSrc = item.voiceUrl
-        this.$refs.myAudio.onPlayer();
+        // 音频播放源修改
+        this.$store.commit('personCenter/setAudioIndex', item);
+      }
+    },
+    // 点击播放
+    startPlay(productSection){
+      // 设置视频自动播放
+      if(this.typeId == 3){
+        for (var i = 0; i < productSection.length; i++) {
+          if(productSection[i].videoStatus == 1){
+            this.audition(productSection[i])
+            this.videoData.playStatus = false
+            return
+          }
+        }
+      }
+      // 设置音频自动播放
+      if(this.typeId == 4){
+        for (var j = 0; j < productSection.length; j++) {
+          if(productSection[j].voiceStatus == 1){
+            this.audition(productSection[j])
+            this.audioData.playStatus = false
+            return
+          }
+        }
       }
     },
     //课程

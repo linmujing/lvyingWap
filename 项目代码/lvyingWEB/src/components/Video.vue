@@ -25,7 +25,10 @@
         数据源格式错误！
       </video-player>
     </div>
-
+    <!--试看结束-->
+    <div v-show="freeTip" class="video_free_tip">
+      <p class="font_16" :style="{marginTop: Height/2 + 'px'}">试看结束，请您购买后再继续观看！</p>
+    </div>
   </div>
 </template>
 
@@ -64,6 +67,8 @@ export default {
 
             // 初次加载防止播放
             curIndex: 0,
+            Height:  '',
+            freeTip: false,
         };
     },
     components: {
@@ -83,8 +88,8 @@ export default {
                 return false;
 
             }
-
-            this.player.play();
+          this.freeTip = false
+          this.player.play();
 
         },
         // 视频暂停 *
@@ -102,6 +107,27 @@ export default {
         // 同步获取视频时间参数 *
         onPlayerTimeupdate(player) {
 
+          // 获取时间进度
+          // this.videoControl.timeProgress = (player.currentTime() / player.duration()).toFixed(2)*100;
+
+          // 获取当前时间
+          // this.videoControl.timeDivider = this.changeTimeBox(player.currentTime());
+
+          // 当前视频资源
+          let  sources = this.$store.state.personCenter.videoIndex ;
+          // console.log(sources)
+
+          if(sources.videoStatus == '1'){
+            // 监听试看时间
+            var timer =  parseFloat(sources.videoTime) * 60 ; // 试看时间，以秒为单位
+            var currentTime = this.changeTimeBox(player.currentTime())
+            if(currentTime > this.changeTimeBox(timer)){
+              player.currentTime(0)   // 设置当前时间 清零
+              this.onPlayerPause()    // 暂停播放
+              this.freeTip = true     // 显示提示
+              return false;
+            }
+          }
 
         },
         // 初始设置 *
@@ -162,6 +188,25 @@ export default {
             setTimeout( ()=>{ this.onPlayerPlay(); }, 1000) ;
 
         },
+        /** 辅助函数 **/
+        // 秒转化器
+        //@param timer 大列表下标
+        changeTimeBox(timer){
+
+          function p(s){ return s < 10 ? '0' + s : s } ;
+          function ps(s){ return s == 0 ? '' : s + ':'} ;
+
+          var h = timer > 3600 ? parseInt(timer/3600) : 0;
+
+          var m = (timer- h*3600) > 60 ? parseInt((timer- h*3600)/60) : 0;
+
+          var s = parseInt(timer - h*3600 - m*60);
+
+          var now =  ps(h) + p(m) + ":" + p(s);
+
+          return now;
+
+        }
 
     },
     computed: {
@@ -177,7 +222,7 @@ export default {
         listenVideo:function (val){ this.getVideoParam();  }
     },
     mounted(){
-
+      this.Height = this.$refs.container_id.offsetHeight
 
     },
 };
@@ -204,7 +249,19 @@ export default {
 </style>
 <style scoped lang='less'>
   .container{
-
+    position: relative;
+  }
+  // 试看提示
+  .video_free_tip{
+    text-align: center;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index:8;
+    color: #ffffff;
+    background: rgba(0,0,0,.7);
   }
 </style>
 

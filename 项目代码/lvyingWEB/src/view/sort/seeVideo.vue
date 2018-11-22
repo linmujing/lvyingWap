@@ -170,7 +170,7 @@ export default {
       this.current = index
       // 视频播放源修改
       this.$store.commit('personCenter/setAudioIndex', obj);
-      this.$refs.myAudio.onPlayerPlay()
+      this.$refs.myAudio.startPlay()
     }
 
   }
