@@ -78,69 +78,14 @@ export default {
             orderData:{
                 // 换货类型下标
                 orderTypeIndex: 0,
+                // 防止多次重复点击
+                orderTypeIndex2: 0,
                 // 换货类型
                 orderType:[
                     { text: '申请换货', value: '0'},
                     { text: '换货成功', value: '1'},
                 ],
-                // 换货数据
-                orderList:[
-                    {
-                        payState: '',
-                        payStateText: '退款中',
-                        operation: '去支付',
-                        routerUrl:'personCenter/checkLogistics',
-                        startTime: '2018-08-51 16:00:00',
-                        orderId: '2018080511600',
-                        itemstotal: '100.00',
-                        items:[{
-                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
-                            price: '100.00',
-                            number: '1',
-                            total: '100.00',
-                            imgSrc:'./static/images/image/book_01.png'
-                        },
-                        {
-                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
-                            price: '100.00',
-                            number: '1',
-                            total: '100.00',
-                            imgSrc:'./static/images/image/book_01.png'
-                        }],
-                    },
-                    {
-                        payState: '',
-                        payStateText: '退款成功',
-                        operation: '',
-                        routerUrl:'personCenter/checkLogistics',
-                        startTime: '2018-08-51 16:00:00',
-                        orderId: '2018080511600',
-                        itemstotal: '100.00',
-                        items:[{
-                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
-                            price: '100.00',
-                            number: '1',
-                            total: '100.00',
-                            imgSrc:'./static/images/image/book_01.png'
-                        }],
-                    },
-                    {
-                        payState: '',
-                        payStateText: '退款成功',
-                        operation: '',
-                        startTime: '2018-08-51 16:00:00',
-                        orderId: '2018080511600',
-                        itemstotal: '100.00',
-                        items:[{
-                            title: '法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货法律顾问换货',
-                            price: '100.00',
-                            number: '1',
-                            total: '100.00',
-                            imgSrc:'./static/images/image/book_01.png'
-                        }],
-                    }
-                ],
-        
+               
             },
 
             // 换货数据
@@ -164,6 +109,9 @@ export default {
         // params index 换货类型下标
         changeType(index){
 
+            if(index == this.orderData.orderTypeIndex2){return}
+
+            this.orderData.orderTypeIndex2 = index;
             this.pageData.current = 1;
             this.orderList = [];
 

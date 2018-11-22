@@ -9,13 +9,20 @@
                         <div class="head_img  padding_right_20">
                             <span :style="{ backgroundImage: 'url('+ userHeadUrl +')' } "></span>
                         </div>
-                        <div class="padding_top_20">
+                        <div class="padding_top_10">
                             <div class="color_cart_ccc2">{{ userName }}</div>
                             <span class="color_cart_ccc1 font_20">{{ items.createDate }}</span>
                         </div>
                     </div>
                     <div class="padding_0_20 line_height_40 padding_20" >
                         {{items.commentDesc}}
+                    </div>
+                    <div class="table_block padding_20" style="1.5rem" v-if="items.commentPicUrl != ''">
+                        <span class="td_block">
+                            <i class="img_middle_center border_1" style="display:inline-block;width: 0.8rem;height: 0.8rem;" >
+                                <img  :src="items.commentPicUrl" alt="" @click="clickImg(items.commentPicUrl)">
+                            </i>
+                        </span>
                     </div>
                     <div >
                         <div class="content flex space_between border_bottom_1px padding_left_20" style="position:relative;background:rgb(250,250,250)">
@@ -28,7 +35,7 @@
                                 <span class="td_block padding_left_30">
                                     <p  class="" style="word-wrap:break-word;">
                                         <span style="position:relative;top:-0.5rem;">{{items.productTitle }}</span>   
-                                        <span class="font_20" style="position:absolute;top:1.5rem;left:2.1rem;color:red;">￥  {{items.productOrgPrice }}</span>
+                                        <span class="font_20" style="position:absolute;top:1.5rem;left:2.1rem;color:red;">￥  {{items.productPrice }}</span>
                                     </p>
                                 </span>
                             </div>
@@ -47,6 +54,7 @@
 </template>
 <script>
 import FooterBar from '../../components/FooterBar.vue'
+import { ImagePreview } from 'vant';
 export default {
     components : {
     	FooterBar
@@ -99,10 +107,11 @@ export default {
                         this.commentData.push({
                             createDate: item.createDate,
                             commentDesc: item.commentDesc,
+                            commentPicUrl: item.commentPicUrl,
                             productWxProfileUrl: item.productInfo.productProfileUrl,
                             productCode: item.productInfo.productCode,
                             productTitle: item.productInfo.productTitle,
-                            productOrgPrice: item.productInfo.productOrgPrice,
+                            productPrice: (item.productPrice).toFixed(2),
                         })
                     }
 
@@ -141,6 +150,11 @@ export default {
             }, 1000);
 
         },
+        // 查看图片
+        // @param imgUrl string 图片地址
+        clickImg(imgUrl){
+            ImagePreview([imgUrl]);
+        }
     },
     mounted(){
 
@@ -163,8 +177,8 @@ export default {
     .head_img{
         span{
             display: inline-block;
-            width: 1rem;
-            height: 1rem;
+            width: 0.8rem;
+            height: 0.8rem;
             border-radius: 50%;
             overflow: hidden;
             background-size: cover; 

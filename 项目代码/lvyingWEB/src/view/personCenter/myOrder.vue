@@ -32,9 +32,9 @@
                                 <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
                                     <div class="item table_block" style="height:2.2rem;">
                                         <span class="td_block">
-                                            <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;">
-                                                <img style="width: 1.6rem; height: 1.6rem;"  @click="$router.push({ path: '/falvDetail', query: { productCode: child.productCode }})"
-                                                :src="child.productProfileUrl" :data-productCode="child.productCode" alt="">                               
+                                            <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;overflow:hidden;">
+                                                <img  @click="$router.push({ path: '/falvDetail', query: { productCode: child.productCode }})"
+                                                :src="child.productProfileUrl" alt="">                               
                                             </i>
                                         </span>
                                         <span class="td_block padding_left_30">
@@ -165,6 +165,8 @@ export default {
             orderData:{
                 // 订单类型下标
                 orderTypeIndex:  this.$store.state.personCenter.orderType,
+                // 防止多次重复点击
+                orderTypeIndex2: this.$store.state.personCenter.orderType,
                 // 订单类型
                 orderType:[
                     { text: '全部', value: ''},
@@ -220,11 +222,14 @@ export default {
         // params index 订单类型下标
         changeType(index){
 
+            if(index == this.orderData.orderTypeIndex2){return}
+
+            this.orderData.orderTypeIndex2 = index;
+
             // 订单类型状态更改
             this.$store.commit('personCenter/setOrderType', index);
 
             this.orderData.orderList = [];
-            this.orderData.orderTypeIndex = index;
             this.orderData.pageData.current = 1
 
             // 获取订单列表
