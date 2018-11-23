@@ -128,12 +128,12 @@
         </div>
 
         <!-- 地址列表选择 -->
-        <div v-show="addressData.addressPageShow" style="padding-top:0.94rem;">
-            <div class="flex space_between line_height_94 bg_fff" style="position:fixed;top:0;width:100%;z-index:100;">
+        <div class="bg_fff" v-show="addressData.addressPageShow" style="padding-top:0.94rem;">
+            <div class="flex space_between line_height_94 bg_fff border_bottom_1px" style="position:fixed;top:0;width:100%;z-index:100;">
                 <div class="padding_0_20">选择地址</div>
                 <div class="padding_0_20 color_00aa88" @click="addressData.addressPageShow = false">关闭</div>
             </div>
-            <Address :pState="1" @hidebox="listenAddressChoose" ></Address>
+            <Address class="bg_fff" :pState="1" @hidebox="listenAddressChoose" ></Address>
         </div>
     </div>
 

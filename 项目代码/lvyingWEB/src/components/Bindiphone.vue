@@ -19,8 +19,8 @@
                     center
                     clearable
                     required
-                    label="验证码"
-                    placeholder="请输入短信验证码"
+                    label="短信验证码"
+                    placeholder="请输入验证码"
                 >
                     <van-button slot="button" size="small" :type=" isSend ? '' : 'primary'" :disabled="isSend"  @click="sendTimeOut"> {{isSendText}} </van-button>
                 </van-field>
@@ -47,13 +47,16 @@ export default {
             sms:'',
 
             // 弹框状态 false 关闭 true 打开
-            bindStateModel: true,
+            bindStateModel: false,
             
             //验证码按钮
             isSend: false,
             isSendText: '获取验证码'
         }
         
+    },
+    mounted(){
+        this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
     },
     methods: {
 
