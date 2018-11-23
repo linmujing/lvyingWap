@@ -9,7 +9,7 @@
     ciSex: localStorage.getItem("ciSex"),
     ciIntroduce: localStorage.getItem("ciIntroduce"),
     ciname: localStorage.getItem("ciname"),
-
+    unionId: localStorage.getItem("unionId"),
     SupplierData: {}
   }
   
@@ -34,6 +34,7 @@
         state.ciProfileUrl = n.ciProfileUrl;
         state.ciSex = n.ciSex;
         state.ciIntroduce = n.ciIntroduce;
+        state.unionId = n.unionLongId;
 
         localStorage.setItem("ciphone", n.ciPhone)
         localStorage.setItem("ciname", n.ciName)
@@ -41,6 +42,8 @@
         localStorage.setItem("ciProfileUrl", n.ciProfileUrl)
         localStorage.setItem("ciSex", n.ciSex)
         localStorage.setItem("ciIntroduce", n.ciIntroduce)
+        localStorage.setItem("unionId", n.unionLongId)
+
         localStorage.setItem("userToken", n.passWord)
   
     },

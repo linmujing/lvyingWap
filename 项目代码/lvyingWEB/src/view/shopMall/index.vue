@@ -12,17 +12,20 @@
 
 
     	<FooterBar :curIndex = '0'></FooterBar>
-		<Message></Message>
+			<Message></Message>
+			<Bindiphone></Bindiphone>	
 
     </div>
 </template>
 <script>
 import FooterBar from '../../components/FooterBar.vue'
 import Message from '../../components/Message.vue'
+import Bindiphone from '../../components/Bindiphone.vue'
 export default {
     components : {
 		FooterBar,
-		Message
+		Message,
+		Bindiphone
     },
     data() {
         return {

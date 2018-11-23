@@ -13,7 +13,7 @@
 export default {
   name: 'App'
 }
-console.log('版本日期：2018-11-22')
+console.log('版本日期：2018-11-23 10:45 ')
 </script>
 
 <style>

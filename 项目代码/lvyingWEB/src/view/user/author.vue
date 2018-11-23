@@ -88,6 +88,10 @@
                     // 存储用户信息
                     this.$store.commit('userData/saveUserData', res.data.content);
 
+                    if(res.data.content.ciPhone != null){
+                        this.$store.commit('personCenter/BindState', 1)
+                    }
+
                     //跳转函数*************************************************
                     this.$router.push({ name: 'shopMallIdex'})
 
