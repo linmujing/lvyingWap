@@ -2,7 +2,7 @@
 
     <div class="body_bg">
         <!-- 商品列表 -->
-        <div style="padding-bottom:50px;">
+        <div style="margin-bottom:50px;padding-bottom:0.01rem;">
             <ul class="goods_list">
                 <li class="bg_fff" v-for="(items,index1) in cartDate.cartList" :key="index1" >
                     <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80">
@@ -42,12 +42,12 @@
                 <div >减免</div>
                 <div >{{ (parseFloat(cartDate.allTotal) - parseFloat(cartDate.listTotal) ).toFixed(2) }}</div>
             </div>
-            <div class="items_total flex space_between padding_0_20  line_height_94 border_top_1px color_cart_ccc2 bg_fff">
+            <div class="items_total flex space_between padding_0_20  line_height_94 border_top_1px color_cart_ccc2 bg_fff" style="margin-bottom:0.3rem ;">
                 <div >优惠券</div>
                 <div class="color_00aa88" @click=" coupons.length > 0 ? showList = true : ''">{{couponName}}</div>
             </div>
             <!-- 配送方式 -->
-            <div class="items_total flex space_between padding_0_20 bg_fff line_height_94 color_cart_ccc2 bg_fff" style="margin:0.3rem 0;" >
+            <div class="items_total flex space_between padding_0_20 bg_fff line_height_94 color_cart_ccc2 bg_fff" style="margin-bottom:0.3rem ;"  v-if="hasStore">
                 <div >配送方式</div>
                 <div >快递免邮</div>
             </div>
@@ -82,31 +82,27 @@
 
 </template>
 <script>
-// 地址组件
-import Address from '../../components/Address.vue'
+
 
 export default {
-    components : {
-    	Address
-    },
+
     data() {
         return {
 
             //  可用屏幕高度
             windowHeight: document.documentElement.clientHeight - 50,
 
-            /*购物车数据*/
+            /* 购物车数据 */
             cartDate:{
-                // 全部列表状态
-                listState: false,
-                // 全部删除状态
-                listDeleteState: false,
                 // 总价格
                 listTotal: 0.00,
                 allTotal: 0.00,
                 // 大列表
                 cartList:[],
             },  
+
+            // 是否存在需要包邮
+            hasStore: false ,
 
             // 用户信息
             userData: {

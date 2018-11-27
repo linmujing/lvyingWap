@@ -5,7 +5,7 @@
         <div style="overflow-y:scroll;" :style="{height: windowHeight + 'px'}" v-show="!addressData.addressPageShow">
 
             <!-- 地址 -->
-            <div class="color_000 bg_fff line_height_60" >
+            <div class="color_000 bg_fff line_height_60 margin_bottom_30" v-if="addressData.hasStore" >
                 <div v-if="addressData.addressList.length != 0">
                     <div class="padding_0_20 padding_top_20 flex space_between">
                         <div><span  class="color_cart_ccc1">收货人：</span>  <span>{{addressData.addressList[0].name}}</span></div>
@@ -32,7 +32,7 @@
             </div>
 
             <!-- 商品列表 -->
-            <div  class="margin_top_30" >
+            <div  >
                 <!-- 普通商品 -->
                 <div v-if="!isGroup">
                     <ul class="goods_list">
@@ -164,6 +164,9 @@ export default {
             // 是否为组合包
             isGroup: false,
 
+            // 存在实物商品才有地址选择
+            hasStore: false ,
+
             /*收货地址数据*/
             addressData:{
                 // 地址列表隐藏与展示
@@ -181,7 +184,7 @@ export default {
                     addressDetail: '',
                     isDefalut:  '',
                 }
-                ]
+                ],
 
             },
 
@@ -288,7 +291,7 @@ export default {
         /*订单提交 生成订单*/
         submitOrderClick(){
 
-            if(this.addressData.addressList.length == 0){
+            if(this.hasStore && this.addressData.addressList.length == 0){
 
                 this.$toast("请先填写好订单地址！");
                 return;
@@ -351,13 +354,18 @@ export default {
 
             }
 
+            // 如果没有实物商品，则不需要写地址
+            let addressCode = this.hasStore ? this.addressData.addressList[0].addressCode : '';
+
+            // orderForm 下单入口 0-购物车 1-非购物车
+            // orderSource 订单来源 1 - PC商城 2 - 公众号 3 - 小程序
             let param = {
                 ciCode: this.userData.ciCode,
                 ciName: this.userData.name,
                 orderSource: 2,
                 orderForm: this.$route.query.sourceType != 'cart' ? 1:0,
                 productCodeAndCount: productCodeAndCount,
-                addressCode: this.addressData.addressList[0].addressCode,
+                addressCode: addressCode,
             }
 
             return param;
@@ -391,6 +399,11 @@ export default {
                 if(res.data.code == 200){
 
                     let data = res.data.content , arr = [];
+
+                    // productProperty为1时，商品存在实物，实物才有地址选择
+                    if(data.productProperty.indexOf('1') != -1){
+                        this.hasStore = true;
+                    }
 
                     // 单个商品
                     if(data.productType != '2'){
@@ -496,6 +509,10 @@ export default {
 
                         let child = Data[i];
 
+                        if(child.productProperty.indexOf('1') != -1){
+                            this.hasStore = true;
+                        }
+
                         let childIndex = merchantArr2.indexOf(child.merchantCode);
 
                         if(childIndex == -1){
@@ -583,6 +600,10 @@ export default {
                             let arr2 = [], merchantArr2 = [] ;
 
                             for(let child of Data){
+
+                                if(child.productProperty.indexOf('1') != -1){
+                                    this.hasStore = true;
+                                }
 
                                 let childIndex = merchantArr2.indexOf(child.merchantCode);
 
