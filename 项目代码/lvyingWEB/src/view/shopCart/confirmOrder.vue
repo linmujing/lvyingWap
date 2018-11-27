@@ -96,6 +96,7 @@ export default {
             cartDate:{
                 // 总价格
                 listTotal: 0.00,
+                // 固定总价
                 allTotal: 0.00,
                 // 大列表
                 cartList:[],
@@ -367,7 +368,7 @@ export default {
         // 获取订单可用优惠券
         getOrderCoupon(){
 
-            let param = this.$Qs.stringify({ 'ciCode': this.userData.ciCode, 'orderCode': this.$route.query.orderCode ,'orderAmount': this.cartDate.listTotal }) ;
+            let param = this.$Qs.stringify({ 'ciCode': this.userData.ciCode, 'orderCode': this.$route.query.orderCode ,'orderAmount': this.cartDate.allTotal }) ;
 
             this.$api.getOrderCoupon( param )
 
