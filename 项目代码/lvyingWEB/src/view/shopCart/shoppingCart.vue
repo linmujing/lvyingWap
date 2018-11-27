@@ -491,7 +491,6 @@ export default {
 
             .then( (res) => {
 
-                this.allCount=res.data.content.count;
                 console.log(res)
 
                 if(res.data.code == 200){
@@ -580,8 +579,6 @@ export default {
 
                     // 压入到购物车
                     this.cartList = arr;
-
-                    this.merchantAllArr=merchantArr;
 
                     // 购物车二次加载 获取组合包的值
                     this.getGroupCartItem()

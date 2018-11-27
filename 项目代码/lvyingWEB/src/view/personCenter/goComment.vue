@@ -28,7 +28,7 @@
             <!-- 评价信息 -->
             <div class="logistics bg_fff">
                 <div class="padding_left_20 margin_top_30 line_height_80 border_bottom_1px">
-                   店铺评分
+                   商品评价
                 </div>
                 <div class="logistics_item padding_0_20 padding_top_30">
                     <div class="upload_box border_1" >

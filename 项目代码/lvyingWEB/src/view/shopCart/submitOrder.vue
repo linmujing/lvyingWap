@@ -7,11 +7,11 @@
             <!-- 地址 -->
             <div class="color_000 bg_fff line_height_60" >
                 <div v-if="addressData.addressList.length != 0">
-                    <div class="padding_0_20 flex space_between">
+                    <div class="padding_0_20 padding_top_20 flex space_between">
                         <div><span  class="color_cart_ccc1">收货人：</span>  <span>{{addressData.addressList[0].name}}</span></div>
                         <div><span  class="color_cart_ccc1">电话号码：</span> <span>{{addressData.addressList[0].phone}}</span></div>
                     </div>
-                    <div class="padding_0_20 flex space_between">
+                    <div class="padding_20 flex space_between">
                         <div class="color_cart_ccc1" style="width:1.6rem;">收货地址：</div>
                         <div v-for="(lists,index) in addressData.addressList" :key="index" v-if="index == 0">
                             <input type="text" readonly="readonly" style="border:0;width:5.5rem;"
@@ -154,10 +154,7 @@ export default {
 
             /*购物车数据*/
             cartDate:{
-                // 全部列表状态
-                listState: false,
-                // 全部删除状态
-                listDeleteState: false,
+   
                 // 总价格
                 listTotal: 0.00,
                 // 大列表
@@ -357,7 +354,7 @@ export default {
             let param = {
                 ciCode: this.userData.ciCode,
                 ciName: this.userData.name,
-                orderSource: 1,
+                orderSource: 2,
                 orderForm: this.$route.query.sourceType != 'cart' ? 1:0,
                 productCodeAndCount: productCodeAndCount,
                 addressCode: this.addressData.addressList[0].addressCode,
@@ -367,7 +364,7 @@ export default {
 
         },
 
-        /**获取产品提交订单的数据**/
+        /**获取产品的数据**/
         // 获取产品详情数据
         getProductDetailData(productCode){
 

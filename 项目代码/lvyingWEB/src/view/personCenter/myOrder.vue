@@ -497,6 +497,7 @@ export default {
                    this.orderData.pageData.current++;
 
                    for(let i = 0 ; i < data.length; i++){
+                       console.log(i)
 
                         let orderItem = [];
                         let lists = data[i];
@@ -520,12 +521,13 @@ export default {
 
                             let childItem = [];
                             let items = lists.orderMerchantList[x];
+                            let itemName = items.orderProductList.length > 0 ? items.orderProductList[0].merchantInfo.merchantNm : '';
 
                             orderItem.push({
                                 itemTime: items.createDate,
                                 itemCode: items.orderMerchantCode,
                                 itemAmount: items.orderAmount,
-                                itemName: items.orderProductList[0].merchantInfo.merchantNm,
+                                itemName: itemName,
                                 itemTrackNo: items.trackNo,
                                 childItem:[]
                             })
