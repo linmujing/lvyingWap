@@ -302,7 +302,7 @@ router.beforeEach((to,form,next) =>{
     document.title=to.meta.title;
   }
 
-   第一次进入项目
+  //  第一次进入项目
   let token = window.localStorage.getItem("userToken");
 
   if (!token && to.path != '/author') {
