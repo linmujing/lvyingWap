@@ -259,22 +259,6 @@ const router = new Router({
       component: resolve => require(['@/view/personCenter/goComment'],resolve)
     },
     {
-      path: '/myOrder/refundMoney',
-      name: 'refundMoney',
-      meta:{
-        title:'退货退款',
-      },
-      component: resolve => require(['@/view/personCenter/refundMoney'],resolve)
-    },
-    {
-      path: '/myOrder/refundingMoney',
-      name: 'refundingMoney',
-      meta:{
-        title:'退货退款',
-      },
-      component: resolve => require(['@/view/personCenter/refundingMoney'],resolve)
-    },
-    {
       path: '/myAddress',
       name: 'myAddress',
       meta:{
