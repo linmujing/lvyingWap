@@ -87,7 +87,7 @@ export default {
         sectionCont: 0,
         sectionIndex: 0,
         classCur: 0,
-        current: 0
+        current: this.$route.query.index
       }
 
   },
@@ -136,21 +136,11 @@ export default {
     clickPlay(productSection){
       // 设置视频自动播放
       if(this.typeId == 3){
-        for (var i = 0; i < productSection.length; i++) {
-          if(!productSection[i].videoUrl == ''){
-            this.pushVideo(productSection[i], i)
-            return
-          }
-        }
+        this.pushVideo(productSection[this.current], this.current)
       }
       // 设置音频自动播放
       if(this.typeId == 4){
-        for (var j = 0; j < productSection.length; j++) {
-          if(!productSection[j].voiceUrl == ''){
-            this.pushAudio(productSection[j], j)
-            return
-          }
-        }
+        this.pushAudio(productSection[this.current], this.current)
       }
     },
     // 压入视频

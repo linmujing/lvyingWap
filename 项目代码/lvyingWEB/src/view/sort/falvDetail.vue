@@ -94,7 +94,7 @@
                         <div v-if="typeId == 3" class="align_center">
                           <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
                           <div v-if="parseInt(item.videoStatus) === 0">
-                            <button class="btn_warning" @click="toCourse">开始播放</button>
+                            <button class="btn_warning" @click="toCourse(index)">开始播放</button>
                           </div>
                           <div v-else-if="parseInt(item.videoStatus) === 1" class="width_70px">
                             <button class="btn_warning" @click="audition(item)">试看</button>
@@ -108,7 +108,7 @@
                         <div v-if="typeId == 4" class="align_center">
                           <!--<span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>-->
                           <div v-if="parseInt(item.voiceStatus) === 0">
-                            <button class="btn_warning" @click="toCourse">开始播放</button>
+                            <button class="btn_warning" @click="toCourse(index)">开始播放</button>
                           </div>
                           <div v-else-if="parseInt(item.voiceStatus) === 1" class="width_70px">
                             <button class="btn_warning" @click="audition(item)">试听</button>
@@ -491,20 +491,20 @@ export default {
     },
     // 获取动态管控列表
     getSectionIndex(sectionIndex){
-      let params = this.$Qs.stringify({'pageNo': 1, 'pageSize': this.sectionSize,'productSectionIndex': sectionIndex, 'productSection': this.proSection});
-      this.$api.getProductCommentList( params )
+      let params = this.$Qs.stringify({'productSectionIndex': sectionIndex, 'productSection': this.proSection});
+      this.$api.getSectionIndex( params )
 
         .then( (res) => {
           console.log(res);
           if(res.data.code == 200){
             var result = res.data.content
-            var arr = []
-            for (var i = 0; i < result.list.length; i++) {
-              arr.push(result.list[i].productInfo.productSectionList)
-            }
-            this.sectionList = arr
-            this.sectionCont = result.count
-            console.log(arr)
+            // var arr = []
+            // for (var i = 0; i < result.list.length; i++) {
+            //   arr.push(result.list[i].productInfo.productSectionList)
+            // }
+            this.sectionList = result
+            // this.sectionCont = result.count
+            console.log(result)
 
           }else if (res.data.code == 500){
 
@@ -570,25 +570,15 @@ export default {
       })
     },
     // 跳转到课程
-    toCourse(){
-      // if(this.isBuy === 0){
-      //   this.$toast('对不起，您需要购买后才能观看！');
-      //   return false;
-      // }
-      switch (this.typeId) {
-        case 1:
-        case 2:
-        case 3:
-        case 4:
-          this.$router.push({
-            path:'/seeVideo',
-            query: {
-              productCode: this.productCode,
-              typeId: this.typeId
-            }
-          })
-          break
-      }
+    toCourse(index){
+      this.$router.push({
+        path:'/seeVideo',
+        query: {
+          productCode: this.productCode,
+          typeId: this.typeId,
+          index: index
+        }
+      })
     },
     // 下载文件
     downloadDoc(doc){
