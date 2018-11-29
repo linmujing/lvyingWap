@@ -22,12 +22,12 @@
                     label="短信验证码"
                     placeholder="请输入验证码"
                 >
-                    <van-button slot="button" size="small" :type=" isSend ? '' : 'primary'" :disabled="isSend"  @click="sendTimeOut"> {{isSendText}} </van-button>
+                    <van-button slot="button" size="small" :type=" isSend ? '' : 'primary'" :disabled="isSend"  @click="sendSms"> {{isSendText}} </van-button>
                 </van-field>
             </van-cell-group>
 
             <div style="padding-top:1rem;text-align:center;">
-                <van-button type="primary" round style="width:1.4rem;height:0.6rem;line-height:0.5rem;border-radius:0.3rem;" >确定</van-button>
+                <van-button type="primary" round style="width:1.4rem;height:0.6rem;line-height:0.5rem;border-radius:0.3rem;" @click="bingPhone"  >确定</van-button>
             </div>
         
         </div>
@@ -59,7 +59,7 @@ export default {
         this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
     },
     methods: {
-
+        // 发送短信
         bingPhone(){
             let reg = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
 
@@ -71,27 +71,22 @@ export default {
 
             }
 
-            // 验证验证码
-            if(this.sms == ""){
-
-                this.$toast('验证码不能为空!');
-                return;
-
-            }
-
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             // 判断手机号是否已被注册
-            this.$api.bindingCustomerInfo( this.$Qs.stringify({ 'ciPhone': this.userPhone, 'smsCode':this.sms , 'unionId': this.this.$store.state.userData,unionId }) )
+            this.$api.bindingCustomerInfo( this.$Qs.stringify({ 'ciPhone': this.userPhone, 'smsCode':this.sms , 'unionId': this.$store.state.userData.unionId }) )
 
             .then( (res) => {
 
                 console.log(res)
+                this.$toast.clear()
 
                 if(res.data.code == 200){
 
-                    this.$toast.clear();
-                    this.$toast('该帐号还没有注册!');
+                    this.$toast('绑定成功!');
+
+                    this.$store.commit('personCenter/BindState', 1);
+                    
                     return;
 
                 }
@@ -104,7 +99,35 @@ export default {
 
             });
         },
+        // 发送验证码
+        sendSms(){
 
+            let reg = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
+
+            // 正则验证手机号
+            if( !reg.test(this.userPhone) ){
+
+                this.$toast('请填写正确的手机号!');
+                return;
+
+            }
+                    
+            this.$api.sendSms( this.$Qs.stringify({ 'phoneNo': this.userPhone, 'type': '2' }) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    this.$toast('发送成功!');
+
+                    this.sendTimeOut();
+
+                }
+
+            })
+        },
         // 发送短信计时器
         sendTimeOut(){
 
@@ -130,9 +153,7 @@ export default {
 
                 }
 
-            },1000)
-
-            
+            },1000) 
 
         },
 
