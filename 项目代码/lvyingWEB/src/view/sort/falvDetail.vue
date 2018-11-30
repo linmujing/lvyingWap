@@ -146,7 +146,7 @@
                         <button @click="audition(item)" class="btn_plain van-ellipsis margin_right_10">视频</button>
                         <button @click="audition(item)" class="btn_plain van-ellipsis margin_right_10">音频</button>
                         <button @click="openTxt(item)" class="btn_plain van-ellipsis margin_right_10">文字预览</button>
-                        <button v-show="parseInt(item.docStatus) === 0" @click="downloadDoc(item.docUrl)" class="btn_plain van-ellipsis">下载</button>
+                        <!--<button v-show="parseInt(item.docStatus) === 0" @click="downloadDoc(item.docUrl)" class="btn_plain van-ellipsis">下载</button>-->
                       </div>
                     </div>
                   </div>
