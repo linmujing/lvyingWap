@@ -586,10 +586,18 @@ export default {
     },
     // 文字预览
     openTxt(item){
+      console.log(item)
       if(item.txtUrl === ''){
         this.$toast('对不起，暂无数据！');
         return false;
       }
+      window.open(item.txtUrl)
+      // this.$dialog.alert({
+      //   title: '标题',
+      //   message: '弹窗内容'
+      // }).then(() => {
+      //   // on close
+      // });
     },
     courseStates(){
       this.courseBtn = 2
