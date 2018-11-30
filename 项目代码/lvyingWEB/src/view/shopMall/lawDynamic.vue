@@ -149,7 +149,7 @@ export default {
     //获取橱窗对象
     getCaseProduct(pageLocat){
       this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
-      this.$api.getProductShowCaseList(this.$Qs.stringify({appType:2, pageLocat: pageLocat})).then((res)=>{
+      this.$api.getProductShowCaseList(this.$Qs.stringify({appType:1, pageLocat: pageLocat})).then((res)=>{
         if(res.data.code == 200){
           this.$toast.clear();
           let {content}=res.data;
