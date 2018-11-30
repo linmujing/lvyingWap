@@ -143,8 +143,8 @@
                         </div>
                       </div>
                       <div v-show="courseBtn == 2" class="margin_top_10">
-                        <button @click="audition(item)" class="btn_plain van-ellipsis margin_right_10">视频</button>
-                        <button @click="audition(item)" class="btn_plain van-ellipsis margin_right_10">音频</button>
+                        <button @click="btnDynamic(3,item)" class="btn_plain van-ellipsis margin_right_10">视频</button>
+                        <button @click="btnDynamic(4,item)" class="btn_plain van-ellipsis margin_right_10">音频</button>
                         <button @click="openTxt(item)" class="btn_plain van-ellipsis margin_right_10">文字预览</button>
                         <!--<button v-show="parseInt(item.docStatus) === 0" @click="downloadDoc(item.docUrl)" class="btn_plain van-ellipsis">下载</button>-->
                       </div>
@@ -604,7 +604,7 @@ export default {
     },
     // 试听
     audition(item){
-      console.log(item)
+      console.log(this.typeId)
       if (this.typeId == 3) {
         if(item.videoUrl == ''){
           this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
@@ -615,6 +615,27 @@ export default {
         this.$store.commit('personCenter/setVideoState', 1)
 
       }else if (this.typeId == 4) {
+        if(item.voiceUrl == ''){
+          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
+          return false;
+        }
+        // 音频播放源修改
+        this.$store.commit('personCenter/setAudioIndex', item);
+      }
+    },
+    // 动态管控点击音视频
+    btnDynamic(id, item){
+      console.log(this.typeId)
+      if (id == 3) {
+        if(item.videoUrl == ''){
+          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
+          return false;
+        }
+        // 视频播放源修改
+        this.$store.commit('personCenter/setVideoIndex', item);
+        this.$store.commit('personCenter/setVideoState', 1)
+
+      }else if (id == 4) {
         if(item.voiceUrl == ''){
           this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
           return false;
