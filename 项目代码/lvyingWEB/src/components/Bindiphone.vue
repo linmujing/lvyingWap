@@ -61,12 +61,20 @@ export default {
     methods: {
         // 发送短信
         bingPhone(){
-            let reg = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
+
+            let reg1 = new RegExp(/^1(3|4|5|7|8)\d{9}$/);
 
             // 正则验证手机号
-            if( !reg.test(this.userPhone) ){
+            if( !reg1.test(this.userPhone) ){
 
                 this.$toast('请填写正确的手机号!');
+                return;
+
+            }
+
+            if( this.sms == '' ){
+
+                this.$toast('请输入验证码!');
                 return;
 
             }
@@ -112,7 +120,7 @@ export default {
 
             }
                     
-            this.$api.sendSms( this.$Qs.stringify({ 'phoneNo': this.userPhone, 'type': '2' }) )
+            this.$api.sendSms( this.$Qs.stringify({ 'phoneNo': this.userPhone, 'type': '1' }) )
 
             .then( (res) => {
 
