@@ -13,7 +13,15 @@
                     label="手机号"
                     placeholder="请输入用户名"
                 />
-
+                <van-field
+                    v-model="password"
+                    center
+                    clearable
+                    required
+                    label="密码"
+                    placeholder="请输入密码"
+                    v-if="passwordShow"
+                />
                 <van-field
                     v-model="sms"
                     center
@@ -25,8 +33,9 @@
                     <van-button slot="button" size="small" :type=" isSend ? '' : 'primary'" :disabled="isSend"  @click="sendSms"> {{isSendText}} </van-button>
                 </van-field>
             </van-cell-group>
+            <div style="color:red;font-size:0.2rem;line-height:0.3rem;padding:0.2rem;" v-if="passwordShow"> 您还没有用该手机号注册，请设置登录密码，用手机号和密码可在电脑上登录</div>
 
-            <div style="padding-top:1rem;text-align:center;">
+            <div style="text-align:center;" :style="{ 'paddingTop': passwordShow ? '0' : '1rem'}">
                 <van-button type="primary" round style="width:1.4rem;height:0.6rem;line-height:0.5rem;border-radius:0.3rem;" @click="bingPhone"  >确定</van-button>
             </div>
         
@@ -44,7 +53,11 @@ export default {
     data() {
         return {
             userPhone:'',
+            password: '',
             sms:'',
+
+            // 是否已注册 假如未注册，则需要输入密码，反之
+            passwordShow: false,
 
             // 弹框状态 false 关闭 true 打开
             bindStateModel: false,
@@ -71,6 +84,7 @@ export default {
                 return;
 
             }
+            
 
             if( this.sms == '' ){
 
@@ -81,8 +95,23 @@ export default {
 
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
+            let params = { 'ciPhone': this.userPhone, 'smsCode':this.sms , 'unionId': this.$store.state.userData.unionId } ;
+
+            // 假如需要输入密码，则需要做个密码验证
+            if(this.passwordShow){
+
+                if( this.password == '' ){
+
+                    this.$toast('请输入密码!');
+                    return;
+
+                }
+
+                params.passWord = this.password
+            }
+
             // 判断手机号是否已被注册
-            this.$api.bindingCustomerInfo( this.$Qs.stringify({ 'ciPhone': this.userPhone, 'smsCode':this.sms , 'unionId': this.$store.state.userData.unionId }) )
+            this.$api.bindingCustomerInfo( this.$Qs.stringify(params) )
 
             .then( (res) => {
 
@@ -119,6 +148,25 @@ export default {
                 return;
 
             }
+
+            // 判断手机号是否已被注册
+            this.$api.verifyCiPhone( this.$Qs.stringify({ 'ciPhone': this.userPhone }) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 500){
+
+                  this.passwordShow = true;
+
+                }else if (res.data.code == 200){
+
+                    this.passwordShow = false;
+                  
+                }
+
+            })
                     
             this.$api.sendSms( this.$Qs.stringify({ 'phoneNo': this.userPhone, 'type': '1' }) )
 
@@ -204,7 +252,7 @@ export default {
 
         .login{
             position: absolute;
-            height: 5rem;
+            height: 5.5rem;
             width:80%;
             background:#fff;
             padding: 0.1rem;

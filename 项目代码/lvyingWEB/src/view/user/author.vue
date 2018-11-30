@@ -50,8 +50,8 @@
 
                 var url =
                 "https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxd07de149859354b8&redirect_uri=" +
-                pageUrl + //这里放当前页面的地址
-                "&response_type=code&scope=snsapi_base&state=STATE&connect_redirect=1#wechat_redirect";
+                pageUrl + //这里放当前页面的地址 snsapi_userinfo
+                "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
 
                 window.location.href = url;
             }
