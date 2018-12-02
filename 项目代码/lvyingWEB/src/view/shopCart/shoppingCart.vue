@@ -123,7 +123,7 @@
             </div>
         </div>
 
-        <div class="img_middle_center bg_fff"  style="height:100%;" v-if="!cartList.length">
+        <div class="img_middle_center bg_fff"  :style="{height: windowHeight + 'px'}" v-if="!cartList.length">
             <img  style="height:auto;width:50%;" src="../../../static/images/image/not_goods.png" alt="">
         </div>
 

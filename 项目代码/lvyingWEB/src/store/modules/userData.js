@@ -44,7 +44,7 @@
         localStorage.setItem("ciIntroduce", n.ciIntroduce)
         localStorage.setItem("unionId", n.unionLongId)
 
-        localStorage.setItem("userToken", n.passWord)
+        localStorage.setItem("userToken1", n.passWord)
   
     },
   }

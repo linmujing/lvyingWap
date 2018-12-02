@@ -23,7 +23,7 @@
                     v-if="passwordShow"
                 />
                 <van-field
-                    v-model="password"
+                    v-model="password2"
                     center
                     clearable
                     required
@@ -79,6 +79,10 @@ export default {
         
     },
     mounted(){
+        // 判断是否有电话号码
+        if(localStorage.getItem("ciphone") != null && localStorage.getItem("ciphone") != 'null'){
+            Store.commit('personCenter/BindState', 1)
+        }
         this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
     },
     methods: {

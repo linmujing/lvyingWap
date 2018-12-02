@@ -23,7 +23,7 @@
 
         this.$toast.loading({ mask: true, message: '获取微信授权中...' , duration: 0});
 
-        this.token = window.localStorage.getItem("userToken");
+        this.token = window.localStorage.getItem("userToken1");
 
         //判断当前的url有没有token参数,如果不存在那就跳转到微信授权的url
         if(this.token){

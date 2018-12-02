@@ -303,7 +303,7 @@ router.beforeEach((to,form,next) =>{
   }
 
   //  第一次进入项目
-  let token = window.localStorage.getItem("userToken");
+  let token = window.localStorage.getItem("userToken1");
 
   if (!token && to.path != '/author') {
 
