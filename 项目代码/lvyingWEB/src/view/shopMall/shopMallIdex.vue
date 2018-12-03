@@ -361,13 +361,14 @@ export default {
       },
       //获取推荐商品
       getProductShowCase(productCode, productSortBy, type){
+        this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
         var params = this.$Qs.stringify({'productCode': productCode, 'productSortBy': productSortBy})
         this.$api.getProductShowCase( params )
 
           .then( (res) => {
 
             if(res.data.code == 200){
-
+              this.$toast.clear();
               switch (type) {
                 case 1:
                   this.videoArr = res.data.content
@@ -387,12 +388,13 @@ export default {
               }
 
             }else{
-
+              this.$toast.clear();
               this.$toast.fail(res.data.message);
 
             }
           })
           .catch((error) => {
+            this.$toast.clear();
             console.log('发生错误！', error);
           });
       },

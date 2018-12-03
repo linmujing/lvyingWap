@@ -44,7 +44,7 @@
               <div class="color_F5320D"style="width:70%;border-right: 2px dashed #EBDFD1">
                 <div class="font_16 font_weight_bold van-ellipsis">{{item.couponTitle}}</div>
                 <div class="margin_top_5 van-ellipsis">{{item.couponDesc}}</div>
-                <div class="margin_top_5 van-ellipsis">有效期{{dateFormat(item.couponStartTime)}} 至 {{dateFormat(item.couponEndTime)}}</div>
+                <div class="margin_top_5 van-ellipsis">有效期{{item.couponStartTime}} 至 {{item.couponEndTime}}</div>
               </div>
               <div class="color_F5320D font_18 juc_center align_center" style="width:30%">立即领取</div>
             </div>
@@ -266,8 +266,8 @@
 
 
 		<!--加入购物车底部-->
-		<div>
-			<van-goods-action>
+		<div class="bg_fff">
+			<van-goods-action class="bg_fff">
 			  <van-goods-action-mini-btn icon="shop" text="店铺" @click="goStore"/>
 			  <van-goods-action-mini-btn icon="cart" text="购物车" to="/shoppingCart" />
 			  <van-goods-action-big-btn text="加入购物车" @click="addProductCart(productCode)" style="background: #F09105;color: #fff;"/>
@@ -551,6 +551,11 @@ export default {
         .then( (res) => {
           console.log(res);
           if(res.data.code == 200){
+            var list = res.data.content.list
+            for(var i=0;i<list.length;i++){
+              list[i].couponStartTime = this.dateFormat(list[i].couponStartTime)
+              list[i].couponEndTime = this.dateFormat(list[i].couponStartTime)
+            }
             this.cuponList = res.data.content.list
           }else {
             this.$toast.fail(res.data.message);
