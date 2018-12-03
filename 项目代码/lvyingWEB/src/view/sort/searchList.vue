@@ -38,7 +38,7 @@
                     <button class="btn_warning width_40px align_center juc_center" @click="addProductCart(val.productCode)">
                       <van-icon name="cart" size="16px" color="#fff" />
                     </button>
-                    <button class="btn_title" @click="goBuy(val.productCode)">立即购买</button>
+                    <button class="btn_title van-ellipsis" @click="goBuy(val.productCode)">立即购买</button>
                   </div>
                 </div>
               </div>

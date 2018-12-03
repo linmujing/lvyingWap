@@ -556,7 +556,7 @@ export default {
               list[i].couponStartTime = this.dateFormat(list[i].couponStartTime)
               list[i].couponEndTime = this.dateFormat(list[i].couponStartTime)
             }
-            this.cuponList = res.data.content.list
+            this.cuponList = list
           }else {
             this.$toast.fail(res.data.message);
           }
