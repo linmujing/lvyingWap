@@ -42,26 +42,25 @@ export default {
                 .replace(/[&]/g, "%26")
                 .replace(/[=]/g, "%3d");
 
-                var url =
-                "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ this.$store.state.userData.appId +"&redirect_uri=" +
-                pageUrl + //这里放当前页面的地址 snsapi_userinfo
-                "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
+                var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+this.$store.state.userData.appId
+                +"&redirect_uri="+pageUrl+"&response_type=code&scope=snsapi_base&state=park#wechat_redirect" ;
 
                 window.location.href = url;
             
         }, 
         // 微信支付
         wxPayRequest(){
+            let that = this;
 
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({ 
-                'orderCode': this.$route.params.orderCode , 
+                'orderCode': window.sessionStorage.getItem("orderCode") , 
                 'ciCode': this.$store.state.userData.cicode , 
-                'truePayMoney': this.$route.params.listTotal, 
+                'truePayMoney':  window.sessionStorage.getItem("listTotal") , 
                 'code': this.GetQueryString('code')
                 }) ;
-
+           
             this.$api.JSAPIPay( param )
 
             .then( (res) => {
@@ -69,34 +68,41 @@ export default {
                 console.log(res)
                 let data = res.data.content;
 
-                if(res.data.code == 1){
+                if(res.data.code == 200){
                     
                     function onBridgeReady(){
-
+                        console.log(data.appid)
                         WeixinJSBridge.invoke(
                             'getBrandWCPayRequest', {
                                 "appId": data.appid,     //公众号名称，由商户传入     
                                 "timeStamp": data.timestamp,         //时间戳，自1970年以来的秒数     
-                                "nonceStr": data.noncestr, //随机串     
-                                "package": data.package,     
+                                "nonceStr": data.nonce_str, //随机串     
+                                "package": 'prepay_id='+ data.prepay_id,     
                                 "signType":"MD5",         //微信签名方式：     
-                                "paySign": data.sign //微信签名 
+                                "paySign": data.sign, //微信签名
+                                "appId": data.appid, 
                             },
                             function(res){     
+                                // alert(JSON.stringify(res))
                                 if(res.err_msg == "get_brand_wcpay_request:ok" ) {
 
-                                    this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
+                                    alert("支付成功！")
+
+                                    window.sessionStorage.removeItem("listTotal")
+
+                                    that.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
                                     // 支付成功后定时查询订单状态
-                                    setInterval(this.getOrderState, 3000);
+                                    that.$router.push({ path: '/myOrder'})
+                                    // setInterval(that.getOrderState, 3000);
 
                                 }else{
-                                    alert(res.err_msg)
+                                    alert("支付失败")   
                                 }     
                                 // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
                             }
                         )
 
-                        this.$toast.clear();
+                        that.$toast.clear();
                     } 
                     console.log("调起支付")
                     if (typeof WeixinJSBridge == "undefined"){
@@ -125,7 +131,7 @@ export default {
         // 查询订单状态
         getOrderState(){
 
-            this.$api.getOrderInfo( this.$Qs.stringify({ 'orderCode': this.$route.params.orderCode })  )
+            this.$api.getOrderInfo( this.$Qs.stringify({ 'orderCode': window.sessionStorage.getItem("orderCode")})  )
 
             .then( (res) => {
 

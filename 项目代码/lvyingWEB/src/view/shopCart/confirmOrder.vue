@@ -193,13 +193,12 @@ export default {
 
         },
         /*去支付*/   
-        submitOrderClick(){   
+        submitOrderClick(){   //this.cartDate.listTotal
 
-            this.$router.push({name: 'toPay',params:{ 
-                orderCode: this.$route.query.orderCode,
-                allTotal:this.cartDate.allTotal
-                }
-            });
+            window.sessionStorage.setItem("orderCode", this.$route.query.orderCode)
+            window.sessionStorage.setItem("listTotal", '0.01' )
+
+            this.$router.push({name: 'toPay'});
             
         }, 
        
