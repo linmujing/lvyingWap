@@ -143,8 +143,10 @@ export const aliPayRequest = params => { return instance.post(`trade/aliPay/aliP
 
 // 微信支付回调
 export const payBack = params => { return instance.post(`/trade/weixinPay/payBack`, params ); };
-// 阿微信支付请求
+// 微信支付请求
 export const appPerPay = params => { return instance.post(`/trade/weixinPay/appPerPay`, params ); };
+// 微官网微信支付请求
+export const JSAPIPay = params => { return instance.post(`/trade/weixinPay/gzh/JSAPIPay`, params ); };
 
 
 

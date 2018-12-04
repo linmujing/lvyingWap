@@ -192,6 +192,14 @@ const router = new Router({
       },
       component: resolve => require(['@/view/shopCart/confirmOrder'],resolve)
     },
+    {
+      path: '/toPay',
+      name: 'toPay',
+      meta:{
+        title:'去支付',
+      },
+      component: resolve => require(['@/view/shopCart/toPay'],resolve)
+    },
 
     /**个人中心部分**/
     {

@@ -10,7 +10,10 @@
     ciIntroduce: localStorage.getItem("ciIntroduce"),
     ciname: localStorage.getItem("ciname"),
     unionId: localStorage.getItem("unionId"),
-    SupplierData: {}
+    SupplierData: {},
+    // 微官网AppID 
+    appId: 'wxd07de149859354b', //测试
+
   }
   
   // getters
