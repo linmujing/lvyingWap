@@ -13,43 +13,51 @@
 
     	<div class="padding_10" style="margin-top: 3.8rem">
         <!--<p class="title">第一张&nbsp;&nbsp;入职管理</p>-->
-        <div v-for="(item,index) in productSection" :key="index">
-          <div class="margin_top_10 padding_10 body_bg juc_center_between">
+        <div v-if="typeId == 3">
+          <div v-for="(item,index) in productSection" :key="index">
+            <div class="margin_top_10 padding_10 body_bg juc_center_between">
               <div class="color_666 flex">
                 <!--<div class="width_20px">{{index + 1}}</div>-->
                 <div class="font_12 van-ellipsis">{{item.sectionName}}</div>
               </div>
-
-              <div v-if="typeId == 3" class="align_center">
-                <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
-                <div v-if="parseInt(item.videoStatus) === 0">
-                  <div @click="pushVideo(item, index)">
-                    <button v-if="current === index" class="btn_warning width_90px">
-                      <span style="width: 0.04rem;height: 0.1rem;background: #fff;display: inline-block;"></span>
-                      <span style="width: 0.04rem;height: 0.2rem;background: #fff;display: inline-block;"></span>
-                      <span style="width: 0.04rem;height: 0.3rem;background: #fff;display: inline-block;"></span>
-                    </button>
-                    <button v-else class="btn_warning width_90px">开始播放</button>
-                  </div>
+              <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
+              <div v-if="item.videoStatus == '0'">
+                <div @click="pushVideo(item, index)">
+                  <button v-if="current === index" class="btn_warning width_90px">
+                    <span style="width: 0.04rem;height: 0.1rem;background: #fff;display: inline-block;"></span>
+                    <span style="width: 0.04rem;height: 0.2rem;background: #fff;display: inline-block;"></span>
+                    <span style="width: 0.04rem;height: 0.3rem;background: #fff;display: inline-block;"></span>
+                  </button>
+                  <button v-else class="btn_warning width_90px">开始播放</button>
                 </div>
-                <div v-else-if="item.videoStatus == ''"></div>
               </div>
-              <div v-else-if="typeId == 4" class="align_center">
-                <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
-                <div v-if="parseInt(item.voiceStatus) === 0">
-                  <div @click="pushAudio(item, index)">
-                    <button v-if="current === index" class="btn_warning width_90px">
-                      <span style="width: 0.04rem;height: 0.1rem;background: #fff;display: inline-block;"></span>
-                      <span style="width: 0.04rem;height: 0.2rem;background: #fff;display: inline-block;"></span>
-                      <span style="width: 0.04rem;height: 0.3rem;background: #fff;display: inline-block;"></span>
-                    </button>
-                    <button v-else class="btn_warning width_90px">开始播放</button>
-                  </div>
-                </div>
-                <div v-else-if="item.videoStatus == ''"></div>
-              </div>
+              <!--<div v-else></div>-->
 
             </div>
+          </div>
+        </div>
+        <div v-else-if="typeId == 4">
+          <div v-for="(item,index) in productSection" :key="index">
+            <div class="margin_top_10 padding_10 body_bg juc_center_between">
+              <div class="color_666 flex">
+                <!--<div class="width_20px">{{index + 1}}</div>-->
+                <div class="font_12 van-ellipsis">{{item.sectionName}}</div>
+              </div>
+              <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
+              <div v-if="item.voiceStatus == '0'">
+                <div @click="pushAudio(item, index)">
+                  <button v-if="current === index" class="btn_warning width_90px">
+                    <span style="width: 0.04rem;height: 0.1rem;background: #fff;display: inline-block;"></span>
+                    <span style="width: 0.04rem;height: 0.2rem;background: #fff;display: inline-block;"></span>
+                    <span style="width: 0.04rem;height: 0.3rem;background: #fff;display: inline-block;"></span>
+                  </button>
+                  <button v-else class="btn_warning width_90px">开始播放</button>
+                </div>
+              </div>
+              <div v-else></div>
+
+            </div>
+          </div>
         </div>
       </div>
 

@@ -93,10 +93,10 @@
                         <!--视频-->
                         <div v-if="typeId == 3" class="align_center">
                           <!--<span class="color_999 font_12 margin_right_10">{{item.videoTime}}</span>-->
-                          <div v-if="parseInt(item.videoStatus) === 0">
+                          <div v-if="item.videoStatus == '0'">
                             <button class="btn_warning" @click="toCourse(index)">开始播放</button>
                           </div>
-                          <div v-else-if="parseInt(item.videoStatus) === 1" class="width_70px">
+                          <div v-else-if="item.videoStatus == '1'" class="width_70px">
                             <button class="btn_warning" @click="audition(item)">试看</button>
                           </div>
                           <div v-else-if="item.videoStatus == ''"></div>
@@ -107,10 +107,10 @@
                         <!--音频-->
                         <div v-if="typeId == 4" class="align_center">
                           <!--<span class="color_999 font_12 margin_right_10">{{item.voiceTime}}</span>-->
-                          <div v-if="parseInt(item.voiceStatus) === 0">
+                          <div v-if="item.voiceStatus == '0'">
                             <button class="btn_warning" @click="toCourse(index)">开始播放</button>
                           </div>
-                          <div v-else-if="parseInt(item.voiceStatus) === 1" class="width_70px">
+                          <div v-else-if="item.voiceStatus == '1'" class="width_70px">
                             <button class="btn_warning" @click="audition(item)">试听</button>
                           </div>
                           <div v-else-if="item.voiceStatus == ''"></div>
@@ -612,7 +612,7 @@ export default {
       console.log(this.typeId)
       if (this.typeId == 3) {
         if(item.videoUrl == ''){
-          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
+          this.$toast('对不起，课程'+ item.sectionName +'没有播放源！');
           return false;
         }
         // 视频播放源修改
@@ -621,7 +621,7 @@ export default {
 
       }else if (this.typeId == 4) {
         if(item.voiceUrl == ''){
-          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
+          this.$toast('对不起，课程'+ item.sectionName +'没有播放源！');
           return false;
         }
         // 音频播放源修改
@@ -633,7 +633,7 @@ export default {
       console.log(this.typeId)
       if (id == 3) {
         if(item.videoUrl == ''){
-          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
+          this.$toast('对不起，课程'+ item.sectionName +'没有播放源！');
           return false;
         }
         // 视频播放源修改
@@ -642,7 +642,7 @@ export default {
 
       }else if (id == 4) {
         if(item.voiceUrl == ''){
-          this.$toast('对不起，课程'+ item.sectionName +'暂无数据！');
+          this.$toast('对不起，课程'+ item.sectionName +'没有播放源！');
           return false;
         }
         // 音频播放源修改

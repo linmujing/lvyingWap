@@ -6,7 +6,7 @@
 				<!--侧边栏-->
 			  	<van-col span="7">
 				  	<van-badge-group :active-key="activeKey" v-bind:style="{height: fullHeight - 50 + 'px'}" class="all_width scroll">
-					  <van-badge v-for="(item,index) in tabData" :key="index" :title="item.catName" @click="onClick" class="van-ellipsis"/>
+					  <van-badge v-for="(item,index) in tabData" :key="index" :title="item.catName" @click="onClick(index, item.id)" class="van-ellipsis"/>
 					</van-badge-group>
 			  	</van-col>
 			  	<!--内容-->
@@ -50,6 +50,7 @@ export default {
 		    //内容显示的index
 		    tabIndex: 0,
 		    tabData: [{productCatVoList: []}],
+        tabId: 0
       }
 
     },
@@ -79,19 +80,18 @@ export default {
             console.log('发生错误！', error);
           });
       },
-    	onClick(key) {
-    		// console.log(key)
-	      this.activeKey = key;
-	      this.tabIndex = key;
+    	onClick(index, id) {
+	      this.activeKey = index;
+	      this.tabIndex = index;
+        this.tabId = id;
 	    },
 	    toList(id, name){
 	    	// console.log(id)
-        var tabIndex = this.tabIndex;
         this.$router.push({
           path:'/dynamicList',
           query: {
             id: id,
-            typeId: tabIndex + 1,
+            typeId: this.tabId,
             name: name
           }
         })
