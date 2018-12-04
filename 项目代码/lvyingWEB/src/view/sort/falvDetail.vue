@@ -552,7 +552,10 @@ export default {
           console.log(res);
           if(res.data.code == 200){
             var list = res.data.content.list
+            var date = new Date(list[0].couponStartTime)
+            console.log(date.toLocaleDateString())
             for(var i=0;i<list.length;i++){
+
               list[i].couponStartTime = this.dateFormat(list[i].couponStartTime)
               list[i].couponEndTime = this.dateFormat(list[i].couponStartTime)
             }
@@ -733,14 +736,14 @@ export default {
     //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
     dateFormat:function(time) {
       var date=new Date(time);
-      var year=date.getFullYear();
-      /* 在日期格式中，月份是从0开始的，因此要加0
-       * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
-       * */
-      var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
-      var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
+      // var year=date.getFullYear();
+      // /* 在日期格式中，月份是从0开始的，因此要加0
+      //  * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+      //  * */
+      // var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
+      // var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
       // 拼接
-      return year.toString()+"-"+month.toString()+"-"+day.toString();
+      return date.toLocaleDateString();
     },
 
     /** 数据 **/
