@@ -140,6 +140,15 @@ export default {
             // this.coupons.push(coupon);
         },
 
+        // 获取地址栏参数
+        GetQueryString(name){
+            var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if(r!=null)
+            return unescape(r[2]);
+            return null;
+        },
+
         /*订单数据计算*/    
         // 计算小计与合计
         calculatePrice(){
@@ -183,80 +192,17 @@ export default {
             }
 
         },
-        /*订单提交*/   
+        /*去支付*/   
         submitOrderClick(){   
 
-            // 去结算页面
-            this.wxPayRequest();
+            this.$router.push({name: 'toPay',params:{ 
+                orderCode: this.$route.query.orderCode,
+                allTotal:this.cartDate.allTotal
+                }
+            });
             
         }, 
-        // 微信支付
-        wxPayRequest(){
-
-            let param = this.$Qs.stringify({ 
-                'orderCode': this.$route.query.orderCode , 
-                'ciCode': this.userData.cicode , 
-                'truePayMoney': this.cartDate.listTotal, 
-                'payCommet': ''
-                }) ;
-
-            this.$api.appPerPay( param )
-
-            .then( (res) => {
-
-                console.log(res)
-                let data = res.data.content;
-
-                if(res.data.code == 1){
-                    
-                    function onBridgeReady(){
-
-                        WeixinJSBridge.invoke(
-                            'getBrandWCPayRequest', {
-                                "appId": data.appid,     //公众号名称，由商户传入     
-                                "timeStamp": data.timestamp,         //时间戳，自1970年以来的秒数     
-                                "nonceStr": data.noncestr, //随机串     
-                                "package": data.package,     
-                                "signType":"MD5",         //微信签名方式：     
-                                "paySign": data.sign //微信签名 
-                            },
-                            function(res){     
-                                if(res.err_msg == "get_brand_wcpay_request:ok" ) {
-
-                                    this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
-                                    // 支付成功后定时查询订单状态
-                                    setInterval(this.getOrderState, 3000);
-
-                                }else{
-                                    alert(res.err_msg)
-                                }     
-                                // 使用以上方式判断前端返回,微信团队郑重提示：res.err_msg将在用户支付成功后返回    ok，但并不保证它绝对可靠。 
-                            }
-                        )
-                    } 
-                    console.log("调起支付")
-                    if (typeof WeixinJSBridge == "undefined"){
-                        if( document.addEventListener ){
-                            document.addEventListener('WeixinJSBridgeReady', onBridgeReady, false);
-                        }else if (document.attachEvent){
-                            document.attachEvent('WeixinJSBridgeReady', onBridgeReady); 
-                            document.attachEvent('onWeixinJSBridgeReady', onBridgeReady);
-                        }
-                    }else{
-                        onBridgeReady();
-                    }
-
-                }else{
-
-                    this.$toast(res.data.message);
-
-                }
-
-            })
-
-
-
-        },
+       
 
         /**数据**/
         // 获取订单详情商品数据
@@ -450,44 +396,13 @@ export default {
             })
 
         },
-        // 查询订单状态
-        getOrderState(){
-
-            this.$api.getOrderInfo( this.$Qs.stringify({ 'orderCode': this.$route.params.orderCode })  )
-
-            .then( (res) => {
-
-                console.log(res)
-
-                if(res.data.code == 200){
-
-                    if(res.data.content.orderStatus != '0'){
-
-                        this.$toast.clear();
-                        
-                        // 订单类型状态更改
-                        this.$store.commit('personCenter/setOrderType', parseFloat(res.data.content.orderStatus) + 1);
-
-                        this.$router.push({ path: '/myOrder'})
-
-                    }
-
-                }else{
-
-                    this.$Message.warning(res.data.message);
-
-                }
-
-            })
-
-        },
 
     },
     mounted(){
 
         // 获取订单详情
         this.getOrderProduct(this.$route.query.orderCode);
-        
+
     }
     
 }
