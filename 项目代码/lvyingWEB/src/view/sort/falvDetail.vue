@@ -44,7 +44,7 @@
               <div class="color_F5320D"style="width:70%;border-right: 2px dashed #EBDFD1">
                 <div class="font_16 font_weight_bold van-ellipsis">{{item.couponTitle}}</div>
                 <div class="margin_top_5 van-ellipsis">{{item.couponDesc}}</div>
-                <div class="margin_top_5 van-ellipsis">有效期{{item.couponStartTime}} 至 {{item.couponEndTime}}</div>
+                <div class="margin_top_5 van-ellipsis font_12">有效期{{item.couponStartTime}} 至 {{item.couponEndTime}}</div>
               </div>
               <div class="color_F5320D font_18 juc_center align_center" style="width:30%">立即领取</div>
             </div>
@@ -267,7 +267,7 @@
 
 		<!--加入购物车底部-->
 		<div class="bg_fff">
-			<van-goods-action class="bg_fff">
+			<van-goods-action class="bg_fff" style="z-index: 100">
 			  <van-goods-action-mini-btn icon="shop" text="店铺" @click="goStore"/>
 			  <van-goods-action-mini-btn icon="cart" text="购物车" to="/shoppingCart" />
 			  <van-goods-action-big-btn text="加入购物车" @click="addProductCart(productCode)" style="background: #F09105;color: #fff;"/>
@@ -552,12 +552,10 @@ export default {
           console.log(res);
           if(res.data.code == 200){
             var list = res.data.content.list
-            var date = new Date(list[0].couponStartTime)
-            console.log(date.toLocaleDateString())
             for(var i=0;i<list.length;i++){
 
-              list[i].couponStartTime = this.dateFormat(list[i].couponStartTime)
-              list[i].couponEndTime = this.dateFormat(list[i].couponStartTime)
+              list[i].couponStartTime = list[i].couponStartTime.substring(0,10)
+              list[i].couponEndTime = list[i].couponStartTime.substring(0,10)
             }
             this.cuponList = list
           }else {
@@ -732,18 +730,6 @@ export default {
            break
        }
      }
-    },
-    //时间格式化函数，此处仅针对yyyy-MM-dd hh:mm:ss 的格式进行格式化
-    dateFormat:function(time) {
-      var date=new Date(time);
-      // var year=date.getFullYear();
-      // /* 在日期格式中，月份是从0开始的，因此要加0
-      //  * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
-      //  * */
-      // var month= date.getMonth()+1<10 ? "0"+(date.getMonth()+1) : date.getMonth()+1;
-      // var day=date.getDate()<10 ? "0"+date.getDate() : date.getDate();
-      // 拼接
-      return date.toLocaleDateString();
     },
 
     /** 数据 **/
