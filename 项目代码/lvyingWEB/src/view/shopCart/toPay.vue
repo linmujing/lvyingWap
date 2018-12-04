@@ -42,10 +42,8 @@ export default {
                 .replace(/[&]/g, "%26")
                 .replace(/[=]/g, "%3d");
 
-                var url =
-                "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ this.$store.state.userData.appId +"&redirect_uri=" +
-                pageUrl + //这里放当前页面的地址 snsapi_userinfo
-                "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
+                var url = "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+this.$store.state.userData.appId
+                +"&redirect_uri="+pageUrl+"&response_type=code&scope=snsapi_base&state=park#wechat_redirect" ;
 
                 window.location.href = url;
             
@@ -56,12 +54,12 @@ export default {
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({ 
-                'orderCode': this.$route.params.orderCode , 
+                'orderCode': window.sessionStorage.getItem("orderCode") , 
                 'ciCode': this.$store.state.userData.cicode , 
-                'truePayMoney': this.$route.params.listTotal, 
+                'truePayMoney':  window.sessionStorage.getItem("listTotal") , 
                 'code': this.GetQueryString('code')
                 }) ;
-
+           
             this.$api.JSAPIPay( param )
 
             .then( (res) => {
@@ -69,21 +67,24 @@ export default {
                 console.log(res)
                 let data = res.data.content;
 
-                if(res.data.code == 1){
+                if(res.data.code == 200){
                     
                     function onBridgeReady(){
 
                         WeixinJSBridge.invoke(
                             'getBrandWCPayRequest', {
-                                "appId": data.appid,     //公众号名称，由商户传入     
+                                "appId":this.$store.state.userData.appId,     //公众号名称，由商户传入     
                                 "timeStamp": data.timestamp,         //时间戳，自1970年以来的秒数     
-                                "nonceStr": data.noncestr, //随机串     
-                                "package": data.package,     
+                                "nonceStr": data.nonce_str, //随机串     
+                                "package": 'prepay_id='+ data.prepay_id,     
                                 "signType":"MD5",         //微信签名方式：     
                                 "paySign": data.sign //微信签名 
                             },
                             function(res){     
                                 if(res.err_msg == "get_brand_wcpay_request:ok" ) {
+
+                                    window.sessionStorage.removeItem("orderCode")
+                                    window.sessionStorage.removeItem("listTotal")
 
                                     this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
                                     // 支付成功后定时查询订单状态

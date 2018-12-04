@@ -49,7 +49,7 @@
                 .replace(/[=]/g, "%3d");
 
                 var url =
-                "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+ this.$store.state.userData.appId +"&redirect_uri=" +
+                "https://open.weixin.qq.com/connect/oauth2/authorize?appid="+this.$store.state.userData.appId+"&redirect_uri="+
                 pageUrl + //这里放当前页面的地址 snsapi_userinfo
                 "&response_type=code&scope=snsapi_userinfo&state=STATE&connect_redirect=1#wechat_redirect";
 

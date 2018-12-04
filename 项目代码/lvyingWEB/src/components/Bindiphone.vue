@@ -81,7 +81,7 @@ export default {
     mounted(){
         // 判断是否有电话号码
         if(localStorage.getItem("ciphone") != null && localStorage.getItem("ciphone") != 'null'){
-            Store.commit('personCenter/BindState', 1)
+            this.$store.commit('personCenter/BindState', 1)
         }
         this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
     },
