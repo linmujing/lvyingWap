@@ -131,7 +131,7 @@ export default {
                 params.passWord = this.password
             }
 
-            // 判断手机号是否已被注册
+            // 绑定手机号
             this.$api.bindingCustomerInfo( this.$Qs.stringify(params) )
 
             .then( (res) => {
