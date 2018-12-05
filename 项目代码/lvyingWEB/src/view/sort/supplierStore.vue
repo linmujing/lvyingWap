@@ -25,7 +25,7 @@
                   <span class="padding_left_10 inline-block width_80px van-ellipsis">用户数：{{merchantInfo.productCount}}</span>
                 </div>
               </div>
-              <div class="color_999 margin_top_5">{{merchantInfo.personIntroduce}}</div>
+              <div class="color_999 margin_top_5 van-ellipsis">{{merchantInfo.personIntroduce}}</div>
             </van-col>
           </van-row>
         </div>
