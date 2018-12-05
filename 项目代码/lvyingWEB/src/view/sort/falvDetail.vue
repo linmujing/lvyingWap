@@ -61,7 +61,7 @@
             </van-col>
             <van-col span="19">
               <div class="font_16">{{merchantInfo.orgName}}</div>
-              <div class="color_999 margin_top_5 font_12">{{merchantInfo.personIntroduce}}</div>
+              <div class="color_999 margin_top_5 font_12 van-ellipsis">{{merchantInfo.personIntroduce}}</div>
             </van-col>
           </van-row>
         </div>
