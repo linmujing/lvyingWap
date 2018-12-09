@@ -587,7 +587,10 @@ export default {
                 if ( this.orderData.orderList.length >= this.orderData.pageData.total ) {
 
                     this.orderData.pageData.finished = true;
-                    this.$toast('没有更多了！');
+                    // 初次加载时不做此提示
+                    if (this.orderData.pageData.current != 2){
+                        this.$toast('没有更多了！');
+                    }
 
                 }else{
 

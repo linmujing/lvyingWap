@@ -29,7 +29,8 @@
                             <div class="item table_block" style="height:2.2rem;">
                                 <span class="td_block">
                                     <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;" >
-                                        <img  :src="items.productWxProfileUrl" :data-productcode="items.productCode" alt="">
+                                        <img  @click="$router.push({ path: '/falvDetail', query: { productCode: items.productCode }})"
+                                        :src="items.productWxProfileUrl" :data-productcode="items.productCode" alt="">
                                     </i>
                                 </span>
                                 <span class="td_block padding_left_30">
@@ -45,7 +46,7 @@
             </div>
         </van-list >
 
-        <div style="padding-top:3rem; text-align:center; color:#999;" v-if="commentData.length == 0">
+        <div style="padding-top:3rem; text-align:center; color:#999;" v-if="not_have">
             <img style="width:2.5rem;" src="../../../static/images/image/not_have.png" alt="">
             <p>暂无评价</p>
         </div>
@@ -72,6 +73,8 @@ export default {
                 loading: false,
                 finished: false
             },
+            // 没有评论
+            not_have: false,
             userName: this.$store.state.userData.ciname ,
             userHeadUrl: this.$store.state.userData.ciProfileUrl 
 
@@ -125,6 +128,8 @@ export default {
                         // this.$toast('没有更多了！');
 
                     }
+
+                    this.not_have = this.commentData.length == 0 ? true : false;
 
                 }else {
 
