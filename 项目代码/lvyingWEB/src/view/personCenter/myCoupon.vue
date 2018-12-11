@@ -18,7 +18,8 @@
                         <div class="bg_00aa88 item_left text_center table_block" :style="{ background: item.color }" >
                             <i class="line"></i>
                             <div class="td_block text_space_1">
-                                <span class="font_40">￥{{item.price}} </span><br/>
+                                <span class="font_40" v-if="item.couponType != 3">￥{{item.price}} </span><br/>
+                                <span class="font_40" v-if="item.couponType == 3">{{item.price}} 折</span><br/>
                                 <span class="font_28">{{item.content}}</span>
                             </div>
                         </div>
@@ -154,13 +155,15 @@ export default {
                             case 3: color = '#ccc'; stateImg = '../../../static/images/image/coupon-icon_01.png';; break;
                         }
 
+                        let price = item.couponInfo.couponType != '3' ? item.couponInfo.couponValuePrice : item.couponInfo.couponValueDiscount;
                         this.couponData.couponList.push({
-                            price:  item.couponInfo.couponValuePrice,
+                            price:  price,
                             content: item.couponInfo.couponTitle,
-                            time: this.dateFormat(item.couponInfo.couponStartTime) +'-'+ this.dateFormat(item.couponInfo.couponEndTime),
+                            time: item.couponInfo.couponStartTime.split("T")[0] + '~' + item.couponInfo.couponEndTime.split("T")[0],
                             stateImg: stateImg,
                             color: color,
-                            platform:''
+                            platform:'',
+                            couponType: item.couponInfo.couponType
                         })
                     }
 
