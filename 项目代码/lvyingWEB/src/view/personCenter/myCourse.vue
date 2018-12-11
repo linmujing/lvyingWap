@@ -94,7 +94,9 @@ export default {
                     if ( this.courseData.length >= this.pageData.total ) {
 
                         this.pageData.finished = true;
-                        this.$toast('没有更多了！');
+                        if(this.pageData.current == 2){
+                            this.$toast('没有更多了！');
+                        }
 
                     }
 

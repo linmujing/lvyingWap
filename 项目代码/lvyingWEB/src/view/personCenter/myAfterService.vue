@@ -160,7 +160,10 @@ export default {
                     if ( this.orderList.length >= this.pageData.total ) {
 
                         this.pageData.finished = true;
-                        this.$toast('没有更多了！');
+                        if(this.pageData.current == 2){
+                            this.$toast('没有更多了！');
+                        }
+
 
                     }
 
