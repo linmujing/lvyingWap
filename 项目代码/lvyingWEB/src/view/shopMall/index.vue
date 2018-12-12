@@ -67,6 +67,7 @@ export default {
 	.van-swipe__indicators{display: none;}
 	/*搜索*/
 	.van-search .van-cell{border-radius: 15px; border: 1px solid #D8D8D8;border-right:transparent}
+  .van-tab{font-size: 0.24rem;}
 </style>
 <style scoped lang='less'>
  	/*引入共用less文件*/

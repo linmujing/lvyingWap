@@ -327,14 +327,6 @@ export default {
 
             this.$toast.clear();
             let {content}=res.data;
-            // 保存轮播数据
-            if(!res.data.content[6].caseUrl == '' || !res.data.content[6].caseUrl == null || !res.data.content[6].caseUrl == undefined){
-              this.banner = eval(res.data.content[6].caseUrl)
-            }
-            if(!res.data.content[3].caseUrl == '' || !res.data.content[3].caseUrl == null || !res.data.content[3].caseUrl == undefined){
-              var bgUrl = eval(res.data.content[3].caseUrl)
-              this.bgUrl = bgUrl[0].src
-            }
             sessionStorage.setItem("Banner", JSON.stringify(eval(res.data.content[6].caseUrl)));
             for(let item of content){
               if(item.caseName=="视频推荐"){
@@ -347,6 +339,12 @@ export default {
                 this.getProductShowCase(item.productCode, item.productSortBy, 4)
               }else if(item.caseName=="律赢商城" || item.caseName=="律瀛商城"){
                 this.getProductShowCase(item.productCode, item.productSortBy, 5)
+              }else if(item.caseName=="轮播图banner"){
+                // 保存轮播数据
+                this.banner = eval(item.caseUrl)
+              }else if(item.caseName=="banner"){
+                var bgUrl = eval(item.caseUrl)
+                this.bgUrl = bgUrl[0].src
               }
             }
           }else{
