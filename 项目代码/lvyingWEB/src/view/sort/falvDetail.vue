@@ -559,7 +559,7 @@ export default {
             }
             this.cuponList = list
           }else {
-            this.$toast.fail(res.data.message);
+            // this.$toast.fail(res.data.message);
           }
         })
         .catch((error) => {
