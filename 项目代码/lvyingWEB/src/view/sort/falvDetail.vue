@@ -555,7 +555,7 @@ export default {
             for(var i=0;i<list.length;i++){
 
               list[i].couponStartTime = list[i].couponStartTime.substring(0,10)
-              list[i].couponEndTime = list[i].couponStartTime.substring(0,10)
+              list[i].couponEndTime = list[i].couponEndTime.substring(0,10)
             }
             this.cuponList = list
           }else {
