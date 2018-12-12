@@ -39,6 +39,8 @@ export const verifyCiPhone = params => { return instance.post(`customer/info/ver
 export const getmyCourseList = params => { return instance.post(`/customer/course/getCourseList`, params ); };
 // 会员账号绑定手机号
 export const bindingCustomerInfo = params => { return instance.post(`customer/info/bindingCustomerInfo`, params ); };
+// 获取会员信息
+export const getCustomerInfo = params => { return instance.post(`customer/info/getCustomerInfo`, params ); };
 
 /** 商户信息 **/
 //商户注册
