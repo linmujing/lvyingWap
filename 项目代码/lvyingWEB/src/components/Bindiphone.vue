@@ -79,11 +79,10 @@ export default {
         
     },
     mounted(){
-        // 判断是否有电话号码
-        if(localStorage.getItem("ciphone") != null && localStorage.getItem("ciphone") != 'null'){
-            this.$store.commit('personCenter/BindState', 1)
-        }
-        this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
+
+        // 获取用户信息
+        this.getCustomerInfo();
+
     },
     methods: {
         // 发送短信
@@ -142,7 +141,8 @@ export default {
                 if(res.data.code == 200){
 
                     this.$toast('绑定成功!');
-
+                    
+                    localStorage.setItem("ciphone", this.userPhone);
                     this.$store.commit('personCenter/BindState', 1);
                     
                     return;
@@ -232,6 +232,32 @@ export default {
 
             },1000) 
 
+        },
+
+        // 获取用户信息
+        getCustomerInfo(){
+
+            // 判断手机号是否已被注册
+            this.$api.getCustomerInfo( this.$Qs.stringify({ 'ciCode': this.$store.state.userData.cicode }) )
+
+            .then( (res) => {
+
+                console.log(res)
+
+                if(res.data.code == 200){
+
+                    // 判断是否有电话号码
+                    if( res.data.content.ciPhone != "" && res.data.content.ciPhone != null){
+                        this.$store.commit('personCenter/BindState', 1);
+                        localStorage.setItem("ciphone", res.data.content.ciPhone);
+                    }
+
+                    this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
+
+                }
+
+            })
+            
         },
 
         // 关闭绑定框
