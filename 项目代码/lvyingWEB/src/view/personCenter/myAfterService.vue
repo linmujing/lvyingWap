@@ -133,7 +133,7 @@ export default {
             this.$api.getOrderProductList( param )
 
             .then( (res) => {
-
+                this.$toast.clear();
                 console.log(res);
                 if(res.data.code == 200){
 
@@ -160,7 +160,7 @@ export default {
                     if ( this.orderList.length >= this.pageData.total ) {
 
                         this.pageData.finished = true;
-                        if(this.pageData.current == 2){
+                        if(this.pageData.current != 2){
                             this.$toast('没有更多了！');
                         }
 
@@ -172,8 +172,6 @@ export default {
                     this.$toast(res.data.message);
 
                 }
-
-                this.$toast.clear();
 
             })
             .catch((error) => {

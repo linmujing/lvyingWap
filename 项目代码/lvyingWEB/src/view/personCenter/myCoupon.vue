@@ -18,12 +18,12 @@
                         <div class="bg_00aa88 item_left text_center table_block" :style="{ background: item.color }" >
                             <i class="line"></i>
                             <div class="td_block text_space_1">
-                                <span class="font_40" v-if="item.couponType != 3">￥{{item.price}} </span><br/>
-                                <span class="font_40" v-if="item.couponType == 3">{{item.price}} 折</span><br/>
+                                <p class="font_40" v-if="item.couponType != 3">￥{{item.price}} </p>
+                                <p class="font_40" v-if="item.couponType == 3">{{item.price}} 折</p>
                                 <span class="font_28">{{item.content}}</span>
                             </div>
                         </div>
-                        <div class="item_right table_block padding_0_20">
+                        <div class="item_right table_block padding_0_20" style="box-sizing">
                             <div class="td_block">
                                 <div class="line_height_50">有效时间： {{item.time}} </div>
                                 <div class="font_20">                    
@@ -136,6 +136,7 @@ export default {
             .then( (res) => {
 
                 console.log(res)
+                this.$toast.clear();
 
                 if(res.data.code == 200){
 
@@ -174,7 +175,7 @@ export default {
                     if ( this.couponData.couponList.length >= this.pageData.total ) {
 
                         this.pageData.finished = true;
-                        if(this.pageData.current == 2){
+                        if(this.pageData.current != 2){
                             this.$toast('没有更多了！');
                         }
 
@@ -184,8 +185,6 @@ export default {
                     this.$toast(res.data.message);
 
                 }
-
-                this.$toast.clear();
 
             })
             .catch((error) => {
@@ -253,7 +252,8 @@ export default {
             }
         }
         .item_right{
-            width: 80%;
+            width: 70%;
+            padding: 0 0.2rem;
             position: relative;
 
             .sign{
