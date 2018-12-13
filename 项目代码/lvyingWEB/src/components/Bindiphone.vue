@@ -237,7 +237,6 @@ export default {
         // 获取用户信息
         getCustomerInfo(){
 
-            // 判断手机号是否已被注册
             this.$api.getCustomerInfo( this.$Qs.stringify({ 'ciCode': this.$store.state.userData.cicode }) )
 
             .then( (res) => {
@@ -254,6 +253,9 @@ export default {
 
                     this.bindStateModel =  this.$store.state.personCenter.bindState == 1  ? false : true ;
 
+                }else{
+                    // 当用户不存在时，需要重新跳转到授权登录页面
+                    window.localStorage.removeItem("userToken1")
                 }
 
             })
