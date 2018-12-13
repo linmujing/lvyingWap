@@ -10,7 +10,7 @@
                     v-model="userPhone"
                     required
                     clearable
-                    label="手机号"
+                    label="手机号码"
                     placeholder="请输入用户名"
                 />
                 <van-field
