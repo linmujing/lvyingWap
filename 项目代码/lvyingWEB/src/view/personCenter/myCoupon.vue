@@ -67,7 +67,7 @@ export default {
                     { text:'全部', value:'' },
                     { text:'可使用', value:'0' },
                     { text:'已使用', value:'1' },
-                    { text:'已过期', value:'2 },
+                    { text:'已过期', value:'2'},
                 ],
                 // 优惠券列表
                 couponList:[] 
