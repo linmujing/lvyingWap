@@ -174,7 +174,7 @@
 			    							<van-rate v-model="item.productScore == null ? 0 : item.productScore" :count="item.productScore" :size="16" color="#F09105" readonly class="align_center margin_top_5"/>
 			    						</div>
 			    					</div>
-			    					<div class="color_999">{{item.createDate}}</div>
+			    					<div class="color_999">{{item.commetTime}}</div>
 			    				</div>
 			    				<div class="margin_top_5 color_666" v-html="item.commentDesc"></div>
                   <div v-if="!item.commentPicUrl == ''" class="margin_top_5 flex_warp">
