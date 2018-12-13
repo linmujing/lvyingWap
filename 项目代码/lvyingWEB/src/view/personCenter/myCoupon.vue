@@ -27,7 +27,7 @@
                             <div class="td_block">
                                 <div class="line_height_50">有效时间： {{item.time}} </div>
                                 <div class="font_20">                    
-                                    <span>使用说明：</span>请在券面所示有效期内使用，逾期失效用券应满足券面所示使用范围、满减金额。
+                                    <span>使用说明：</span>{{ item.couponDesc }}
                                 </div>
                             </div>
                             <i class="sign" :style="{ backgroundImage: 'url('+ item.stateImg +')'}" v-if="item.state != 1"></i>
@@ -65,9 +65,9 @@ export default {
                 // 优惠券类型
                 couponType:[
                     { text:'全部', value:'' },
-                    { text:'可使用', value:'1' },
-                    { text:'已使用', value:'2' },
-                    { text:'已过期', value:'0' },
+                    { text:'可使用', value:'0' },
+                    { text:'已使用', value:'1' },
+                    { text:'已过期', value:'2 },
                 ],
                 // 优惠券列表
                 couponList:[] 
@@ -127,9 +127,12 @@ export default {
                 'pageNo': this.pageData.current,
                 'pageSize': this.pageData.pageSize,
                 'ciCode':this.$store.state.userData.cicode,
-                'couponStatus': this.couponData.couponType[this.couponData.couponTypeIndex].value,
                 'couponForm': ''
                 } ;
+
+            if(this.data.couponType[this.data.scrollIndex].value != "" ){
+                param.couponStatus = this.data.couponType[this.data.scrollIndex].value 
+            } 
 
             this.$api.getCouponList( this.$Qs.stringify(param) )
 
@@ -160,6 +163,7 @@ export default {
                         this.couponData.couponList.push({
                             price:  price,
                             content: item.couponInfo.couponTitle,
+                            couponDesc: item.couponInfo.couponDesc,
                             time: item.couponInfo.couponStartTime.split("T")[0] + '~' + item.couponInfo.couponEndTime.split("T")[0],
                             stateImg: stateImg,
                             color: color,
