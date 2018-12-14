@@ -13,14 +13,14 @@
 			  	<van-col span="17">
 				  	<div  v-bind:style="{height: fullHeight - 50 + 'px'}" class="scroll">
 					  	<div v-for="(item,index) in tabData[tabIndex].productCatVoList" :key="index">
-                <div class="font_16 padding_10 van-ellipsis" @click="toList(tabData[tabIndex].id,tabData[tabIndex].catName)">{{item.catName}}</div>
+                <div class="font_16 padding_10" @click="toList(tabData[tabIndex].id,tabData[tabIndex].catName)">{{item.catName}}</div>
                 <div class="flex_warp">
                   <div v-for="(val, index2) in item.productCatVoList" :key="index2" class="sort">
 
                     <!--<div class="all_width">-->
                       <!--<img :src="val.img" class="all_width all_height"/>-->
                     <!--</div>-->
-                    <div @click="toList(item.id, item.catName)" class="juc_center margin_top_5 van-ellipsis color_999">{{val.catName}}</div>
+                    <div @click="toList(item.id, item.catName)" class="juc_center margin_top_5 color_999">{{val.catName}}</div>
                   </div>
                 </div>
               </div>

@@ -5,7 +5,7 @@
         <div>
           <van-swipe :autoplay="4000">
             <van-swipe-item v-for="(item,index) in banner" :key="index">
-              <img :src="item.src" class="all_width"/>
+              <img :src="item.src" class="all_width" style="height: 4.2rem"/>
             </van-swipe-item>
           </van-swipe>
         </div>
