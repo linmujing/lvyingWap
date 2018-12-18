@@ -12,8 +12,8 @@
     unionId: localStorage.getItem("unionId"),
     SupplierData: {},
     // 微官网AppID 
-    // appId: 'wxd07de149859354b8', //测试版本
-    appId: 'wx2c8efae8785382c6', //正式版本 
+    appId: 'wxd07de149859354b8', //测试版本
+    // appId: 'wx2c8efae8785382c6', //正式版本 
 
   }
   

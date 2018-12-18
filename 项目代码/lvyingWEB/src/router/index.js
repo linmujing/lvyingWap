@@ -7,7 +7,7 @@ Vue.use(Router)
 const router = new Router({
 
   routes: [
-    {path: '/', redirect: 'shopMallIdex'},
+    {path: '/', redirect: 'Login'},
     {
       path: '/Login',
       name: 'Login',
@@ -313,19 +313,19 @@ router.beforeEach((to,form,next) =>{
   //  第一次进入项目
   let token = window.localStorage.getItem("userToken1");
 
-  if (!token && to.path != '/author') {
+  // if (!token && to.path != '/author') {
 
-    next({
-      path: '/author',
-    });
-    return false;
+  //   next({
+  //     path: '/author',
+  //   });
+  //   return false;
 
-  } else if (token ) {
+  // } else if (token ) {
 
-    next();
-    return false;
+  //   next();
+  //   return false;
     
-  }
+  // }
   next();
   
 })

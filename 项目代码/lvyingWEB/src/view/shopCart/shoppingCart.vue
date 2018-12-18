@@ -67,8 +67,33 @@
                                         <span class="delete_btn"  @click="deleteItem(items.cartId)">删除</span>
                                     </div>
                                 </div>
+                                <ul class="items_list">
+                                    <li class="padding_left_20" >
+                                        <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                            <div class="item table_block">
+                                                <span class="td_block" style="width:20px;">&nbsp;</span>
+                                                <span class="td_block padding_left_30">
+                                                    <i class="img_middle_center img_box border_1">
+                                                        <img  :src="items.imgSrc" alt=""  @click="$router.push({ path: '/falvDetail', query: { productCode: items.productCode }})">
+                                                    </i>
+                                                </span>
+                                                <span class="td_block padding_left_30 ">
+                                                    <p  class="" style="word-wrap:break-word;">
+                                                        <span style="position:relative;top:-0.6rem;">{{items.productKeyWord}}</span>
+                                                        <span class="font_26" style="position:absolute;top:1.5rem;left:2.6rem;color:red;">￥{{items.price}}</span>
+                                                    </p>
+                                                </span>
+                                            </div>
+                                            <div class="item table_block">
+                                                <p class="padding_right_20 color_cart_ccc1" style="position:absolute;top:1.5rem;right:0.5rem">
+                                                    X 1
+                                                </p>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>     
                                 <!-- 平台遍历 -->
-                                <div v-for="(item,index2) in items.items" :key="index2">
+                                <div v-for="(item,index2) in items.items" :key="index2" v-if="items.itemsShow">
                                     <div class="margin_left_20 line_height_80 border_bottom_1px">{{item.itemTitle}}</div>
                                     <ul class="items_list">
                                         <li class="padding_left_20" v-for="(child,index3) in item.items" :key="index3">
@@ -95,6 +120,11 @@
                                             </div>
                                         </li>
                                     </ul>
+                                </div>
+
+                                <div class="border_bottom_1px" style="text-align:center;line-height:0.6rem;font-size:0.2rem;color:#aaa;" @click="items.itemsShow = !items.itemsShow">
+                                    <span v-show="!items.itemsShow">展开</span>
+                                    <span v-show="items.itemsShow">收起</span>
                                 </div>
 
                                 <div class="items_total flex flex_end padding_0_20">
@@ -365,19 +395,7 @@ export default {
 
                     if(this.cartList[x].itemState){
 
-                        for(let i = 0 ; i < n ; i++){
-
-                            let item = this.cartList[x].items[i];
-
-                            for(let child of item.items){
-
-                                this.cartList[x].itemTotal += child.num * (child.price * 10000);
-
-                            }
-
-                        }
-
-                        this.cartList[x].itemTotal = (this.cartList[x].itemTotal / 10000).toFixed(2);
+                        this.cartList[x].itemTotal = (this.cartList[x].price ).toFixed(2);
                     }
 
                 }
@@ -565,6 +583,9 @@ export default {
                                 itemType: data[i].productInfo.productType ,
                                 itemState: false,
                                 itemTitle: data[i].productInfo.productTitle,
+                                price: data[i].productInfo.productPrice,
+                                imgSrc: data[i].productInfo.productProfileUrl,
+                                itemsShow: false,
                                 itemTotal: 0.00,
                                 productCode: data[i].productCode,
                                 num: 1,

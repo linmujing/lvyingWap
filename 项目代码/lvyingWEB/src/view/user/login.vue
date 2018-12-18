@@ -40,7 +40,7 @@ export default {
     data() {
         return {
             username:'15874025525',
-            password:'12345678'
+            password:'123456'
         }
         
     },
