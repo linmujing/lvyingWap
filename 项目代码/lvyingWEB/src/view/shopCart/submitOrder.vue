@@ -51,7 +51,7 @@
                                             </span>
                                             <span class="td_block padding_left_30 ">
                                                 <p  class="" style="word-wrap:break-word;">
-                                                    <span style="position:relative;top:-0.6rem;">{{item.productKeyWord}}</span>
+                                                    <span style="position:relative;top:-0.6rem;">{{item.productTitle}}</span>
                                                     <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
                                                 </p>
                                             </span>
@@ -75,7 +75,33 @@
                 <div  v-if="isGroup" >
                     <ul class="goods_list" v-for="(lists,index) in cartDate.cartList" :key="index">
                         <li class="padding_0_20 border_bottom_1px line_height_80 bg_fff">组合包</li>
-                        <li class="bg_fff" v-for="(items,index1) in lists.items" :key="index1" >
+                        <li>
+                            <ul class="items_list bg_fff">
+                                <li class="padding_left_20" >
+                                    <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                        <div class="item table_block">
+                                            <span class="td_block padding_left_30">
+                                                <i class="img_middle_center img_box border_1">
+                                                    <img  :src="lists.imgSrc" :data-productCode="lists.productCode"  >
+                                                </i>
+                                            </span>
+                                            <span class="td_block padding_left_30 ">
+                                                <p  class="" style="word-wrap:break-word;">
+                                                    <span style="position:relative;top:-0.6rem;"> {{lists.itemTitle}} </span>
+                                                    <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{ (lists.price).toFixed(2)}}</span>
+                                                </p>
+                                            </span>
+                                        </div>
+                                        <div class="item table_block">
+                                            <p class="color_cart_ccc1" style="position:absolute;top:1.52rem;right:0.2rem">
+                                            X 1
+                                            </p>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </li>
+                        <li class="bg_fff" v-for="(items,index1) in lists.items" :key="index1" v-show="lists.itemsShow">
                             <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80 color_cart_ccc1">
                                 <div>{{items.itemTitle}}</div>
                             </div>
@@ -90,7 +116,7 @@
                                             </span>
                                             <span class="td_block padding_left_30 ">
                                                 <p  class="" style="word-wrap:break-word;">
-                                                    <span style="position:relative;top:-0.6rem;">{{item.productKeyWord}}</span>
+                                                    <span style="position:relative;top:-0.6rem;">{{item.productTitle}}</span>
                                                     <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
                                                 </p>
                                             </span>
@@ -103,11 +129,16 @@
                                     </div>
                                 </li>
                             </ul>
-                            <div class="items_total flex flex_end padding_0_20 line_height_94 color_cart_ccc2">
-                                <div >小计：￥{{items.itemTotal}}</div>
-                            </div>
                         </li>
+                        <div class="border_bottom_1px bg_fff"  style="text-align:center;line-height:0.6rem;font-size:0.2rem;color:#aaa;" @click="lists.itemsShow = !lists.itemsShow">
+                            <span v-show="!lists.itemsShow">展开</span>
+                            <span v-show="lists.itemsShow">收起</span>
+                        </div>
+                        <div class="items_total flex flex_end padding_0_20 line_height_94 color_cart_ccc2 bg_fff">
+                            <div >小计：￥{{ (lists.price).toFixed(2) }}</div>
+                        </div>
                     </ul>
+
                 </div>
 
             </div>
@@ -256,17 +287,7 @@ export default {
                 // 组合包
                 for(let lists of this.cartDate.cartList){
 
-                    for(let items of lists.items){
-
-                        for(let item of items.items){
-
-                            items.itemTotal += item.num * (item.price * 10000);
-                        }
-
-                        this.cartDate.listTotal += items.itemTotal;
-                        items.itemTotal = (items.itemTotal/10000).toFixed(2);
-
-                    }
+                    this.cartDate.listTotal += lists.price * 10000;
 
                 }
 
@@ -443,8 +464,12 @@ export default {
                             itemTitle: data.productTitle,
                             itemTotal: 0.00,
                             productCode: data.productCode,
+                            price: data.productPrice,
                             num: cartNun,
+                            imgSrc: data.productProfileUrl,
                             productSubCode: data.productSubCode,
+                            productProperty :  data.productProperty ,
+                            itemsShow: false,
                             //小列表
                             items:[]
                         });

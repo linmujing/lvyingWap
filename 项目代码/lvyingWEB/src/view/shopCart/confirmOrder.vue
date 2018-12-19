@@ -3,7 +3,8 @@
     <div class="body_bg">
         <!-- 商品列表 -->
         <div style="margin-bottom:50px;padding-bottom:0.01rem;">
-            <ul class="goods_list">
+            <!-- 普通商品 -->
+            <ul class="goods_list" v-if="!isCombination">
                 <li class="bg_fff" v-for="(items,index1) in cartDate.cartList" :key="index1" >
                     <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80">
                         <div>{{items.itemTitle}}</div>
@@ -36,6 +37,76 @@
                         <div >小计：￥{{items.itemTotal}}</div>
                     </div>
                 </li>
+            </ul> 
+
+            <!-- 组合包商品 -->
+            <ul class="goods_list" v-if="isCombination">
+                <li class="bg_fff" >
+                    <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80">
+                        <div>{{combinationObj.productTitle}}</div>
+                    </div>
+                    <ul class="items_list">
+                        <li class="padding_left_20" >
+                            <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                <div class="item table_block">
+                                    <span class="td_block padding_left_30">
+                                        <i class="img_middle_center img_box border_1">
+                                            <img  :src="combinationObj.productProfileUrl" alt=""  @click="$router.push({ path: '/falvDetail', query: { productCode: combinationObj.productCode }})">
+                                        </i>
+                                    </span>
+                                    <span class="td_block padding_left_30 ">
+                                        <p  class="" style="word-wrap:break-word;">
+                                            <span style="position:relative;top:-0.6rem;" v-html="combinationObj.productTitle"> </span>   
+                                            <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{combinationObj.productPrice}}</span>
+                                        </p>
+                                    </span>
+                                </div>
+                                <div class="item table_block">
+                                    <p class="color_cart_ccc1" style="position:absolute;top:1.52rem;right:0.2rem">
+                                    X 1
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <li class="bg_fff" v-for="(items,index1) in cartDate.cartList" :key="index1" v-if="showCombination">
+                    <div class="header flex space_between padding_0_20 border_bottom_1px line_height_80">
+                        <div>{{items.itemTitle}}</div>
+                    </div>
+                    <ul class="items_list">
+                        <li class="padding_left_20" v-for="(item,index2) in items.items" :key="index2">
+                            <div class="content flex space_between border_bottom_1px" style="position:relative;">
+                                <div class="item table_block">
+                                    <span class="td_block padding_left_30">
+                                        <i class="img_middle_center img_box border_1">
+                                            <img  :src="item.imgSrc" alt=""  @click="$router.push({ path: '/falvDetail', query: { productCode: item.productCode }})">
+                                        </i>
+                                    </span>
+                                    <span class="td_block padding_left_30 ">
+                                        <p  class="" style="word-wrap:break-word;">
+                                            <span style="position:relative;top:-0.6rem;" v-html="item.productTitle"> </span>   
+                                            <span  style="position:absolute;top:1.5rem;left:2.2rem;color:red;">￥{{item.price}}</span>
+                                        </p>
+                                    </span>
+                                </div>
+                                <div class="item table_block">
+                                    <p class="color_cart_ccc1" style="position:absolute;top:1.52rem;right:0.2rem">
+                                    X {{item.num}}
+                                    </p>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </li>
+                <div class="border_bottom_1px bg_fff"  style="text-align:center;line-height:0.6rem;font-size:0.2rem;color:#aaa;" @click="showCombination = !showCombination">
+                        <span v-show="!showCombination">展开</span>
+                        <span v-show="showCombination">收起</span>
+                </div>
+                <div class="items_total flex flex_end padding_0_20 line_height_94 color_cart_ccc2 bg_fff">
+                    <div >小计：￥{{ (combinationObj.productPrice).toFixed(2) }}</div>
+                </div>
+
             </ul> 
 
             <div class="items_total flex space_between padding_0_20  line_height_94 border_top_1px color_cart_ccc2 bg_fff">
@@ -100,7 +171,14 @@ export default {
                 allTotal: 0.00,
                 // 大列表
                 cartList:[],
-            },  
+            }, 
+            
+            // 组合包商品
+            combinationObj:{},
+            // 是否存在组合包
+            isCombination: false,
+            // 组合包显示隐藏
+            showCombination: false,
 
             // 是否存在需要包邮
             hasStore: false ,
@@ -195,8 +273,8 @@ export default {
         /*去支付*/   
         submitOrderClick(){   //this.cartDate.listTotal
 
-            window.sessionStorage.setItem("orderCode", this.$route.query.orderCode)
-            window.sessionStorage.setItem("listTotal", '0.01' )
+            window.sessionStorage.setItem("payorderCode", this.$route.query.orderCode)
+            window.sessionStorage.setItem("paylistTotal", '0.01' )
 
             this.$router.push({name: 'toPay'});
             
@@ -271,6 +349,18 @@ export default {
                                 imgSrc: data[i].productInfo.productProfileUrl
                             })
 
+                        }
+
+                        // 添加组合包商品
+                        if(data[0].combineProductInfo != null ){
+                            this.combinationObj = {
+                                productProfileUrl: data[0].combineProductInfo.productProfileUrl,
+                                productCode: data[0].combineProductInfo.productCode,
+                                productTitle: data[0].combineProductInfo.productTitle,
+                                productPrice: data[0].combineProductInfo.productPrice,
+                                productProperty: data[0].combineProductInfo.productProperty,
+                            }
+                            this.isCombination = true;
                         }
 
                     }

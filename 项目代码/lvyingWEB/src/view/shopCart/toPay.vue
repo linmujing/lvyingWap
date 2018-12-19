@@ -55,9 +55,9 @@ export default {
             this.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
 
             let param = this.$Qs.stringify({ 
-                'orderCode': window.sessionStorage.getItem("orderCode") , 
+                'orderCode': window.sessionStorage.getItem("payorderCode") , 
                 'ciCode': this.$store.state.userData.cicode , 
-                'truePayMoney':  window.sessionStorage.getItem("listTotal") , 
+                'truePayMoney':  window.sessionStorage.getItem("paylistTotal") , 
                 'code': this.GetQueryString('code')
                 }) ;
            
@@ -88,7 +88,7 @@ export default {
 
                                     alert("支付成功！")
 
-                                    window.sessionStorage.removeItem("listTotal")
+                                    window.sessionStorage.removeItem("paylistTotal")
 
                                     that.$toast.loading({ mask: true, message: '加载中...' , duration: 0});
                                     // 支付成功后定时查询订单状态
@@ -131,7 +131,7 @@ export default {
         // 查询订单状态
         getOrderState(){
 
-            this.$api.getOrderInfo( this.$Qs.stringify({ 'orderCode': window.sessionStorage.getItem("orderCode")})  )
+            this.$api.getOrderInfo( this.$Qs.stringify({ 'orderCode': window.sessionStorage.getItem("payorderCode")})  )
 
             .then( (res) => {
 

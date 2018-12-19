@@ -22,8 +22,8 @@
                         <div class="line_height_60 padding_0_20 border_bottom_1px" v-if="items.isCombination != 0">
                             <span>组合包</span>
                         </div>
-                        <div class="lists" v-for="(item, index2) in items.orderItem" :key="index2">
-                            <!-- 普通商品 -->
+                         <!-- 普通商品 -->
+                        <div class="lists" v-for="(item, index2) in items.orderItem" :key="index2" v-if="item.combinationProduct == undefined">
                             <div class="flex space_between padding_0_20 line_height_60 font_24 border_bottom_1px" >
                                 <span>子订单号：{{ item.itemCode }}</span>
                                 <span class="color_cart_ccc2 font_20" > {{item.itemName}} </span>
@@ -51,8 +51,70 @@
                                     </div>
                                 </div>
                             </div>
+                        </div> 
+                        <!-- 组合包商品 -->
+                        <div class="lists"  v-if="items.orderItem[0].combinationProduct != undefined">
+                            <div class="flex space_between padding_0_20 line_height_60 font_24 border_bottom_1px" >
+                                <span>子订单号：{{ items.orderItem[0].itemCode }}</span>
+                                <span class="color_cart_ccc2 font_20" > {{items.orderItem[0].itemName}} </span>
+                            </div>
+                            <!-- 组合包自己 -->
+                            <div >
+                                <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
+                                    <div class="item table_block" style="height:2.2rem;">
+                                        <span class="td_block">
+                                            <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;overflow:hidden;">
+                                                <img  @click="$router.push({ path: '/falvDetail', query: { productCode: items.orderItem[0].combinationProduct.productCode }})"
+                                                :src="items.orderItem[0].combinationProduct.productProfileUrl" alt="">                               
+                                            </i>
+                                        </span>
+                                        <span class="td_block padding_left_30">
+                                            <p  class="" style="word-wrap:break-word;">
+                                                <span style="position:relative;top:-0.6rem;"> {{items.orderItem[0].combinationProduct.productTitle}} </span>   
+                                                <span class="font_22" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{(items.orderItem[0].combinationProduct.productPrice).toFixed(2)}}</span>
+                                            </p>
+                                        </span>
+                                    </div>
+                                    <div class="item table_block" style="height:2.2rem;">
+                                        <p class="color_cart_ccc1 font_26" style="position:absolute;top:1.52rem;right:0.3rem">
+                                            X 1
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 组合包子商品 -->
+                            <div class="margin_left_20 line_height_60 border_bottom_1px" v-if="items.orderItem[0].combinationShow">组合包详情</div>
+                            <div v-for="(item, index2) in items.orderItem" :key="index2" v-if="items.orderItem[0].combinationShow">
+                                <div v-for="(child, index3) in item.childItem" :key="index3">
+                                    <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
+                                        <div class="item table_block" style="height:2.2rem;">
+                                            <span class="td_block">
+                                                <i class="img_middle_center border_1" style="display:inline-block;width: 1.6rem;height: 1.6rem;overflow:hidden;">
+                                                    <img  @click="$router.push({ path: '/falvDetail', query: { productCode: child.productCode }})"
+                                                    :src="child.productProfileUrl" alt="">                               
+                                                </i>
+                                            </span>
+                                            <span class="td_block padding_left_30">
+                                                <p  class="" style="word-wrap:break-word;">
+                                                    <span style="position:relative;top:-0.6rem;"> {{child.name}} </span>   
+                                                    <span class="font_22" style="position:absolute;top:1.5rem;left:1.9rem;color:red;">￥  {{(child.price).toFixed(2)}}</span>
+                                                </p>
+                                            </span>
+                                        </div>
+                                        <div class="item table_block" style="height:2.2rem;">
+                                            <p class="color_cart_ccc1 font_26" style="position:absolute;top:1.52rem;right:0.3rem">
+                                                X {{child.num}}
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border_bottom_1px bg_fff"  style="text-align:center;line-height:0.6rem;font-size:0.2rem;color:#aaa;" @click="items.orderItem[0].combinationShow = !items.orderItem[0].combinationShow">
+                                    <span v-show="!items.orderItem[0].combinationShow">展开</span>
+                                    <span v-show="items.orderItem[0].combinationShow">收起</span>
+                            </div>
+                        </div> 
 
-                        </div>   
                         <div class="items_total flex flex_end margin_left_20 padding_right_20 line_height_100 border_bottom_1px">
                             <div >实付：￥ {{(items.orderPayAmount).toFixed(2)}}</div>
                         </div>
@@ -523,14 +585,29 @@ export default {
                             let items = lists.orderMerchantList[x];
                             let itemName = items.orderProductList.length > 0 ? items.orderProductList[0].merchantInfo.merchantNm : '';
 
-                            orderItem.push({
-                                itemTime: items.createDate,
-                                itemCode: items.orderMerchantCode,
-                                itemAmount: items.orderAmount,
-                                itemName: itemName,
-                                itemTrackNo: items.trackNo,
-                                childItem:[]
-                            })
+                            // 判断是否存在组合包商品
+                            if(lists.orderMerchantList[0].combinationProduct.productType == '2'){
+
+                                orderItem.push({
+                                    itemTime: items.createDate,
+                                    itemCode: items.orderMerchantCode,
+                                    itemAmount: items.orderAmount,
+                                    itemName: itemName,
+                                    itemTrackNo: items.trackNo,
+                                    combinationProduct: lists.orderMerchantList[0].combinationProduct,
+                                    combinationShow: false,
+                                    childItem:[]
+                                })
+                            }else{
+                                orderItem.push({
+                                    itemTime: items.createDate,
+                                    itemCode: items.orderMerchantCode,
+                                    itemAmount: items.orderAmount,
+                                    itemName: itemName,
+                                    itemTrackNo: items.trackNo,
+                                    childItem:[]
+                                })                             
+                            }
 
                             // 子订单商品
                             for( let z = 0 ; z < items.orderProductList.length; z++){
