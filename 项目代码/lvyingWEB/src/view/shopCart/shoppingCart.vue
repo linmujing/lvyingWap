@@ -329,7 +329,7 @@ export default {
         setAllCheckboxChange(){
 
             this.cartDate.listState = !this.cartDate.listState;
-            console.log(this.cartDate.listState)
+            // console.log(this.cartDate.listState)
 
             // 获取全选大列表状态
             let isAll = this.cartDate.listState;
@@ -509,7 +509,7 @@ export default {
 
             .then( (res) => {
 
-                console.log(res)
+                // console.log(res)
 
                 if(res.data.code == 200){
 
@@ -638,7 +638,7 @@ export default {
 
                     .then( (res) => {
 
-                        console.log(res)
+                        // console.log(res)
 
                         if(res.data.code == 200){
 
@@ -707,7 +707,7 @@ export default {
             }
 
             this.$toast.clear();
-            console.log(CartList);
+            // console.log(CartList);
 
         },
 
@@ -723,7 +723,7 @@ export default {
 
             .then( (res) => {
 
-                console.log(res)
+                // console.log(res)
 
                 this.$toast.clear();
 

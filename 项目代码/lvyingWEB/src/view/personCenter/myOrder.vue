@@ -54,10 +54,6 @@
                         </div> 
                         <!-- 组合包商品 -->
                         <div class="lists"  v-if="items.orderItem[0].combinationProduct != undefined">
-                            <div class="flex space_between padding_0_20 line_height_60 font_24 border_bottom_1px" >
-                                <span>子订单号：{{ items.orderItem[0].itemCode }}</span>
-                                <span class="color_cart_ccc2 font_20" > {{items.orderItem[0].itemName}} </span>
-                            </div>
                             <!-- 组合包自己 -->
                             <div >
                                 <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
@@ -85,6 +81,10 @@
                             <!-- 组合包子商品 -->
                             <div class="margin_left_20 line_height_60 border_bottom_1px" v-if="items.orderItem[0].combinationShow">组合包详情</div>
                             <div v-for="(item, index2) in items.orderItem" :key="index2" v-if="items.orderItem[0].combinationShow">
+                                <div class="flex space_between padding_0_20 line_height_60 font_24 border_bottom_1px" >
+                                    <span>子订单号：{{ item.itemCode }}</span>
+                                    <span class="color_cart_ccc2 font_20" > {{item.itemName}} </span>
+                                </div>
                                 <div v-for="(child, index3) in item.childItem" :key="index3">
                                     <div class="content flex space_between border_bottom_1px margin_left_20" style="position:relative;">
                                         <div class="item table_block" style="height:2.2rem;">
@@ -125,12 +125,12 @@
 
                             <!-- 去支付 待支付 -->
                             <div v-if="items.orderStatus == 0">
-                                <van-button size="small" @click="orderModel(items.orderCode)">取消订单</van-button>
+                                <van-button size="small" @click="orderModel(items.orderCode, 0)">取消订单</van-button>
                                 <van-button size="small" @click="jumpPage(items.orderCode, items.orderStatus)" type="primary" >去支付</van-button>
                             </div>
                             <!-- 重新购买 交易取消或交易关闭-->
                             <div v-if="items.orderStatus == '4' || items.orderStatus == '5'">
-                                <van-button size="small" @click="orderModel(items.orderCode)">删除订单</van-button>
+                                <van-button size="small" @click="orderModel(items.orderCode, 1)">删除订单</van-button>
                                 <van-button size="small" @click="jumpPage(items.orderCode, items.orderStatus)" type="primary" >重新购买</van-button>
                             </div>
 
@@ -309,7 +309,12 @@ export default {
         },
 
         // 订单弹框
-        orderModel(code){
+        // @param code string 获取当前点击的订单单号
+        // @param type string 点击类型 type=0:取消订单，type=1:删除订单
+        orderModel(code, type){
+
+            this.orderModelData.modelState = type;
+
             this.$dialog.confirm({
                 message: '确定该商品吗？'
             }).then(() => {
@@ -489,7 +494,7 @@ export default {
                 case 0:
                     // 组合包评论只能针对某一个组合包评论  
                     // isCombination (string, optional): 是否是组合包 0- 不是 1-是 
-                    if(this.orderData.orderList[index].isCombination == 0 ){
+                    if(this.orderData.orderList[index].orderItem[0].combinationShow == undefined){
                         for(let item of this.orderData.orderList[index].orderItem){
                             for(let child of item.childItem){
                                 // if( child.commetStatus == '0' ){
@@ -499,7 +504,7 @@ export default {
                         }          
                     }else{
                         // 组合包评价
-                        this.goComment(orderCode, this.orderData.orderList[index].orderItem[0].childItem.productCode)
+                        this.goComment(orderCode, this.orderData.orderList[index].orderItem[0].combinationProduct.productCode)
                     }
 
                     break;
